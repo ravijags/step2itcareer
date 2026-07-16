@@ -1,65 +1,517 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useEffect, useState } from "react";
+import { courses } from "@/lib/courses";
+
+export default function HomePage() {
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("popupShown")) return;
+    const t = setTimeout(() => {
+      setPopupOpen(true);
+      sessionStorage.setItem("popupShown", "true");
+    }, 5000);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setPopupOpen(false);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      <HeroSection onOpenLead={() => setPopupOpen(true)} />
+      <AlumniMarquee />
+      <StatsRow />
+      <FeaturedCourses />
+      <MicroBatchUSP />
+      <PlacementProcess />
+      <CareerOutcomes />
+      <RecentPlacements />
+      <FinalCTA onOpenLead={() => setPopupOpen(true)} />
+      <MobileStickyBar onOpenLead={() => setPopupOpen(true)} />
+      {popupOpen && (
+        <LeadPopup
+          submitted={submitted}
+          onSubmit={() => setSubmitted(true)}
+          onClose={() => { setPopupOpen(false); setSubmitted(false); }}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+      )}
+    </>
+  );
+}
+
+function HeroSection({ onOpenLead }: { onOpenLead: () => void }) {
+  return (
+    <section className="relative min-h-[88vh] flex items-center bg-[#0D1330] overflow-hidden">
+      <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle, #3B5BFF 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full" style={{ background: "radial-gradient(circle, rgba(59,91,255,0.15) 0%, transparent 70%)" }} />
+      <div className="relative max-w-brand mx-auto px-6 py-20 text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/10 text-accent text-xs font-bold tracking-widest uppercase mb-8">
+          Live Cohort-Based Bootcamps
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
+        <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight tracking-tight mb-6">
+          From Learning to <span className="text-primary">Landing the Job</span>
+        </h1>
+        <p className="text-lg text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed">
+          Live, mentor-led IT career transition programs engineered for outcomes. Learn in micro-batches of max 5 students and secure your future.
+        </p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
+          <a href="/courses" className="px-8 py-4 bg-primary text-white font-bold rounded-full hover:bg-primary-deep transition-colors text-[15px]">
+            Explore Courses
           </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
+          <button onClick={onOpenLead} className="px-8 py-4 bg-white/10 text-white font-bold rounded-full hover:bg-white/20 transition-colors border border-white/20 text-[15px]">
+            Book Free Counseling
+          </button>
+          <a href="https://wa.me/919936609430" className="px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full hover:bg-green-700 transition-colors text-[15px] flex items-center gap-2">
+            WhatsApp Us
           </a>
         </div>
-      </main>
+        <div className="flex flex-wrap justify-center gap-3">
+          {["Live Classes", "1:1 Mentorship", "Real Projects", "Placement Support"].map((chip) => (
+            <span key={chip} className="px-4 py-2 bg-white/10 text-white/80 text-sm font-semibold rounded-full border border-white/10">
+              {chip}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AlumniMarquee() {
+  const doubled = [1, 2].flatMap(() => [
+    <div key={Math.random()} className="inline-flex items-center mx-16">
+      <span className="text-[22px] font-bold tracking-tight">
+        <span style={{ color: "#4285F4" }}>G</span>
+        <span style={{ color: "#EA4335" }}>o</span>
+        <span style={{ color: "#FBBC05" }}>o</span>
+        <span style={{ color: "#4285F4" }}>g</span>
+        <span style={{ color: "#34A853" }}>l</span>
+        <span style={{ color: "#EA4335" }}>e</span>
+      </span>
+    </div>,
+
+    <div key={Math.random()} className="inline-flex items-center gap-2 mx-16">
+      <div className="grid grid-cols-2 gap-[2px] w-[22px] h-[22px] shrink-0">
+        <div style={{ background: "#F25022" }} className="rounded-[1px]" />
+        <div style={{ background: "#7FBA00" }} className="rounded-[1px]" />
+        <div style={{ background: "#00A4EF" }} className="rounded-[1px]" />
+        <div style={{ background: "#FFB900" }} className="rounded-[1px]" />
+      </div>
+      <span className="text-[22px] font-semibold text-gray-700 tracking-tight">Microsoft</span>
+    </div>,
+
+    <div key={Math.random()} className="inline-flex items-center mx-16">
+      <div className="flex flex-col items-start leading-none">
+        <span className="text-[22px] font-bold text-gray-900 tracking-tight">amazon</span>
+        <svg viewBox="0 0 100 18" width="80" height="12" className="ml-1 mt-0.5">
+          <path d="M5 8 Q50 20 95 8" stroke="#FF9900" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+          <polygon points="90,4 98,9 90,14" fill="#FF9900" />
+        </svg>
+      </div>
+    </div>,
+
+    <div key={Math.random()} className="inline-flex items-center mx-16">
+      <span className="text-[22px] font-extrabold tracking-[0.15em]" style={{ color: "#1F70C1" }}>IBM</span>
+    </div>,
+
+    <div key={Math.random()} className="inline-flex items-center mx-16">
+      <span className="text-[22px] font-bold" style={{ color: "#007CC3" }}>Infosys</span>
+    </div>,
+
+    <div key={Math.random()} className="inline-flex items-center mx-16">
+      <span className="text-[22px] font-bold" style={{ color: "#CC0000" }}>TCS</span>
+    </div>,
+
+    <div key={Math.random()} className="inline-flex items-center mx-16">
+      <span className="text-[22px] font-bold" style={{ color: "#341C5C" }}>wipro</span>
+    </div>,
+
+    <div key={Math.random()} className="inline-flex items-center mx-16">
+      <span className="text-[22px] font-bold" style={{ color: "#A100FF" }}>Accenture</span>
+      <span className="text-[22px] font-bold ml-0.5" style={{ color: "#A100FF" }}>{">"}</span>
+    </div>,
+
+    <div key={Math.random()} className="inline-flex items-center mx-16">
+      <span className="text-[22px] font-bold" style={{ color: "#0070AD" }}>Capgemini</span>
+    </div>,
+
+    <div key={Math.random()} className="inline-flex items-center mx-16">
+      <span className="text-[22px] font-bold" style={{ color: "#86BC25" }}>Deloitte.</span>
+    </div>,
+
+    <div key={Math.random()} className="inline-flex items-center mx-16">
+      <span className="text-[22px] font-bold" style={{ color: "#1A4CA1" }}>Cognizant</span>
+    </div>,
+
+    <div key={Math.random()} className="inline-flex items-center mx-16">
+      <span className="text-[22px] font-bold" style={{ color: "#0076C0" }}>HCL</span>
+      <span className="text-[10px] font-bold ml-0.5 align-super" style={{ color: "#0076C0" }}>Tech</span>
+    </div>,
+  ]);
+
+  return (
+    <section className="py-16 bg-soft overflow-hidden">
+      <p className="text-center text-[11px] font-extrabold text-primary uppercase tracking-[0.25em] mb-2">
+        Our Alumni Work Here
+      </p>
+      <div className="w-12 h-0.5 bg-primary mx-auto mb-12" />
+
+      <div className="relative flex">
+        <div
+          className="absolute left-0 top-0 bottom-0 w-32 z-10"
+          style={{ background: "linear-gradient(to right, #F6F8FC, transparent)" }}
+        />
+        <div
+          className="absolute right-0 top-0 bottom-0 w-32 z-10"
+          style={{ background: "linear-gradient(to left, #F6F8FC, transparent)" }}
+        />
+        <div className="flex animate-marquee whitespace-nowrap items-center">
+          {doubled}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function StatsRow() {
+  const stats = [
+    { value: "1,200+", label: "Students Trained" },
+    { value: "800+", label: "Placements" },
+    { value: "60+", label: "Hiring Partners" },
+    { value: "20+", label: "Expert Trainers" },
+    { value: "94%", label: "Placement Rate" },
+  ];
+  return (
+    <section className="py-14 bg-white">
+      <div className="max-w-brand mx-auto px-6">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+          {stats.map((s) => (
+            <div key={s.label} className="text-center p-6 rounded-brand bg-soft border border-line">
+              <div className="text-3xl font-extrabold text-primary mb-1">{s.value}</div>
+              <div className="text-sm text-muted font-semibold">{s.label}</div>
+            </div>
+          ))}
+        </div>
+        <p className="text-center text-xs text-muted mt-4">Stats are illustrative and will be updated with verified data before launch</p>
+      </div>
+    </section>
+  );
+}
+
+function FeaturedCourses() {
+  const featured = courses.filter((c) =>
+    ["generative-ai-multi-agent", "data-science-ml-ai", "cpep-customized-professional-excellence"].includes(c.slug)
+  );
+  return (
+    <section className="py-20 bg-soft">
+      <div className="max-w-brand mx-auto px-6">
+        <div className="text-center mb-12">
+          <span className="inline-block px-4 py-1.5 bg-primary-tint text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">Our Programs</span>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-ink mb-4">Career-Launching Tech Programs</h2>
+          <p className="text-muted text-base max-w-xl mx-auto">12 industry-aligned programs with live mentorship, real projects, and guaranteed placement support.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {featured.map((course) => (
+            <a key={course.slug} href={`/courses/${course.slug}`} className="bg-white rounded-brand border border-line shadow-card hover:-translate-y-1.5 hover:shadow-deep transition-all duration-200 flex flex-col overflow-hidden">
+              <div className="h-36 flex items-center justify-center" style={{ background: `linear-gradient(135deg, ${course.categoryColor}18, ${course.categoryColor}30)` }}>
+                <span className="text-5xl">
+                  {course.slug.includes("generative") ? "🧠" : course.slug.includes("data-science") ? "📊" : "⭐"}
+                </span>
+              </div>
+              <div className="p-5 flex flex-col flex-1">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold px-3 py-1 rounded-full" style={{ background: `${course.categoryColor}18`, color: course.categoryColor }}>
+                    {course.category}
+                  </span>
+                  <span className="text-xs text-muted font-semibold">{course.duration}</span>
+                </div>
+                <h3 className="text-[15px] font-extrabold text-ink mb-3 leading-snug">{course.title}</h3>
+                <div className="mt-auto flex items-center justify-between">
+                  <span className="text-base font-extrabold text-ink">{course.feeDisplay}</span>
+                  <span className="text-xs font-bold text-primary">Explore</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div className="text-center">
+          <a href="/courses" className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-white font-bold rounded-full hover:bg-primary-deep transition-colors">
+            View All 12 Courses
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MicroBatchUSP() {
+  const features = [
+    { icon: "👥", title: "Max 5 Students Per Batch", desc: "You're not a number. Every student gets real attention." },
+    { icon: "🗺️", title: "Personalized Roadmap", desc: "Your learning path is built around your goals, not a template." },
+    { icon: "📅", title: "Weekly 1:1 Mentor Reviews", desc: "Direct feedback every week, not once a month." },
+    { icon: "🏆", title: "Guaranteed Capstone", desc: "Every student ships a real project before graduating." },
+    { icon: "🔁", title: "Free Re-attendance", desc: "Attend future batches for free if you need more time." },
+    { icon: "🎯", title: "Placement Until Hired", desc: "We don't stop until you have your first offer letter." },
+  ];
+  return (
+    <section className="py-20 bg-white">
+      <div className="max-w-brand mx-auto px-6">
+        <div className="text-center mb-12">
+          <span className="inline-block px-4 py-1.5 bg-primary-tint text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">Our Difference</span>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-ink mb-4">Micro-Batch Career Accelerator</h2>
+          <p className="text-muted text-base max-w-xl mx-auto">Not a classroom. Not a MOOC. A focused, high-accountability program built for real outcomes.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((f) => (
+            <div key={f.title} className="p-6 rounded-brand bg-soft border border-line">
+              <div className="text-3xl mb-4">{f.icon}</div>
+              <h3 className="text-[15px] font-extrabold text-ink mb-2">{f.title}</h3>
+              <p className="text-sm text-muted leading-relaxed">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PlacementProcess() {
+  const steps = [
+    "Resume Building", "Placement Training", "Interview Questions",
+    "Internships Under Experts", "Real-time Live Projects", "Aptitude Preparation",
+    "Personality Development", "Mock Interviews", "Scheduling Interviews", "Get Offer Letter",
+  ];
+  return (
+    <section className="py-20 bg-soft">
+      <div className="max-w-brand mx-auto px-6">
+        <div className="text-center mb-12">
+          <span className="inline-block px-4 py-1.5 bg-primary-tint text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">How It Works</span>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-ink mb-4">From Learning to Landing the Job</h2>
+          <p className="text-muted text-base max-w-xl mx-auto">Our 10-step placement process is engineered to get you hired, not just trained.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {steps.map((step, i) => (
+            <div key={step} className="relative p-5 bg-white rounded-brand border border-line text-center">
+              <div className="w-8 h-8 bg-primary text-white text-xs font-extrabold rounded-full flex items-center justify-center mx-auto mb-3">
+                {i + 1}
+              </div>
+              <p className="text-[13px] font-bold text-ink leading-snug">{step}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CareerOutcomes() {
+  const salaryRoadmaps = [
+    { from: "4L", to: "8L", role: "Entry Level to Junior", color: "#3B5BFF" },
+    { from: "8L", to: "15L", role: "Junior to Mid Level", color: "#FF7A3D" },
+    { from: "15L", to: "30L", role: "Mid to Senior Level", color: "#16A34A" },
+  ];
+  return (
+    <section className="py-20 bg-white">
+      <div className="max-w-brand mx-auto px-6">
+        <div className="text-center mb-12">
+          <span className="inline-block px-4 py-1.5 bg-primary-tint text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">Career Outcomes</span>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-ink mb-4">Your Salary Growth Roadmap</h2>
+          <p className="text-muted text-base max-w-xl mx-auto">See where our programs take you — from your first IT job to senior-level packages.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {salaryRoadmaps.map((r) => (
+            <div key={r.role} className="p-8 rounded-brand border border-line text-center" style={{ background: `${r.color}08` }}>
+              <div className="text-4xl font-extrabold mb-2" style={{ color: r.color }}>
+                Rs.{r.from} to Rs.{r.to}
+              </div>
+              <div className="text-sm font-semibold text-muted">{r.role}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function RecentPlacements() {
+  const placements = [
+    { name: "Priya S.", track: "Data Science & ML", company: "Microsoft", pkg: "18 LPA" },
+    { name: "Rahul K.", track: "Full Stack Engineering", company: "Infosys", pkg: "12 LPA" },
+    { name: "Anjali R.", track: "Generative AI", company: "TCS", pkg: "14 LPA" },
+    { name: "Vikas M.", track: "Cloud & DevOps", company: "Wipro", pkg: "11 LPA" },
+  ];
+  return (
+    <section className="py-20 bg-soft">
+      <div className="max-w-brand mx-auto px-6">
+        <div className="text-center mb-12">
+          <span className="inline-block px-4 py-1.5 bg-primary-tint text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">Success Stories</span>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-ink mb-4">Recent Placements</h2>
+          <p className="text-xs text-muted mt-2">Names and details are illustrative — real stories coming soon</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {placements.map((p) => (
+            <div key={p.name} className="bg-white rounded-brand border border-line p-6">
+              <div className="w-12 h-12 bg-primary-tint text-primary font-extrabold text-lg rounded-full flex items-center justify-center mb-4">
+                {p.name[0]}
+              </div>
+              <div className="font-extrabold text-ink mb-1">{p.name}</div>
+              <div className="text-xs text-muted mb-3">{p.track}</div>
+              <div className="text-xs font-bold text-[#16A34A]">Placed at {p.company}</div>
+              <div className="text-lg font-extrabold text-ink mt-1">Rs.{p.pkg}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FinalCTA({ onOpenLead }: { onOpenLead: () => void }) {
+  return (
+    <section className="py-20 bg-primary">
+      <div className="max-w-brand mx-auto px-6 text-center">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-6">Ready to Take the Next Leap?</h2>
+        <ul className="flex flex-wrap justify-center gap-4 mb-10">
+          {["Free 1:1 Counseling", "EMI & Scholarships", "Pay After Placement", "Lifetime Placement Support"].map((item) => (
+            <li key={item} className="text-sm font-semibold text-white/80">{item}</li>
+          ))}
+        </ul>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button onClick={onOpenLead} className="px-8 py-4 bg-white text-primary font-bold rounded-full hover:bg-soft transition-colors text-[15px]">
+            Book Free Counseling
+          </button>
+          <a href="https://wa.me/919936609430" className="px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full hover:bg-green-700 transition-colors text-[15px]">
+            WhatsApp Now
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileStickyBar({ onOpenLead }: { onOpenLead: () => void }) {
+  return (
+    <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white border-t border-line flex">
+      <a href="https://wa.me/919936609430" className="flex-1 py-3.5 text-center text-xs font-bold text-[#16A34A] border-r border-line">
+        WhatsApp
+      </a>
+      <button onClick={onOpenLead} className="flex-1 py-3.5 text-center text-xs font-bold text-white bg-primary border-r border-line">
+        Apply Now
+      </button>
+      <a href="tel:+919936609430" className="flex-1 py-3.5 text-center text-xs font-bold text-ink">
+        Call Us
+      </a>
+    </div>
+  );
+}
+
+function LeadPopup({ submitted, onSubmit, onClose }: {
+  submitted: boolean;
+  onSubmit: () => void;
+  onClose: () => void;
+}) {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit();
+  };
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden">
+
+        <button
+          onClick={onClose}
+          className="absolute top-5 right-5 z-10 w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-500 hover:text-gray-800 transition-colors text-lg font-bold"
+        >
+          ✕
+        </button>
+
+        {submitted ? (
+          <div className="p-16 text-center">
+            <div className="text-6xl mb-5">🎉</div>
+            <h3 className="text-2xl font-extrabold text-gray-900 mb-3">You are on the list!</h3>
+            <p className="text-gray-500">Our team will reach out within 24 hours. Check your WhatsApp!</p>
+          </div>
+        ) : (
+          <div className="flex min-h-[380px]">
+
+  {/* Left dark panel */}
+  <div className="hidden sm:flex flex-col justify-center w-[45%] shrink-0 bg-[#0D1330] p-8 rounded-l-2xl">
+    <p className="text-accent text-xs font-bold uppercase tracking-widest mb-3">Free Career Counseling</p>
+    <h3 className="text-xl font-extrabold text-white mb-6 leading-snug">
+      Get Job-Ready.<br />Get Hired.
+    </h3>
+    <ul className="space-y-3">
+      {["Expert 1:1 Career Consultation", "Micro-Batch Mentorship (5 max)", "Placement Support Until Offer"].map((item) => (
+        <li key={item} className="flex items-start gap-3 text-sm text-white/70 font-medium">
+          <span className="text-green-400 mt-0.5 shrink-0">✓</span>
+          {item}
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  {/* Right form panel */}
+  <div className="flex-1 p-8">
+    <h3 className="text-xl font-extrabold text-gray-900 mb-1">Book Free Counseling</h3>
+    <p className="text-gray-500 text-sm mb-6">No pressure. Just clarity on your next step.</p>
+
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <input
+        required
+        type="text"
+        placeholder="Full Name"
+        className="w-full px-4 py-3.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+      />
+      <input
+        required
+        type="tel"
+        placeholder="Phone Number"
+        className="w-full px-4 py-3.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+      />
+      <input
+        type="email"
+        placeholder="Email Address"
+        className="w-full px-4 py-3.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+      />
+      <select
+        className="w-full px-4 py-3.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-800 focus:outline-none focus:border-blue-500 transition-colors bg-white"
+      >
+        <option value="">Interested Program</option>
+        <option>Generative AI & Multi-Agent Systems Engineering</option>
+        <option>Data Science, Machine Learning & AI Engineering</option>
+        <option>Data Analytics & Business Intelligence</option>
+        <option>Business Analyst & Product Management</option>
+        <option>Full Stack Software Engineering</option>
+        <option>Cloud, DevOps & Platform Engineering</option>
+        <option>Cybersecurity & Cloud Security</option>
+        <option>Software Testing & QA Automation Engineering</option>
+        <option>CPEP - Customized Professional Excellence Program</option>
+        <option>AI Automation & No-Code Solutions</option>
+        <option>Digital Marketing & Growth Analytics</option>
+        <option>System Design & Software Architecture</option>
+        <option>Not sure yet — need guidance</option>
+      </select>
+      <button
+        type="submit"
+        className="w-full py-3.5 bg-primary text-white font-bold rounded-xl hover:bg-primary-deep transition-colors text-sm"
+      >
+        Request Callback
+      </button>
+    </form>
+  </div>
+
+</div>
+        )}
+      </div>
     </div>
   );
 }
