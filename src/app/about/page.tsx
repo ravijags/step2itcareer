@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 const leadership = [
   { name: "Ashvani Srivastava", role: "Founder & CEO", exp: "10+ Years", expertise: "EdTech Strategy • Technology Education • Business Growth • Career Development", initial: "A" },
   { name: "Ankita Srivastava", role: "Co-Founder & COO", exp: "5+ Years", expertise: "EdTech Operations • Learning Delivery • Student Experience • Business Operations", initial: "A" },
-  { name: "Ravi Jaglon", role: "Chief Technology Officer (CTO)", exp: "6+ Years", expertise: "Software Architecture • Cloud • AI Platforms • Technology Strategy", initial: "R" },
+  { name: "Ravi Jaglan", role: "Chief Technology Officer (CTO)", exp: "6+ Years", expertise: "Software Architecture • Cloud • AI Platforms • Technology Strategy", initial: "R" },
   { name: "Anupam", role: "Lead Investor & Finance Advisor", exp: "14+ Years", expertise: "Corporate Finance • Fundraising • Financial Strategy • Investment", initial: "A" },
 ];
 
