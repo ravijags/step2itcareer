@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import MobileNav from "@/components/MobileNav";
 
 export const metadata: Metadata = {
   title: "Step2ITCareer-AI — Get Job-Ready. Get Hired.",
@@ -49,11 +50,7 @@ function Nav() {
           Login / Sign In
         </a>
 
-        <button className="md:hidden p-2 rounded-lg text-ink">
-          <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M3 6h18M3 12h18M3 18h18" strokeLinecap="round" />
-          </svg>
-        </button>
+        <MobileNav />
       </nav>
     </header>
   );
