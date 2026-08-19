@@ -166,14 +166,14 @@ const courseLinks = [
 ];
 
 const internshipLinks = [
-  { name: "30-Days Coding Challenge — ₹10,000", href: "/internship" },
-  { name: "Summer/Winter Training Internship — ₹10,000", href: "/internship" },
+  { name: "30-Days Coding Challenge — ₹10,000", href: "/internship/30-days-coding-challenge" },
+  { name: "Summer/Winter Training — ₹6,000", href: "/internship/summer-winter-training" },
 ];
 
 const schoolingLinks = [
-  { name: "Class 6–8 Coding Program — ₹5,000", href: "/schooling" },
-  { name: "Class 8–10 Coding Program — ₹10,000", href: "/schooling" },
-  { name: "Class 10–12 Coding Program — ₹10,000", href: "/schooling" },
+  { name: "Class 6–8 Coding Program — ₹5,000", href: "/schooling/class-6-8" },
+  { name: "Class 8–10 Coding Program — ₹10,000", href: "/schooling/class-8-10" },
+  { name: "Class 10–12 Coding Program — ₹10,000", href: "/schooling/class-10-12" },
 ];
 
 const resourceLinks = [

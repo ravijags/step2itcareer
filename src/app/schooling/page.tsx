@@ -2,42 +2,42 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Schooling Programs — Step2ITCareer-AI",
-  description: "Coding programs for Class 6-12 students. Build future-ready skills with practical, project-based learning.",
+  description: "Coding programs for Class 6–12 students. Fun, project-based learning with expert mentors. Build future-ready skills early.",
 };
 
 const programs = [
   {
     class: "Class 6–8",
     fee: "₹5,000",
-    title: "Empower Young Minds with Future-Ready Coding Skills",
-    desc: "Introduces students to the exciting world of technology through fun, interactive, and project-based learning.",
+    href: "/schooling/class-6-8",
     color: "#3B5BFF",
-    topics: ["Computer Fundamentals", "Coding Logic & Thinking", "Flowcharts & Algorithms", "Block-Based Programming", "Introduction to Python", "Game & Animation Development", "AI & Technology Awareness", "Mini Coding Projects", "Internet Safety & Digital Skills", "Creative Problem Solving"],
-    highlights: ["Beginner-Friendly Curriculum", "Interactive Live Classes", "Hands-on Coding Activities", "Weekly Coding Challenges", "Fun Games & Creative Projects", "Small Batch Size", "Individual Mentor Support", "Progress Tracking & Parent Feedback", "Certificate of Completion"],
-    skills: ["Logical Thinking", "Critical Thinking", "Creativity & Innovation", "Problem-Solving Skills", "Analytical Reasoning", "Digital Literacy"],
-    for: ["Class 6 Students", "Class 7 Students", "Class 8 Students", "Beginners with No Coding Experience"],
+    bg: "#EEF2FF",
+    icon: "🎮",
+    tagline: "Beginner Friendly",
+    desc: "Fun, interactive coding using block-based programming and Python basics. Games, animations, and creative projects that make kids love technology.",
+    highlights: ["Block-Based Programming", "Introduction to Python", "Games & Animations", "Mini Projects", "Parent Progress Reports"],
   },
   {
     class: "Class 8–10",
     fee: "₹10,000",
-    title: "Don't Just Use Technology. Learn to Build It.",
-    desc: "The right time to start coding is not when a student enters college. Class 8–10 is the perfect stage to build the thinking skills that technology careers demand.",
+    href: "/schooling/class-8-10",
     color: "#7C3AED",
-    topics: ["Programming Fundamentals", "Variables & Data Types", "Conditions & Loops", "Functions", "Strings & Lists", "Problem Solving", "Basic Data Structures", "Debugging", "OOP Basics", "Coding Challenges", "Mini Projects", "Introduction to AI"],
-    highlights: ["One-to-One Online Training", "Skill-Level Based Learning", "Practical Coding Sessions", "Handwritten Coding Practice", "Regular Coding Challenges", "Project-Based Learning", "Personal Doubt Support", "Future-Oriented Technology Exposure"],
-    skills: ["Logic", "Coding", "Creativity", "Confidence", "Problem Solving", "Debugging"],
-    for: ["Class 8 Students", "Class 9 Students", "Class 10 Students", "Beginners with Some Exposure"],
+    bg: "#F5F3FF",
+    icon: "💡",
+    tagline: "Build Real Code",
+    desc: "Skill-level based learning with real Python, OOP, data structures, and debugging. Students arrive at college with a 2-year head start.",
+    highlights: ["1:1 Online Mentorship", "Skill-Level Assessment", "Python & OOP", "Handwritten Code Practice", "Mini Projects"],
   },
   {
     class: "Class 10–12",
     fee: "₹10,000",
-    title: "From Student to Future Tech Professional",
-    desc: "Bridge the gap between school education and real-world technology skills through practical learning, projects and industry-relevant tools.",
+    href: "/schooling/class-10-12",
     color: "#FF7A3D",
-    topics: ["Python & Java", "SQL & Databases", "Git & GitHub", "HTML, CSS & JavaScript", "Data Structures & Algorithms", "AI Fundamentals", "Generative AI & Prompt Engineering", "APIs & Web Services", "Application Development", "Deployment Fundamentals"],
-    highlights: ["One-to-One Online Training", "Practical + Project Based", "Industry Technologies", "Real-World Projects", "GitHub Portfolio Building", "AI & GenAI Exposure", "Career Preparation", "Interview Preparation"],
-    skills: ["Problem Solving", "Logical Thinking", "Version Control", "AI Productivity", "Project Development", "Technical Communication"],
-    for: ["Class 10 Students", "Class 11 Students", "Class 12 Students", "Pre-College Students"],
+    bg: "#FFF3EC",
+    icon: "🚀",
+    tagline: "Pre-College Tech Prep",
+    desc: "Python, Java, SQL, Git, GitHub, and AI tools — the full stack a Class 12 student needs to stand out in college and the job market.",
+    highlights: ["Python & Java", "GitHub Portfolio", "AI & GenAI Tools", "Interview Prep", "Industry Projects"],
   },
 ];
 
@@ -45,79 +45,94 @@ export default function SchoolingPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <div className="bg-[#0D1330] py-16 px-6 text-center">
-        <span className="inline-block px-4 py-1.5 bg-primary/20 text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">Schooling Programs</span>
-        <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4">Give Your Child a Head Start</h1>
-        <p className="text-white/60 text-base max-w-2xl mx-auto">Coding programs designed specifically for school students — Class 6 to Class 12. Build skills that matter for the future.</p>
+      <div className="relative bg-[#060D1F] overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle, #3B5BFF 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
+        <div className="max-w-brand mx-auto px-6 py-16 md:py-24 text-center relative">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/15 border border-primary/30 text-primary text-xs font-bold rounded-full uppercase tracking-widest mb-6">
+            📚 School Coding Programs · Class 6 to 12
+          </div>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6">
+            Give Your Child<br />
+            <span style={{ background: "linear-gradient(90deg, #3B5BFF, #7B8FFF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              a Head Start
+            </span>
+          </h1>
+          <p className="text-white/60 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+            Coding programs designed for Class 6 to Class 12. Fun, interactive, project-based — with expert mentors in micro-batches of max 5 students.
+          </p>
+        </div>
       </div>
 
-      {/* Programs */}
-      {programs.map((prog, idx) => (
-        <section key={prog.class} className={`py-16 px-6 ${idx % 2 === 0 ? "bg-soft" : "bg-white"} border-t border-line`}>
-          <div className="max-w-brand mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="px-4 py-1.5 text-white text-xs font-bold rounded-full" style={{ background: prog.color }}>{prog.class}</span>
-                  <span className="text-2xl font-extrabold text-ink">{prog.fee}</span>
-                </div>
-                <h2 className="text-xl md:text-2xl font-extrabold text-ink mb-3">{prog.title}</h2>
-                <p className="text-muted leading-relaxed mb-6">{prog.desc}</p>
-
-                <h3 className="font-extrabold text-ink mb-3">What Students Will Learn</h3>
-                <div className="grid grid-cols-2 gap-2 mb-6">
-                  {prog.topics.map((t) => (
-                    <div key={t} className="px-3 py-2 bg-white border border-line rounded-lg text-xs font-semibold text-ink">{t}</div>
-                  ))}
-                </div>
-
-                <a href="https://wa.me/919936609430"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 text-white font-bold rounded-full hover:opacity-90 transition-opacity"
-                  style={{ background: prog.color }}>
-                  💬 Enroll via WhatsApp
-                </a>
-              </div>
-
-              <div>
-                <h3 className="font-extrabold text-ink mb-4">Program Highlights</h3>
-                <div className="space-y-2 mb-6">
-                  {prog.highlights.map((h) => (
-                    <div key={h} className="flex items-center gap-3 p-3 bg-white rounded-xl border border-line text-sm font-semibold text-ink">
-                      <span className="font-bold" style={{ color: prog.color }}>✓</span>{h}
+      {/* Program Cards */}
+      <section className="py-16 md:py-20 bg-soft">
+        <div className="max-w-brand mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {programs.map((prog) => (
+              <a key={prog.class} href={prog.href}
+                className="bg-white rounded-2xl border border-line shadow-card hover:-translate-y-1.5 hover:shadow-deep transition-all duration-300 overflow-hidden group flex flex-col">
+                <div className="h-3 w-full" style={{ background: prog.color }} />
+                <div className="p-7 flex flex-col flex-1">
+                  <div className="flex items-start justify-between mb-5">
+                    <div>
+                      <span className="inline-block px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider rounded-full mb-3" style={{ background: prog.bg, color: prog.color }}>
+                        {prog.class} · {prog.tagline}
+                      </span>
+                      <h2 className="text-xl font-extrabold text-ink">{prog.class}</h2>
+                      <p className="text-sm font-semibold" style={{ color: prog.color }}>{prog.tagline}</p>
                     </div>
-                  ))}
-                </div>
-
-                <h3 className="font-extrabold text-ink mb-3">Skills Developed</h3>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {prog.skills.map((s) => (
-                    <span key={s} className="px-3 py-1.5 text-white text-xs font-bold rounded-full" style={{ background: `${prog.color}CC` }}>{s}</span>
-                  ))}
-                </div>
-
-                <div className="p-5 rounded-brand text-white" style={{ background: prog.color }}>
-                  <h4 className="font-extrabold mb-3">Perfect For</h4>
-                  <ul className="space-y-1">
-                    {prog.for.map((f) => (
-                      <li key={f} className="text-sm text-white/80 flex items-center gap-2">
-                        <span className="text-white">→</span>{f}
+                    <div className="text-3xl shrink-0">{prog.icon}</div>
+                  </div>
+                  <p className="text-muted text-sm leading-relaxed mb-6">{prog.desc}</p>
+                  <ul className="space-y-2 mb-6">
+                    {prog.highlights.map((h) => (
+                      <li key={h} className="flex items-center gap-2 text-xs font-semibold text-ink">
+                        <span className="font-bold" style={{ color: prog.color }}>✓</span>{h}
                       </li>
                     ))}
                   </ul>
+                  <div className="mt-auto flex items-center justify-between pt-4 border-t border-line">
+                    <div className="text-2xl font-extrabold text-ink">{prog.fee}</div>
+                    <span className="inline-flex items-center gap-1.5 px-5 py-2.5 text-white text-sm font-bold rounded-full group-hover:opacity-90 transition-opacity" style={{ background: prog.color }}>
+                      View Program →
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </a>
+            ))}
           </div>
-        </section>
-      ))}
+        </div>
+      </section>
+
+      {/* Why Us */}
+      <section className="py-14 bg-white">
+        <div className="max-w-brand mx-auto px-6">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-ink">Why Parents Choose Us</h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { icon: "👥", title: "Max 5 Students", desc: "Real individual attention, not a classroom of 30" },
+              { icon: "👨‍🏫", title: "Expert Mentors", desc: "Industry professionals who love teaching kids" },
+              { icon: "🏗️", title: "Project-Based", desc: "Kids build real things, not just read theory" },
+              { icon: "📊", title: "Progress Updates", desc: "Weekly reports so parents stay informed" },
+            ].map((item) => (
+              <div key={item.title} className="text-center p-5 bg-soft rounded-brand border border-line">
+                <div className="text-3xl mb-3">{item.icon}</div>
+                <h3 className="font-extrabold text-ink text-sm mb-1">{item.title}</h3>
+                <p className="text-xs text-muted">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* CTA */}
       <section className="py-12 px-6 bg-primary text-center">
         <h2 className="text-2xl font-extrabold text-white mb-4">Help Your Child Discover the Joy of Coding</h2>
-        <p className="text-white/70 mb-6">Learn • Think • Create • Innovate</p>
+        <p className="text-white/70 mb-6">Learn · Think · Create · Innovate</p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="https://wa.me/919936609430" className="px-8 py-4 bg-white text-primary font-bold rounded-full">💬 WhatsApp to Enroll</a>
-          <a href="tel:+919936609430" className="px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full">📞 Call Us</a>
+          <a href="https://wa.me/919936609430" className="w-full sm:w-auto px-8 py-4 bg-white text-primary font-bold rounded-full hover:bg-soft transition-colors">💬 WhatsApp to Enroll</a>
+          <a href="tel:+919936609430" className="w-full sm:w-auto px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full hover:bg-green-700 transition-colors">📞 Call Us</a>
         </div>
       </section>
     </div>

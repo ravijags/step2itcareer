@@ -214,7 +214,7 @@ function AlumniMarquee() {
     </div>,
   ]);
   return (
-    <section className="py-12 md:py-16 bg-soft overflow-hidden">
+    <section className="py-10 md:py-14 bg-soft overflow-hidden">
       <Reveal>
         <p className="text-center text-[11px] font-extrabold text-primary uppercase tracking-[0.25em] mb-2">Our Alumni Work Here</p>
         <div className="w-12 h-0.5 bg-primary mx-auto mb-8 md:mb-12" />
@@ -237,7 +237,7 @@ function StatsRow() {
     { value: 94, label: "Placement Rate", suffix: "%" },
   ];
   return (
-    <section className="py-12 md:py-14 bg-white">
+    <section className="py-10 md:py-14 bg-white">
       <div className="max-w-brand mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
           {stats.map((s, i) => (
