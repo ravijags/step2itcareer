@@ -1,10 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -13,92 +20,37 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-a { color: inherit; text-decoration: none; }
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
-/* Marquee */
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-.animate-marquee { animation: marquee 30s linear infinite; }
-.animate-marquee:hover { animation-play-state: paused; }
 
-/* Blip */
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
 @keyframes blip {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
 }
-.animate-blip { animation: blip 1.5s ease-in-out infinite; }
 
-/* Shimmer on cards */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-/* Floating badge pulse */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-}
-.animate-float { animation: float 3s ease-in-out infinite; }
-
-/* Gradient text utility */
-.gradient-text {
-  background: linear-gradient(135deg, #3B5BFF 0%, #7B8FFF 50%, #3B5BFF 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 3s linear infinite;
-}
-
-/* Premium button base */
-.btn-primary {
-  @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-primary text-white font-bold rounded-full text-[14px] transition-all duration-200;
-  box-shadow: 0 4px 20px rgba(59,91,255,0.35);
-}
-.btn-primary:hover {
-  @apply bg-primary-deep;
-  box-shadow: 0 6px 28px rgba(59,91,255,0.5);
-  transform: translateY(-1px);
-}
-.btn-primary:active { transform: translateY(0); }
-
-.btn-ghost {
-  @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/10 text-white font-bold rounded-full border border-white/25 text-[14px] transition-all duration-200 backdrop-blur-sm;
-}
-.btn-ghost:hover { @apply bg-white/15 border-white/40; transform: translateY(-1px); }
-
-.btn-whatsapp {
-  @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 text-white font-bold rounded-full text-[14px] transition-all duration-200;
-  background: #16A34A;
-  box-shadow: 0 4px 20px rgba(22,163,74,0.3);
-}
-.btn-whatsapp:hover {
-  background: #15803d;
-  box-shadow: 0 6px 28px rgba(22,163,74,0.45);
-  transform: translateY(-1px);
-}
-
-/* Section label pill */
-.section-label {
-  @apply inline-flex items-center gap-1.5 px-4 py-1.5 bg-primary-tint text-primary text-[11px] font-extrabold rounded-full uppercase tracking-[0.15em] mb-4;
-}
-
-/* Card hover */
-.card-hover {
-  @apply transition-all duration-300;
-}
-.card-hover:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 48px -12px rgba(59,91,255,0.18);
+.animate-blip {
+  animation: blip 1.5s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee, .animate-blip, .animate-float,
-  .gradient-text, .btn-primary, .btn-ghost, .btn-whatsapp, .card-hover:hover {
+  .animate-marquee,
+  .animate-blip {
     animation: none !important;
-    transform: none !important;
+    opacity: 1 !important;
   }
 }
