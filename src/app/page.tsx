@@ -56,10 +56,10 @@ export default function HomePage() {
 
 function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const inView = useInView(ref, { once: true, amount: 0.1 });
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 32 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>
+    <motion.div ref={ref} initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>
       {children}
     </motion.div>
   );
@@ -125,17 +125,19 @@ function HeroSection({ onOpenLead }: { onOpenLead: () => void }) {
           Live, mentor-led IT career transition programs engineered for outcomes. Learn in micro-batches of max 5 students and secure your future.
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
-          <motion.a href="/courses" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
-            className="w-full sm:w-auto px-8 py-4 bg-primary text-white font-bold rounded-full text-[15px] shadow-lg shadow-primary/30 text-center">
-            Explore Courses
-          </motion.a>
-          <motion.button onClick={onOpenLead} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
-            className="w-full sm:w-auto px-8 py-4 bg-white/10 text-white font-bold rounded-full border border-white/20 text-[15px] backdrop-blur-sm">
-            Book Free Counseling
-          </motion.button>
+          className="flex flex-col items-center justify-center gap-3 mb-10 w-full max-w-sm sm:max-w-none mx-auto">
+          <div className="flex gap-3 w-full sm:w-auto">
+            <motion.a href="/courses" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
+              className="flex-1 sm:flex-none px-6 sm:px-8 py-3.5 sm:py-4 bg-primary text-white font-bold rounded-full text-[14px] sm:text-[15px] shadow-lg shadow-primary/30 text-center">
+              Explore Courses
+            </motion.a>
+            <motion.button onClick={onOpenLead} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
+              className="flex-1 sm:flex-none px-6 sm:px-8 py-3.5 sm:py-4 bg-white/10 text-white font-bold rounded-full border border-white/20 text-[14px] sm:text-[15px] backdrop-blur-sm">
+              Free Counseling
+            </motion.button>
+          </div>
           <motion.a href="https://wa.me/919936609430" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
-            className="w-full sm:w-auto px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full text-[15px] flex items-center justify-center gap-2 shadow-lg shadow-green-900/30">
+            className="w-full sm:w-auto px-8 py-3.5 sm:py-4 bg-[#16A34A] text-white font-bold rounded-full text-[14px] sm:text-[15px] flex items-center justify-center gap-2 shadow-lg shadow-green-900/30">
             💬 WhatsApp Us
           </motion.a>
         </motion.div>
@@ -239,7 +241,7 @@ function StatsRow() {
       <div className="max-w-brand mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
           {stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.1}>
+            <Reveal key={s.label} delay={i * 0.1} className={i === 4 ? "col-span-2 md:col-span-1" : ""}>
               <motion.div whileHover={{ borderColor: "#3B5BFF", y: -4 }} transition={{ duration: 0.2 }}
                 className="text-center p-4 md:p-6 rounded-brand bg-soft border border-line">
                 <div className="text-2xl md:text-3xl font-extrabold text-primary mb-1">
@@ -327,9 +329,9 @@ function MicroBatchUSP() {
         </Reveal>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           {features.map((f, i) => (
-            <Reveal key={f.title} delay={i * 0.1}>
+            <Reveal key={f.title} delay={i * 0.07}>
               <motion.div whileHover={{ y: -4, borderColor: "#3B5BFF" }} transition={{ duration: 0.2 }}
-                className="p-5 md:p-6 rounded-brand bg-soft border border-line">
+                className="p-5 md:p-6 rounded-brand bg-soft border border-line h-full">
                 <motion.div className="text-3xl mb-4" whileHover={{ scale: 1.2, rotate: 5 }} transition={{ duration: 0.2 }}>{f.icon}</motion.div>
                 <h3 className="text-[14px] md:text-[15px] font-extrabold text-ink mb-2">{f.title}</h3>
                 <p className="text-sm text-muted leading-relaxed">{f.desc}</p>
@@ -352,11 +354,11 @@ function PlacementProcess() {
           <h2 className="text-2xl md:text-4xl font-extrabold text-ink mb-4">From Learning to Landing the Job</h2>
           <p className="text-muted text-sm md:text-base max-w-xl mx-auto">Our 10-step placement process is engineered to get you hired, not just trained.</p>
         </Reveal>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
           {steps.map((step, i) => (
-            <Reveal key={step} delay={i * 0.07}>
-              <motion.div whileHover={{ y: -4, borderColor: "#3B5BFF" }} className="relative p-4 md:p-5 bg-white rounded-brand border border-line text-center">
-                <motion.div className="w-7 h-7 md:w-8 md:h-8 bg-primary text-white text-xs font-extrabold rounded-full flex items-center justify-center mx-auto mb-2 md:mb-3"
+            <Reveal key={step} delay={i * 0.05}>
+              <motion.div whileHover={{ y: -4, borderColor: "#3B5BFF" }} className="relative p-4 md:p-5 bg-white rounded-brand border border-line text-center h-full flex flex-col items-center justify-center">
+                <motion.div className="w-7 h-7 md:w-8 md:h-8 bg-primary text-white text-xs font-extrabold rounded-full flex items-center justify-center mb-2 md:mb-3"
                   whileHover={{ scale: 1.15, backgroundColor: "#FF7A3D" }} transition={{ duration: 0.2 }}>
                   {i + 1}
                 </motion.div>
@@ -470,10 +472,17 @@ function FinalCTA({ onOpenLead }: { onOpenLead: () => void }) {
 function MobileStickyBar({ onOpenLead }: { onOpenLead: () => void }) {
   return (
     <motion.div initial={{ y: 100 }} animate={{ y: 0 }} transition={{ delay: 1, duration: 0.5 }}
-      className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white border-t border-line flex pb-safe">
-      <a href="https://wa.me/919936609430" className="flex-1 py-3.5 text-center text-xs font-bold text-[#16A34A] border-r border-line">💬 WhatsApp</a>
-      <button onClick={onOpenLead} className="flex-1 py-3.5 text-center text-xs font-bold text-white bg-primary border-r border-line">Apply Now</button>
-      <a href="tel:+919936609430" className="flex-1 py-3.5 text-center text-xs font-bold text-ink">📞 Call</a>
+      className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white border-t border-line flex"
+      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
+      <a href="https://wa.me/919936609430" className="flex-1 py-3.5 text-center text-xs font-bold text-[#16A34A] border-r border-line flex flex-col items-center justify-center gap-0.5">
+        <span>💬</span><span>WhatsApp</span>
+      </a>
+      <button onClick={onOpenLead} className="flex-1 py-3.5 text-center text-xs font-bold text-white bg-primary border-r border-line">
+        Apply Now
+      </button>
+      <a href="tel:+919936609430" className="flex-1 py-3.5 text-center text-xs font-bold text-ink flex flex-col items-center justify-center gap-0.5">
+        <span>📞</span><span>Call</span>
+      </a>
     </motion.div>
   );
 }
