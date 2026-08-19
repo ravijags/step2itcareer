@@ -10,16 +10,25 @@ function openPopup() {
 }
 
 function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, amount: 0.1 });
-  return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}>
-      {children}
-    </motion.div>
-  );
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { return; }
+    el.style.opacity = "0";
+    el.style.transform = "translateY(20px)";
+    el.style.transition = `opacity 0.55s ease ${delay}s, transform 0.55s ease ${delay}s`;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        el.style.opacity = "1";
+        el.style.transform = "translateY(0)";
+        observer.disconnect();
+      }
+    }, { threshold: 0.05 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [delay]);
+  return <div ref={ref} className={className}>{children}</div>;
 }
 
 function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
@@ -317,14 +326,14 @@ function MicroBatchUSP() {
           <h2 className="text-2xl md:text-4xl font-extrabold text-ink mb-3">Micro-Batch Career Accelerator™</h2>
           <p className="text-muted text-sm md:text-base max-w-xl mx-auto">Not a classroom. Not a MOOC. A high-accountability program built for real outcomes.</p>
         </Reveal>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
           {features.map((f, i) => (
             <Reveal key={f.title} delay={i*0.07}>
               <motion.div whileHover={{ y:-5, borderColor:"#3B5BFF" }} transition={{ duration:0.2 }}
-                className="p-6 rounded-2xl bg-soft border border-line h-full group">
-                <div className="text-3xl mb-4 group-hover:scale-110 transition-transform duration-200">{f.icon}</div>
-                <h3 className="text-[14px] font-extrabold text-ink mb-2">{f.title}</h3>
-                <p className="text-sm text-muted leading-relaxed">{f.desc}</p>
+                className="p-4 md:p-6 rounded-2xl bg-soft border border-line h-full group">
+                <div className="text-2xl md:text-3xl mb-3 group-hover:scale-110 transition-transform duration-200">{f.icon}</div>
+                <h3 className="text-[12px] md:text-[14px] font-extrabold text-ink mb-1.5">{f.title}</h3>
+                <p className="text-[11px] md:text-sm text-muted leading-relaxed hidden sm:block">{f.desc}</p>
               </motion.div>
             </Reveal>
           ))}
@@ -366,7 +375,7 @@ function PlacementProcess() {
         </Reveal>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {steps.map((step, i) => (
-            <Reveal key={step} delay={i*0.05}>
+            <Reveal key={step} delay={i*0.03}>
               <motion.div whileHover={{ y:-4, borderColor:"#3B5BFF" }}
                 className="bg-white rounded-2xl border border-line p-4 text-center h-full flex flex-col items-center justify-center">
                 <motion.div className="w-8 h-8 bg-primary text-white text-xs font-extrabold rounded-full flex items-center justify-center mb-3"
@@ -423,15 +432,16 @@ function RecentPlacements() {
 }
 
 function Testimonials() {
+  // Note: py-16 md:py-20 matches surrounding sections - no extra gap
   const testimonials = [
     { name:"Aditya Sharma", role:"Data Analyst @ Capgemini", quote:"The micro-batch model changed everything for me. My mentor knew my weaknesses better than I did. Placed in 4 months.", img:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80", rating:5 },
     { name:"Neha Gupta", role:"Full Stack Dev @ HCL Tech", quote:"Coming from a non-IT background felt scary. But the personalized roadmap made it feel achievable. Best investment I made.", img:"https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=80&q=80", rating:5 },
     { name:"Rohit Verma", role:"GenAI Engineer @ Startup", quote:"The batch of 5 meant I could never hide. That accountability is exactly what I needed. Got my offer 2 weeks after graduating.", img:"https://images.unsplash.com/photo-1463453091185-61582044d556?w=80&q=80", rating:5 },
   ];
   return (
-    <section className="py-16 md:py-20 bg-soft">
+    <section className="py-14 md:py-18 bg-soft">
       <div className="max-w-brand mx-auto px-6">
-        <Reveal className="text-center mb-12">
+        <Reveal className="text-center mb-10">
           <span className="section-label">What Students Say</span>
           <h2 className="text-2xl md:text-4xl font-extrabold text-ink">Heard It From Them</h2>
         </Reveal>
