@@ -40,12 +40,11 @@ function Nav() {
           </a>
         </div>
         <div className="hidden md:flex items-center gap-3">
-          <button
-            onClick={() => typeof window !== "undefined" && window.dispatchEvent(new CustomEvent("openLeadPopup"))}
+          <a href="#"
             className="px-5 py-2.5 bg-primary text-white text-[13px] font-bold rounded-full hover:bg-primary-deep transition-all"
             style={{ boxShadow: "0 2px 12px rgba(59,91,255,0.3)" }}>
             Free Counseling
-          </button>
+          </a>
         </div>
         <MobileNav />
       </nav>
