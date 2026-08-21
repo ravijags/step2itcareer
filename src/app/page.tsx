@@ -10,17 +10,13 @@ export default function HomePage() {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    const key = "popupLastShown";
-    const last = localStorage.getItem(key);
-    const now = Date.now();
-    const hours24 = 24 * 60 * 60 * 1000;
-    if (!last || now - parseInt(last) > hours24) {
-      const t = setTimeout(() => {
-        setPopupOpen(true);
-        localStorage.setItem(key, String(now));
-      }, 4000);
-      return () => clearTimeout(t);
-    }
+    const key = "s2ic_popup_shown_v2";
+    if (sessionStorage.getItem(key)) return;
+    const t = setTimeout(() => {
+      setPopupOpen(true);
+      sessionStorage.setItem(key, "1");
+    }, 4000);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
@@ -89,7 +85,7 @@ function HeroSection({ onOpenLead }: { onOpenLead: () => void }) {
   const y = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
   return (
-    <section className="relative min-h-[92vh] flex items-center bg-[#060D1F] overflow-hidden">
+    <section className="relative min-h-[88vh] md:min-h-[92vh] flex items-center bg-[#060D1F] overflow-hidden">
       <motion.div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full opacity-20"
         style={{ background: "radial-gradient(circle, #3B5BFF, transparent 70%)" }}
         animate={{ x: [0, 30, 0], y: [0, -20, 0] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
@@ -386,13 +382,13 @@ function CareerOutcomes() {
           <h2 className="text-2xl md:text-4xl font-extrabold text-ink mb-4">Your Salary Growth Roadmap</h2>
           <p className="text-muted text-sm md:text-base max-w-xl mx-auto">See where our programs take you — from your first IT job to senior-level packages.</p>
         </Reveal>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+        <div className="grid grid-cols-3 gap-3 md:gap-6">
           {roadmaps.map((r, i) => (
             <Reveal key={r.role} delay={i * 0.15}>
               <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.2 }}
-                className="p-6 md:p-8 rounded-brand border border-line text-center" style={{ background: `${r.color}08` }}>
-                <div className="text-2xl md:text-4xl font-extrabold mb-2" style={{ color: r.color }}>{r.from} → {r.to}</div>
-                <div className="text-sm font-semibold text-muted">{r.role}</div>
+                className="p-4 md:p-8 rounded-brand border border-line text-center" style={{ background: `${r.color}08` }}>
+                <div className="text-lg md:text-4xl font-extrabold mb-1 md:mb-2 leading-tight" style={{ color: r.color }}>{r.from}<br className="md:hidden"/>→ {r.to}</div>
+                <div className="text-[10px] md:text-sm font-semibold text-muted leading-snug">{r.role}</div>
               </motion.div>
             </Reveal>
           ))}

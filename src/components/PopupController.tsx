@@ -7,16 +7,20 @@ export default function PopupController() {
   const [open, setOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  // Auto-show once per session (not on homepage — homepage has its own logic)
+  // Auto-show once per session on ALL pages except homepage
+  // (homepage has its own popup logic with its own key)
   useEffect(() => {
-    const key = "popupShownGlobal";
+    const isHomepage = window.location.pathname === "/";
+    if (isHomepage) return;
+
+    // Use session storage so it resets each visit
+    const key = "s2ic_popup_shown_v2";
     if (sessionStorage.getItem(key)) return;
-    // Only auto-show if NOT on homepage (homepage handles its own)
-    if (window.location.pathname === "/") return;
+
     const t = setTimeout(() => {
       setOpen(true);
       sessionStorage.setItem(key, "1");
-    }, 5000);
+    }, 4000);
     return () => clearTimeout(t);
   }, []);
 
