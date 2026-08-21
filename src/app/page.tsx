@@ -98,13 +98,11 @@ function HeroSection() {
           transition={{ duration: Math.random() * 3 + 3, repeat: Infinity, delay: Math.random() * 2, ease: "easeInOut" }} />
       ))}
       <motion.div style={{ y, opacity }} className="relative max-w-brand mx-auto px-6 py-20 text-center w-full">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/10 text-accent text-xs font-bold tracking-widest uppercase mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/10 text-accent text-xs font-bold tracking-widest uppercase mb-8">
           <motion.span animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 1.5, repeat: Infinity }}>⚡</motion.span>
           Live Cohort-Based Bootcamps
-        </motion.div>
-        <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight tracking-tight mb-6">
+        </div>
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight tracking-tight mb-6">
           From Learning to{" "}
           <motion.span className="inline-block"
             style={{ background: "linear-gradient(90deg, #3B5BFF, #7B8FFF, #3B5BFF)", backgroundSize: "200% auto", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
@@ -112,13 +110,11 @@ function HeroSection() {
             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}>
             Landing the Job
           </motion.span>
-        </motion.h1>
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-lg text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed">
+        </h1>
+        <p className="text-lg text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed">
           Live, mentor-led IT career transition programs engineered for outcomes. Learn in micro-batches of max 5 students and secure your future.
-        </motion.p>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}
-          className="flex flex-col items-center justify-center gap-3 mb-10 w-full max-w-sm sm:max-w-none mx-auto">
+        </p>
+        <div className="flex flex-col items-center justify-center gap-3 mb-10 w-full max-w-sm sm:max-w-none mx-auto">
           <div className="flex gap-3 w-full sm:w-auto">
             <motion.a href="/courses" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
               className="flex-1 sm:flex-none px-6 sm:px-8 py-3.5 sm:py-4 bg-primary text-white font-bold rounded-full text-[14px] sm:text-[15px] shadow-lg shadow-primary/30 text-center">
@@ -133,15 +129,13 @@ function HeroSection() {
             className="w-full sm:w-auto px-8 py-3.5 sm:py-4 bg-[#16A34A] text-white font-bold rounded-full text-[14px] sm:text-[15px] flex items-center justify-center gap-2 shadow-lg shadow-green-900/30">
             💬 WhatsApp Us
           </motion.a>
-        </motion.div>
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7, delay: 0.5 }}
-          className="flex flex-wrap justify-center gap-3">
-          {["🎥 Live Classes", "👨‍🏫 1:1 Mentorship", "💼 Real Projects", "🏆 Placement Support"].map((chip, i) => (
-            <motion.span key={chip} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5 + i * 0.1 }}
+        </div>
+        <div className="flex flex-wrap justify-center gap-3">
+          {["🎥 Live Classes", "👨‍🏫 1:1 Mentorship", "💼 Real Projects", "🏆 Placement Support"].map((chip) => (
+            <span key={chip}
               className="px-4 py-2 bg-white/10 text-white/80 text-sm font-semibold rounded-full border border-white/10 backdrop-blur-sm">
               {chip}
-            </motion.span>
+            </span>
           ))}
         </motion.div>
       </motion.div>
@@ -320,14 +314,14 @@ function MicroBatchUSP() {
           <h2 className="text-2xl md:text-4xl font-extrabold text-ink mb-4">Micro-Batch Career Accelerator</h2>
           <p className="text-muted text-sm md:text-base max-w-xl mx-auto">Not a classroom. Not a MOOC. A focused, high-accountability program built for real outcomes.</p>
         </Reveal>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {features.map((f, i) => (
             <Reveal key={f.title} delay={i * 0.07}>
               <motion.div whileHover={{ y: -4, borderColor: "#3B5BFF" }} transition={{ duration: 0.2 }}
                 className="p-5 md:p-6 rounded-brand bg-soft border border-line h-full">
-                <motion.div className="text-3xl mb-4" whileHover={{ scale: 1.2, rotate: 5 }} transition={{ duration: 0.2 }}>{f.icon}</motion.div>
-                <h3 className="text-[14px] md:text-[15px] font-extrabold text-ink mb-2">{f.title}</h3>
-                <p className="text-sm text-muted leading-relaxed">{f.desc}</p>
+                <motion.div className="text-2xl md:text-3xl mb-3" whileHover={{ scale: 1.2, rotate: 5 }} transition={{ duration: 0.2 }}>{f.icon}</motion.div>
+                <h3 className="text-[12px] md:text-[15px] font-extrabold text-ink mb-1 leading-snug">{f.title}</h3>
+                <p className="hidden sm:block text-sm text-muted leading-relaxed">{f.desc}</p>
               </motion.div>
             </Reveal>
           ))}

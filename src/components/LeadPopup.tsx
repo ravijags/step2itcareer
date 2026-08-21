@@ -36,7 +36,7 @@ export default function LeadPopup({ submitted, onSubmit, onClose }: {
       <div className="absolute inset-0 bg-black/65 backdrop-blur-sm" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative w-full sm:max-w-2xl bg-white sm:rounded-2xl shadow-2xl overflow-hidden max-h-[95dvh] flex flex-col">
+      <div className="relative w-full sm:max-w-2xl bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col" style={{ maxHeight: "90dvh" }}>
 
         {/* Close button */}
         <button onClick={onClose}
