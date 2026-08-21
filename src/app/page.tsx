@@ -10,14 +10,9 @@ function openPopup() {
 }
 
 export default function HomePage() {
-  // Auto-show popup once per session via PopupController event
+  // Auto-show popup 5s after every page load
   useEffect(() => {
-    const key = "s2ic_popup_v3";
-    if (sessionStorage.getItem(key)) return;
-    const t = setTimeout(() => {
-      openPopup();
-      sessionStorage.setItem(key, "1");
-    }, 5000);
+    const t = setTimeout(() => openPopup(), 5000);
     return () => clearTimeout(t);
   }, []);
 

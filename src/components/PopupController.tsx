@@ -14,15 +14,10 @@ export default function PopupController() {
     return () => window.removeEventListener("openLeadPopup", handler);
   }, []);
 
-  // Auto-show on inner pages after 5s (homepage fires its own timer via page.tsx)
+  // Auto-show on inner pages after 5s on every load
   useEffect(() => {
     if (window.location.pathname === "/") return;
-    const key = "s2ic_popup_v3";
-    if (sessionStorage.getItem(key)) return;
-    const t = setTimeout(() => {
-      setOpen(true);
-      sessionStorage.setItem(key, "1");
-    }, 5000);
+    const t = setTimeout(() => setOpen(true), 5000);
     return () => clearTimeout(t);
   }, []);
 
