@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import MobileNav from "@/components/MobileNav";
+import PopupController from "@/components/PopupController";
 
 export const metadata: Metadata = {
   title: "Step2ITCareer-AI — Get Job-Ready. Get Hired.",
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="pb-16 md:pb-0">{children}</main>
         <Footer />
         <FloatingWhatsApp />
+        <PopupController />
       </body>
     </html>
   );
