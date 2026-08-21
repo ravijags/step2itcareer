@@ -7,35 +7,28 @@ export default function PopupController() {
   const [open, setOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  // Auto-show once per session on ALL pages except homepage
-  // (homepage has its own popup logic with its own key)
-  useEffect(() => {
-    const isHomepage = window.location.pathname === "/";
-    if (isHomepage) return;
-
-    // Use session storage so it resets each visit
-    const key = "s2ic_popup_shown_v2";
-    if (sessionStorage.getItem(key)) return;
-
-    const t = setTimeout(() => {
-      setOpen(true);
-      sessionStorage.setItem(key, "1");
-    }, 4000);
-    return () => clearTimeout(t);
-  }, []);
-
-  // Listen for global trigger from any button on any page
+  // Listen for global trigger — works on every page including homepage
   useEffect(() => {
     const handler = () => setOpen(true);
     window.addEventListener("openLeadPopup", handler);
     return () => window.removeEventListener("openLeadPopup", handler);
   }, []);
 
-  // Close on Escape
+  // Auto-show on inner pages after 5s (homepage fires its own timer via page.tsx)
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
+    if (window.location.pathname === "/") return;
+    const key = "s2ic_popup_v3";
+    if (sessionStorage.getItem(key)) return;
+    const t = setTimeout(() => {
+      setOpen(true);
+      sessionStorage.setItem(key, "1");
+    }, 5000);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Escape key close
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, []);

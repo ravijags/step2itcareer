@@ -1,33 +1,29 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { motion, useInView, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { courses } from "@/lib/courses";
-import LeadPopup from "@/components/LeadPopup";
+
+// Single function to open popup - fires the global event picked up by PopupController in layout
+function openPopup() {
+  window.dispatchEvent(new CustomEvent("openLeadPopup"));
+}
 
 export default function HomePage() {
-  const [popupOpen, setPopupOpen] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
+  // Auto-show popup once per session via PopupController event
   useEffect(() => {
-    const key = "s2ic_popup_shown_v2";
+    const key = "s2ic_popup_v3";
     if (sessionStorage.getItem(key)) return;
     const t = setTimeout(() => {
-      setPopupOpen(true);
+      openPopup();
       sessionStorage.setItem(key, "1");
-    }, 4000);
+    }, 5000);
     return () => clearTimeout(t);
-  }, []);
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setPopupOpen(false); };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
   }, []);
 
   return (
     <>
-      <HeroSection onOpenLead={() => setPopupOpen(true)} />
+      <HeroSection />
       <AlumniMarquee />
       <StatsRow />
       <FeaturedCourses />
@@ -35,17 +31,8 @@ export default function HomePage() {
       <PlacementProcess />
       <CareerOutcomes />
       <RecentPlacements />
-      <FinalCTA onOpenLead={() => setPopupOpen(true)} />
-      <MobileStickyBar onOpenLead={() => setPopupOpen(true)} />
-      <AnimatePresence>
-        {popupOpen && (
-          <LeadPopup
-            submitted={submitted}
-            onSubmit={() => setSubmitted(true)}
-            onClose={() => { setPopupOpen(false); setSubmitted(false); }}
-          />
-        )}
-      </AnimatePresence>
+      <FinalCTA />
+      <MobileStickyBar />
     </>
   );
 }
@@ -80,7 +67,7 @@ function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
   return <span ref={ref}>{count.toLocaleString()}{suffix}</span>;
 }
 
-function HeroSection({ onOpenLead }: { onOpenLead: () => void }) {
+function HeroSection() {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
@@ -127,7 +114,7 @@ function HeroSection({ onOpenLead }: { onOpenLead: () => void }) {
               className="flex-1 sm:flex-none px-6 sm:px-8 py-3.5 sm:py-4 bg-primary text-white font-bold rounded-full text-[14px] sm:text-[15px] shadow-lg shadow-primary/30 text-center">
               Explore Courses
             </motion.a>
-            <motion.button onClick={onOpenLead} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
+            <motion.button onClick={openPopup} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
               className="flex-1 sm:flex-none px-6 sm:px-8 py-3.5 sm:py-4 bg-white/10 text-white font-bold rounded-full border border-white/20 text-[14px] sm:text-[15px] backdrop-blur-sm">
               Free Counseling
             </motion.button>
@@ -432,7 +419,7 @@ function RecentPlacements() {
   );
 }
 
-function FinalCTA({ onOpenLead }: { onOpenLead: () => void }) {
+function FinalCTA() {
   return (
     <section className="py-16 md:py-20 bg-primary relative overflow-hidden">
       <motion.div className="absolute inset-0 opacity-10"
@@ -450,7 +437,7 @@ function FinalCTA({ onOpenLead }: { onOpenLead: () => void }) {
             ))}
           </ul>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <motion.button onClick={onOpenLead} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
+            <motion.button onClick={openPopup} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
               className="w-full sm:w-auto px-8 py-4 bg-white text-primary font-bold rounded-full text-[15px] shadow-xl">
               Book Free Counseling
             </motion.button>
@@ -465,7 +452,7 @@ function FinalCTA({ onOpenLead }: { onOpenLead: () => void }) {
   );
 }
 
-function MobileStickyBar({ onOpenLead }: { onOpenLead: () => void }) {
+function MobileStickyBar() {
   return (
     <motion.div initial={{ y: 100 }} animate={{ y: 0 }} transition={{ delay: 1, duration: 0.5 }}
       className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white border-t border-line flex"
@@ -473,7 +460,7 @@ function MobileStickyBar({ onOpenLead }: { onOpenLead: () => void }) {
       <a href="https://wa.me/919936609430" className="flex-1 py-3.5 text-center text-xs font-bold text-[#16A34A] border-r border-line flex flex-col items-center justify-center gap-0.5">
         <span>💬</span><span>WhatsApp</span>
       </a>
-      <button onClick={onOpenLead} className="flex-1 py-3.5 text-center text-xs font-bold text-white bg-primary border-r border-line">
+      <button onClick={openPopup} className="flex-1 py-3.5 text-center text-xs font-bold text-white bg-primary border-r border-line">
         Apply Now
       </button>
       <a href="tel:+919936609430" className="flex-1 py-3.5 text-center text-xs font-bold text-ink flex flex-col items-center justify-center gap-0.5">
