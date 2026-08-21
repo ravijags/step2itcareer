@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { courses } from "@/lib/courses";
 
 // Single function to open popup - fires the global event picked up by PopupController in layout
@@ -38,14 +38,25 @@ export default function HomePage() {
 }
 
 function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, amount: 0.1 });
-  return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>
-      {children}
-    </motion.div>
-  );
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    el.style.opacity = "0";
+    el.style.transform = "translateY(20px)";
+    el.style.transition = `opacity 0.55s ease ${delay}s, transform 0.55s ease ${delay}s`;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        el.style.opacity = "1";
+        el.style.transform = "translateY(0)";
+        observer.disconnect();
+      }
+    }, { threshold: 0.05 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [delay]);
+  return <div ref={ref} className={className}>{children}</div>;
 }
 
 function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
@@ -224,7 +235,7 @@ function StatsRow() {
       <div className="max-w-brand mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
           {stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.1} className={i === 4 ? "col-span-2 md:col-span-1" : ""}>
+            <Reveal key={s.label} delay={i * 0.05} className={i === 4 ? "col-span-2 md:col-span-1" : ""}>
               <motion.div whileHover={{ borderColor: "#3B5BFF", y: -4 }} transition={{ duration: 0.2 }}
                 className="text-center p-4 md:p-6 rounded-brand bg-soft border border-line">
                 <div className="text-2xl md:text-3xl font-extrabold text-primary mb-1">
@@ -260,7 +271,7 @@ function FeaturedCourses() {
         </Reveal>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {featured.map((course, i) => (
-            <Reveal key={course.slug} delay={i * 0.15}>
+            <Reveal key={course.slug} delay={i * 0.06}>
               <motion.a href={`/courses/${course.slug}`} whileHover={{ y: -8, boxShadow: "0 24px 48px -12px rgba(59,91,255,0.2)" }}
                 transition={{ duration: 0.3 }} className="bg-white rounded-2xl overflow-hidden shadow-card flex flex-col block">
                 <div className="h-44 relative overflow-hidden">
@@ -371,7 +382,7 @@ function CareerOutcomes() {
         </Reveal>
         <div className="grid grid-cols-3 gap-3 md:gap-6">
           {roadmaps.map((r, i) => (
-            <Reveal key={r.role} delay={i * 0.15}>
+            <Reveal key={r.role} delay={i * 0.06}>
               <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.2 }}
                 className="p-4 md:p-8 rounded-brand border border-line text-center" style={{ background: `${r.color}08` }}>
                 <div className="text-lg md:text-4xl font-extrabold mb-1 md:mb-2 leading-tight" style={{ color: r.color }}>{r.from}<br className="md:hidden"/>→ {r.to}</div>
@@ -402,7 +413,7 @@ function RecentPlacements() {
         </Reveal>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
           {placements.map((p, i) => (
-            <Reveal key={p.name} delay={i * 0.1}>
+            <Reveal key={p.name} delay={i * 0.05}>
               <motion.div whileHover={{ y: -6, boxShadow: "0 20px 40px -12px rgba(14,21,38,0.15)" }}
                 transition={{ duration: 0.3 }} className="bg-white rounded-brand border border-line p-5 md:p-6">
                 <div className="w-10 h-10 md:w-12 md:h-12 bg-primary-tint text-primary font-extrabold text-lg rounded-full flex items-center justify-center mb-4">{p.name[0]}</div>
