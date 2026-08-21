@@ -137,7 +137,7 @@ function HeroSection() {
               {chip}
             </span>
           ))}
-        </motion.div>
+        </div>
       </motion.div>
       <div className="absolute bottom-0 left-0 right-0 h-24"
         style={{ background: "linear-gradient(to top, #ffffff08, transparent)" }} />
