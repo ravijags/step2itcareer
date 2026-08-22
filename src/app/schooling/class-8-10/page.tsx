@@ -63,7 +63,7 @@ export default function Class810Page() {
                 <p className="text-muted leading-relaxed mb-4">Students who learn to code in Class 8–10 arrive at college with a 2-year head start. They understand how software works, they can build things, and they have a portfolio before their peers even know what Python is.</p>
                 <p className="text-muted leading-relaxed">Our program is skill-level based — so whether your child knows nothing or already played with Scratch, they join at the right starting point.</p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 {[
                   { icon: "🧪", title: "Skill-Level Based", desc: "Assess first, teach second. Every student starts where it makes sense for them." },
                   { icon: "✍️", title: "Handwritten Code Practice", desc: "We build the habit of writing code by hand — essential for competitive exams and interviews." },

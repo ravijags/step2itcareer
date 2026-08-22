@@ -95,7 +95,7 @@ export default function SummerWinterPage() {
 
               <div>
                 <h3 className="font-extrabold text-ink mb-4">What You Get</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3">
                   {[
                     { icon: "🏗️", text: "Live industry project (not a dummy project)" },
                     { icon: "👨‍🏫", text: "Dedicated mentor — same person, every session" },
@@ -175,7 +175,7 @@ export default function SummerWinterPage() {
             <span className="inline-block px-4 py-1.5 bg-primary-tint text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">Program Flow</span>
             <h2 className="text-2xl md:text-3xl font-extrabold text-ink">8-Week Journey</h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
             {timeline.map((t, i) => (
               <div key={t.phase} className="bg-white p-5 rounded-brand border border-line relative hover:border-primary hover:shadow-card transition-all duration-200">
                 <div className="w-8 h-8 bg-primary text-white text-xs font-extrabold rounded-full flex items-center justify-center mb-4">{i + 1}</div>

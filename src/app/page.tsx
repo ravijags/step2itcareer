@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { courses } from "@/lib/courses";
 
@@ -54,35 +54,13 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
   return <div ref={ref} className={className}>{children}</div>;
 }
 
-function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      observer.disconnect();
-      let start = 0;
-      const step = target / (2000 / 16);
-      const timer = setInterval(() => {
-        start += step;
-        if (start >= target) { setCount(target); clearInterval(timer); }
-        else setCount(Math.floor(start));
-      }, 16);
-    }, { threshold: 0.1 });
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [target]);
-  return <span ref={ref}>{count.toLocaleString()}{suffix}</span>;
-}
 
 function HeroSection() {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
   return (
-    <section className="relative min-h-[88vh] md:min-h-[92vh] flex items-center bg-[#060D1F] overflow-hidden">
+    <section className="relative flex items-center bg-[#060D1F] overflow-hidden py-20 md:py-28">
       <motion.div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full opacity-20"
         style={{ background: "radial-gradient(circle, #3B5BFF, transparent 70%)" }}
         animate={{ x: [0, 30, 0], y: [0, -20, 0] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
@@ -97,7 +75,7 @@ function HeroSection() {
           animate={{ y: [0, -30, 0], opacity: [0.3, 1, 0.3] }}
           transition={{ duration: Math.random() * 3 + 3, repeat: Infinity, delay: Math.random() * 2, ease: "easeInOut" }} />
       ))}
-      <motion.div style={{ y, opacity }} className="relative max-w-brand mx-auto px-6 py-20 text-center w-full">
+      <motion.div style={{ y, opacity }} className="relative max-w-brand mx-auto px-6 text-center w-full">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/10 text-accent text-xs font-bold tracking-widest uppercase mb-8">
           <motion.span animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 1.5, repeat: Infinity }}>⚡</motion.span>
           Live Cohort-Based Bootcamps
@@ -232,7 +210,7 @@ function StatsRow() {
               <motion.div whileHover={{ borderColor: "#3B5BFF", y: -4 }} transition={{ duration: 0.2 }}
                 className="text-center p-4 md:p-6 rounded-brand bg-soft border border-line">
                 <div className="text-2xl md:text-3xl font-extrabold text-primary mb-1">
-                  <CountUp target={s.value} suffix={s.suffix} />
+                  {s.value.toLocaleString()}{s.suffix}
                 </div>
                 <div className="text-xs md:text-sm text-muted font-semibold">{s.label}</div>
               </motion.div>
@@ -343,7 +321,7 @@ function PlacementProcess() {
         </Reveal>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
           {steps.map((step, i) => (
-            <Reveal key={step} delay={i * 0.05}>
+            <Reveal key={step} delay={0}>
               <motion.div whileHover={{ y: -4, borderColor: "#3B5BFF" }} className="relative p-4 md:p-5 bg-white rounded-brand border border-line text-center h-full flex flex-col items-center justify-center">
                 <motion.div className="w-7 h-7 md:w-8 md:h-8 bg-primary text-white text-xs font-extrabold rounded-full flex items-center justify-center mb-2 md:mb-3"
                   whileHover={{ scale: 1.15, backgroundColor: "#FF7A3D" }} transition={{ duration: 0.2 }}>
@@ -431,7 +409,7 @@ function FinalCTA() {
         transition={{ duration: 10, repeat: Infinity, repeatType: "reverse" }}
         style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "30px 30px" }} />
       <div className="max-w-brand mx-auto px-6 text-center relative">
-        <Reveal>
+        <div>
           <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-6">Ready to Take the Next Leap?</h2>
           <ul className="flex flex-wrap justify-center gap-3 md:gap-4 mb-8 md:mb-10">
             {["Free 1:1 Counseling", "EMI & Scholarships", "Pay After Placement", "Lifetime Placement Support"].map((item) => (
@@ -450,7 +428,7 @@ function FinalCTA() {
               💬 WhatsApp Now
             </motion.a>
           </div>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

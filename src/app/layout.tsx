@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 function Nav() {
   return (
-    <header className="sticky top-0 z-50 bg-nav border-b border-line">
+    <header className="sticky top-0 z-40 bg-nav border-b border-line">
       <nav className="max-w-brand mx-auto px-6 flex items-center justify-between py-3">
         <a href="/" className="flex items-center gap-2">
           <span className="text-[15px] font-extrabold tracking-tight text-ink leading-tight">

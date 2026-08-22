@@ -76,7 +76,7 @@ export default function MobileNav() {
       {/* Backdrop */}
       {open && (
         <div
-          className="fixed inset-0 z-[998] md:hidden"
+          className="fixed inset-0 z-[9997] md:hidden"
           style={{ background: "rgba(14,21,38,0.6)", backdropFilter: "blur(2px)" }}
           onClick={close}
           aria-hidden
@@ -85,7 +85,7 @@ export default function MobileNav() {
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-[88%] max-w-[360px] bg-white z-[999] shadow-2xl flex flex-col md:hidden transition-transform duration-300 ease-in-out ${open ? "translate-x-0" : "translate-x-full"}`}
+        className={`fixed top-0 right-0 h-full w-[88%] max-w-[360px] bg-white z-[9998] shadow-2xl flex flex-col md:hidden transition-transform duration-300 ease-in-out ${open ? "translate-x-0" : "translate-x-full"}`}
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"

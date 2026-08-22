@@ -85,7 +85,7 @@ export default function ThirtyDaysPage() {
                 <p className="text-muted leading-relaxed mb-4">An intense, structured 30-day program where you solve 2,000+ coding problems in Java or Python under live mentor supervision. Every day has a plan. Every week has a milestone.</p>
                 <p className="text-muted leading-relaxed">Designed for students who want to break into tech or sharpen their coding skills before placements — with real accountability and no fluff.</p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 {[
                   { icon: "🎯", title: "Goal-Based Learning", desc: "Each week targets a specific skill milestone, not just random topics." },
                   { icon: "👨‍💻", title: "Live Doubt Sessions", desc: "Direct access to your mentor every day for doubt-clearing and code reviews." },
@@ -141,7 +141,7 @@ export default function ThirtyDaysPage() {
             <span className="inline-block px-4 py-1.5 bg-primary-tint text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">Curriculum</span>
             <h2 className="text-2xl md:text-3xl font-extrabold text-ink">4-Week Breakdown</h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
             {curriculum.map((week, i) => (
               <div key={week.week} className="bg-soft rounded-brand border border-line p-5 hover:border-primary hover:shadow-card transition-all duration-200">
                 <div className="inline-flex items-center gap-2 mb-4">
@@ -170,7 +170,7 @@ export default function ThirtyDaysPage() {
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-extrabold text-ink">Who Should Join?</h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-5">
             {[
               { icon: "🎓", title: "Final-Year Students", desc: "Preparing for campus placements and coding rounds at top companies." },
               { icon: "💼", title: "Fresh Graduates", desc: "Want to strengthen coding fundamentals before job applications." },

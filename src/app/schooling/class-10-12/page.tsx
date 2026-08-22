@@ -63,7 +63,7 @@ export default function Class1012Page() {
                 <p className="text-muted leading-relaxed mb-4">Most Class 12 students arrive at college never having written a real program. Our students arrive knowing Python, Java, Git, SQL, and how to use AI tools — with a GitHub portfolio to prove it.</p>
                 <p className="text-muted leading-relaxed">This program is built for pre-college students who want to stand out — in admissions, in internships, and in their first job hunt.</p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 {[
                   { icon: "🐙", title: "GitHub Portfolio", desc: "Every student ships real projects and commits them to GitHub — a portfolio before college." },
                   { icon: "🤖", title: "AI & GenAI Exposure", desc: "Learn ChatGPT, Claude, GitHub Copilot — tools every modern developer uses daily." },

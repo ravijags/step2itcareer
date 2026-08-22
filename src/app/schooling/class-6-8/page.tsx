@@ -63,7 +63,7 @@ export default function Class68Page() {
                 <p className="text-muted leading-relaxed mb-4">Ages 11–14 are the golden window for building computational thinking. Students who learn to code at this age develop problem-solving habits that stay with them forever — in any career.</p>
                 <p className="text-muted leading-relaxed">Our Class 6–8 program uses block-based programming, Python basics, and creative projects to make coding something kids look forward to every week.</p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 {[
                   { icon: "🎮", title: "Games & Animations", desc: "Students build their own games and animations — making learning feel like play." },
                   { icon: "🧩", title: "Block-Based First", desc: "Scratch and block coding ease students into logic before text-based code." },
