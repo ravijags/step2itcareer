@@ -5,9 +5,10 @@ interface LogoProps {
 
 export default function Logo({ size = "md", theme = "light" }: LogoProps) {
   const cfg = {
-    sm: { mark: 26, gap: 6,  wm: 13, ai: 5.5 },
-    md: { mark: 30, gap: 8,  wm: 15, ai: 6.5 },
-    lg: { mark: 42, gap: 12, wm: 20, ai: 8   },
+    //        mark  gap  wm    ai
+    sm: { mark: 32, gap: 7,  wm: 14, ai: 6   },
+    md: { mark: 38, gap: 9,  wm: 16, ai: 7   },
+    lg: { mark: 52, gap: 13, wm: 22, ai: 9   },
   }[size];
 
   const slash1   = theme === "dark" ? "#8BA4FF" : "#9DB4FF";
@@ -16,14 +17,13 @@ export default function Logo({ size = "md", theme = "light" }: LogoProps) {
   return (
     <div
       style={{
-        display: "flex",
+        display: "inline-flex",
         alignItems: "center",
         gap: cfg.gap,
-        lineHeight: 1,
       }}
       aria-label="Step2ITCareer-AI"
     >
-      {/* ── MARK — floating free, no container ── */}
+      {/* ── MARK — no container, floating free ── */}
       <svg
         width={cfg.mark}
         height={cfg.mark}
@@ -32,48 +32,66 @@ export default function Logo({ size = "md", theme = "light" }: LogoProps) {
         aria-hidden="true"
         style={{ flexShrink: 0, display: "block" }}
       >
-        <path d="M22 78 L46 18" stroke={slash1}   strokeWidth="12" strokeLinecap="round" />
-        <path d="M44 78 L68 18" stroke="#3B5BFF"  strokeWidth="16" strokeLinecap="round" />
+        {/* Slash 1 — lighter, thinner — "where you were" */}
+        <path d="M22 78 L46 18" stroke={slash1}  strokeWidth="12" strokeLinecap="round" />
+        {/* Slash 2 — electric blue, bolder — "where you are" */}
+        <path d="M44 78 L68 18" stroke="#3B5BFF" strokeWidth="16" strokeLinecap="round" />
+        {/* Orange dot — the job offer */}
         <circle cx="78" cy="74" r="11" fill="#FF7A3D" />
       </svg>
 
       {/* ── WORDMARK ── */}
-      <span
-        style={{
+      <div style={{ display: "flex", alignItems: "baseline", lineHeight: 1 }}>
+        <span style={{
           fontSize: cfg.wm,
           fontWeight: 800,
-          letterSpacing: "-0.4px",
-          lineHeight: 1,
+          letterSpacing: "-0.5px",
+          fontStyle: "normal",
           color: inkColor,
-          display: "flex",
-          alignItems: "center",
-          gap: 0,
-        }}
-      >
-        <span style={{ color: inkColor }}>Step</span>
-        <span style={{ color: "#3B5BFF", fontStyle: "italic" }}>2</span>
-        <span style={{ color: inkColor }}>IT</span>
-        <span style={{ color: "#3B5BFF" }}>Career</span>
+        }}>Step</span>
+
+        {/* Italic blue 2 — more pronounced skew for visibility */}
+        <span style={{
+          fontSize: cfg.wm,
+          fontWeight: 800,
+          letterSpacing: "-0.5px",
+          color: "#3B5BFF",
+          display: "inline-block",
+          transform: "skewX(-14deg)",
+          fontStyle: "italic",
+        }}>2</span>
+
+        <span style={{
+          fontSize: cfg.wm,
+          fontWeight: 800,
+          letterSpacing: "-0.5px",
+          color: inkColor,
+        }}>IT</span>
+
+        <span style={{
+          fontSize: cfg.wm,
+          fontWeight: 800,
+          letterSpacing: "-0.5px",
+          color: "#3B5BFF",
+        }}>Career</span>
+
         {/* AI badge — small tight superscript */}
-        <span
-          style={{
-            fontSize: cfg.ai,
-            fontWeight: 800,
-            background: "#FF7A3D",
-            color: "white",
-            padding: "1px 3.5px",
-            borderRadius: 3,
-            marginLeft: 2,
-            verticalAlign: "super",
-            lineHeight: 1.5,
-            letterSpacing: "0.3px",
-            fontStyle: "normal",
-            flexShrink: 0,
-          }}
-        >
-          AI
-        </span>
-      </span>
+        <span style={{
+          fontSize: cfg.ai,
+          fontWeight: 800,
+          background: "#FF7A3D",
+          color: "white",
+          padding: "1px 4px",
+          borderRadius: 3,
+          marginLeft: 2,
+          verticalAlign: "super",
+          lineHeight: 1.5,
+          letterSpacing: "0.3px",
+          fontStyle: "normal",
+          display: "inline-block",
+          flexShrink: 0,
+        }}>AI</span>
+      </div>
     </div>
   );
 }
