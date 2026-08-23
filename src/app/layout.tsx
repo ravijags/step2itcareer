@@ -73,7 +73,7 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
           <div>
             <div className="mb-3">
-              <Logo size="md" theme="dark" />
+              <Logo size="lg" theme="dark" />
             </div>
             <p className="text-sm text-white/60 leading-relaxed mb-4">Your next step starts here. Practical IT career programs for students, freshers and career switchers.</p>
             <p className="text-xs text-white/40 mb-5">Empowering Careers. Enabling Futures.</p>
