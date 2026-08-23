@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import MobileNav from "@/components/MobileNav";
 import PopupController from "@/components/PopupController";
+import Logo from "@/components/Logo";
 
 export const metadata: Metadata = {
   title: "Step2ITCareer-AI — Get Job-Ready. Get Hired.",
@@ -26,11 +27,8 @@ function Nav() {
   return (
     <header className="sticky top-0 z-40 bg-nav border-b border-line">
       <nav className="max-w-brand mx-auto px-6 flex items-center justify-between py-3">
-        <a href="/" className="flex items-center gap-2">
-          <span className="text-[15px] font-extrabold tracking-tight text-ink leading-tight">
-            Step2IT<span className="text-primary">Career</span>
-            <sup className="text-[9px] text-accent font-bold align-super">AI</sup>
-          </span>
+        <a href="/" className="flex items-center">
+          <Logo size="md" theme="light" />
         </a>
         <div className="hidden md:flex items-center gap-1 bg-white rounded-full px-2 py-1.5 shadow-card border border-line">
           <NavDropdown label="Courses" items={courseLinks} />
@@ -74,9 +72,8 @@ function Footer() {
       <div className="max-w-brand mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
           <div>
-            <div className="text-[17px] font-extrabold mb-3">
-              Step2IT<span className="text-primary">Career</span>
-              <sup className="text-[9px] text-accent font-bold align-super">AI</sup>
+            <div className="mb-3">
+              <Logo size="md" theme="dark" />
             </div>
             <p className="text-sm text-white/60 leading-relaxed mb-4">Your next step starts here. Practical IT career programs for students, freshers and career switchers.</p>
             <p className="text-xs text-white/40 mb-5">Empowering Careers. Enabling Futures.</p>

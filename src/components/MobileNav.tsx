@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Logo from "@/components/Logo";
 
 const courseLinks = [
   { name: "Generative AI & Multi-Agent Systems", href: "/courses/generative-ai-multi-agent" },
@@ -92,9 +93,8 @@ export default function MobileNav() {
       >
         {/* Drawer Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-line bg-white shrink-0">
-          <a href="/" onClick={close} className="text-[15px] font-extrabold tracking-tight text-ink">
-            Step2IT<span className="text-primary">Career</span>
-            <sup className="text-[9px] text-accent font-bold align-super">AI</sup>
+          <a href="/" onClick={close}>
+            <Logo size="sm" theme="light" />
           </a>
           <button
             onClick={close}
