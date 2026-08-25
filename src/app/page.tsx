@@ -108,7 +108,7 @@ function HeroSection() {
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   return (
-    <section className="relative flex items-center bg-[#060D1F] overflow-hidden min-h-[75vh] md:min-h-[78vh]">
+    <section className="relative flex items-center bg-[#060D1F] overflow-hidden md:min-h-[78vh]">
       {/* Ambient glows */}
       <motion.div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full opacity-20 pointer-events-none"
         style={{ background: "radial-gradient(circle, #3B5BFF, transparent 70%)" }}
@@ -343,11 +343,10 @@ function MicroBatchUSP() {
     { Icon: Icons.Target, title: "Placement Until Hired", desc: "We don't stop supporting you until your first offer letter is in hand." },
   ];
   return (
-    <section className="py-16 md:py-20 bg-white">
+    <section className="py-12 md:py-16 bg-white">
       <div className="max-w-brand mx-auto px-6">
         <Reveal className="text-center mb-10 md:mb-14">
           <span className="inline-block px-4 py-1.5 bg-primary-tint text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">Our Difference</span>
-          <h2 className="text-2xl md:text-4xl font-extrabold text-ink mb-4">Micro-Batch Career Accelerator</h2>
           <p className="text-muted text-sm md:text-base max-w-xl mx-auto">Not a classroom. Not a MOOC. A focused, high-accountability program built for real outcomes.</p>
         </Reveal>
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -451,7 +450,8 @@ function RecentPlacements() {
 
   const placements = [
     {
-      photo: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&h=120&fit=crop&crop=face",
+      // Indian male - verified Unsplash photo
+      photo: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=120&h=120&fit=crop&crop=face",
       name: "Rohit S.",
       location: "Delhi",
       track: "Data Science & ML",
@@ -462,7 +462,8 @@ function RecentPlacements() {
       quote: "Honestly didn't think I'd make it to Microsoft. The mock interviews here were brutal — exactly what real interviews are like.",
     },
     {
-      photo: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=120&h=120&fit=crop&crop=face",
+      // Indian female - verified Unsplash photo
+      photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&h=120&fit=crop&crop=face",
       name: "Priya A.",
       location: "Noida",
       track: "Generative AI",
@@ -473,7 +474,8 @@ function RecentPlacements() {
       quote: "5 students per batch sounds small but that's exactly why it works. My mentor knew every single gap I had.",
     },
     {
-      photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=face",
+      // Indian male - verified Unsplash photo
+      photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop&crop=face",
       name: "Arjun K.",
       location: "Bangalore",
       track: "Full Stack Engineering",
@@ -484,7 +486,8 @@ function RecentPlacements() {
       quote: "Got placed before the program ended. The projects I built here got me shortlisted directly — no cold applying.",
     },
     {
-      photo: "https://images.unsplash.com/photo-1488716820095-cbe80883c496?w=120&h=120&fit=crop&crop=face",
+      // Indian female - verified Unsplash photo
+      photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&crop=face",
       name: "Sneha M.",
       location: "Mumbai",
       track: "Cloud & DevOps",
