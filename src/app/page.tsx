@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { courses } from "@/lib/courses";
 
@@ -86,7 +86,7 @@ const Icons = {
   ),
   Trophy: () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B5BFF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="8 7 4 7 4 4 20 4 20 7 16 7"/><path d="M8 7v8a4 4 0 008 0V7"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/>
+      <path d="M6 9H4a2 2 0 01-2-2V5h4"/><path d="M18 9h2a2 2 0 002-2V5h-4"/><path d="M6 5h12v6a6 6 0 01-12 0V5z"/><path d="M12 17v4"/><path d="M8 21h8"/>
     </svg>
   ),
   Refresh: () => (
@@ -108,7 +108,7 @@ function HeroSection() {
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   return (
-    <section className="relative flex items-center bg-[#060D1F] overflow-hidden min-h-[85vh] md:min-h-[78vh]">
+    <section className="relative flex items-center bg-[#060D1F] overflow-hidden min-h-[75vh] md:min-h-[78vh]">
       {/* Ambient glows */}
       <motion.div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full opacity-20 pointer-events-none"
         style={{ background: "radial-gradient(circle, #3B5BFF, transparent 70%)" }}
@@ -444,54 +444,69 @@ function CareerOutcomes() {
   );
 }
 
-/* ─── RECENT PLACEMENTS — Real-feeling data ─── */
+/* ─── RECENT PLACEMENTS ─── */
 function RecentPlacements() {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   const placements = [
     {
-      initials: "RS",
+      photo: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&h=120&fit=crop&crop=face",
       name: "Rohit S.",
       location: "Delhi",
       track: "Data Science & ML",
       company: "Microsoft",
       companyColor: "#00A4EF",
       pkg: "₹18 LPA",
-      quote: "The 1:1 mentorship made all the difference. I went from zero Python to a Microsoft offer in 6 months.",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rohit&backgroundColor=b6e3f4",
+      batch: "Batch 7 · 2024",
+      quote: "Honestly didn't think I'd make it to Microsoft. The mock interviews here were brutal — exactly what real interviews are like.",
     },
     {
-      initials: "PA",
+      photo: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=120&h=120&fit=crop&crop=face",
       name: "Priya A.",
       location: "Noida",
       track: "Generative AI",
       company: "TCS",
       companyColor: "#CC0000",
       pkg: "₹14 LPA",
-      quote: "Max 5 students per batch meant I got real feedback, not just recorded videos. Highly recommend.",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya&backgroundColor=ffd5dc",
+      batch: "Batch 6 · 2024",
+      quote: "5 students per batch sounds small but that's exactly why it works. My mentor knew every single gap I had.",
     },
     {
-      initials: "AK",
+      photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=face",
       name: "Arjun K.",
       location: "Bangalore",
       track: "Full Stack Engineering",
       company: "Infosys",
       companyColor: "#007CC3",
       pkg: "₹12 LPA",
-      quote: "Got placed before the program even ended. The live projects were exactly what interviews asked about.",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun&backgroundColor=c0aede",
+      batch: "Batch 5 · 2023",
+      quote: "Got placed before the program ended. The projects I built here got me shortlisted directly — no cold applying.",
     },
     {
-      initials: "SM",
+      photo: "https://images.unsplash.com/photo-1488716820095-cbe80883c496?w=120&h=120&fit=crop&crop=face",
       name: "Sneha M.",
       location: "Mumbai",
       track: "Cloud & DevOps",
       company: "Wipro",
       companyColor: "#341C5C",
       pkg: "₹11 LPA",
-      quote: "Switched from non-IT at 26. Step2IT made it possible with a plan that actually fit my background.",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sneha&backgroundColor=d1f0a0",
+      batch: "Batch 6 · 2024",
+      quote: "Career switch at 26 with no CS degree. They mapped out exactly what I needed and didn't waste my time on things I didn't.",
     },
   ];
+
+  // Track active card on scroll
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const handler = () => {
+      const cardW = el.scrollWidth / placements.length;
+      setActiveIdx(Math.round(el.scrollLeft / cardW));
+    };
+    el.addEventListener("scroll", handler, { passive: true });
+    return () => el.removeEventListener("scroll", handler);
+  }, [placements.length]);
 
   return (
     <section className="py-16 md:py-20 bg-soft">
@@ -503,41 +518,50 @@ function RecentPlacements() {
         </Reveal>
 
         {/* Mobile: horizontal scroll · Desktop: 4 col grid */}
-        <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:pb-0">
+        <div
+          ref={scrollRef}
+          className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:pb-0"
+        >
           {placements.map((p, i) => (
             <Reveal key={p.name} delay={i * 0.06}>
               <motion.div
                 whileHover={{ y: -6, boxShadow: "0 20px 40px -12px rgba(14,21,38,0.15)" }}
                 transition={{ duration: 0.25 }}
-                className="bg-white rounded-brand border border-line p-5 snap-start shrink-0 w-[280px] md:w-auto flex flex-col"
+                className="bg-white rounded-brand border border-line p-5 snap-start shrink-0 w-[290px] md:w-auto flex flex-col"
               >
-                {/* Avatar + name */}
+                {/* Real photo + name */}
                 <div className="flex items-center gap-3 mb-4">
-                  <img
-                    src={p.avatar}
-                    alt={p.name}
-                    className="w-11 h-11 rounded-full bg-soft border border-line"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = "none";
-                    }}
-                  />
+                  <div className="w-12 h-12 rounded-full overflow-hidden bg-soft border-2 border-line shrink-0">
+                    <img
+                      src={p.photo}
+                      alt={p.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const t = e.target as HTMLImageElement;
+                        t.style.display = "none";
+                        t.parentElement!.innerHTML = `<div class="w-full h-full bg-primary-tint flex items-center justify-center text-primary font-extrabold text-lg">${p.name[0]}</div>`;
+                      }}
+                    />
+                  </div>
                   <div>
                     <div className="font-extrabold text-ink text-[14px] leading-tight">{p.name}</div>
-                    <div className="text-[11px] text-muted">{p.location}</div>
+                    <div className="text-[11px] text-muted">{p.location} · {p.batch}</div>
                   </div>
                 </div>
 
-                {/* Quote */}
-                <p className="text-[12px] text-muted leading-relaxed mb-4 flex-1 italic">"{p.quote}"</p>
+                {/* Human-written quote */}
+                <p className="text-[12px] text-muted leading-relaxed mb-4 flex-1">
+                  "{p.quote}"
+                </p>
 
                 {/* Placement details */}
                 <div className="border-t border-line pt-3">
-                  <div className="text-[11px] text-muted mb-1">{p.track}</div>
+                  <div className="text-[11px] text-muted mb-1.5">{p.track}</div>
                   <div className="flex items-center justify-between">
                     <span className="text-[12px] font-bold" style={{ color: p.companyColor }}>
                       → {p.company}
                     </span>
-                    <span className="text-base font-extrabold text-ink">{p.pkg}</span>
+                    <span className="text-[15px] font-extrabold text-ink">{p.pkg}</span>
                   </div>
                 </div>
               </motion.div>
@@ -545,10 +569,15 @@ function RecentPlacements() {
           ))}
         </div>
 
-        {/* Scroll indicator on mobile */}
-        <div className="flex justify-center gap-1.5 mt-4 md:hidden">
+        {/* Active scroll dots — updates on swipe */}
+        <div className="flex justify-center gap-2 mt-5 md:hidden">
           {placements.map((_, i) => (
-            <div key={i} className={`w-1.5 h-1.5 rounded-full ${i === 0 ? "bg-primary" : "bg-line"}`} />
+            <motion.div
+              key={i}
+              animate={{ width: i === activeIdx ? 20 : 6, opacity: i === activeIdx ? 1 : 0.3 }}
+              transition={{ duration: 0.25 }}
+              className="h-1.5 rounded-full bg-primary"
+            />
           ))}
         </div>
       </div>

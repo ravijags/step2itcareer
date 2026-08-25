@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <Nav />
-        <main className="pb-16 md:pb-0">{children}</main>
+        <main className="pb-16 md:pb-0" style={{ marginBottom: 0 }}>{children}</main>
         <Footer />
         <FloatingWhatsApp />
         <PopupController />
