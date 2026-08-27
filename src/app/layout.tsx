@@ -3,6 +3,7 @@ import "./globals.css";
 import MobileNav from "@/components/MobileNav";
 import PopupController from "@/components/PopupController";
 import Logo from "@/components/Logo";
+import ScrollProgress from "@/components/ScrollProgress";
 
 export const metadata: Metadata = {
   title: "Step2ITCareer-AI — Get Job-Ready. Get Hired.",
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 function Nav() {
   return (
     <header className="sticky top-0 z-40 bg-nav border-b border-line">
+      <ScrollProgress />
       <nav className="max-w-brand mx-auto px-6 flex items-center justify-between py-3">
         <a href="/" className="flex items-center">
           <Logo size="md" theme="light" />

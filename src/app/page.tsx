@@ -42,15 +42,43 @@ function Reveal({ children, delay = 0, className = "" }: {
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     el.style.opacity = "0";
-    el.style.transform = "translateY(24px)";
-    el.style.transition = `opacity 0.6s cubic-bezier(0.22,1,0.36,1) ${delay}s, transform 0.6s cubic-bezier(0.22,1,0.36,1) ${delay}s`;
+    el.style.transform = "translateY(22px)";
+    el.style.transition = `opacity 0.55s cubic-bezier(0.22,1,0.36,1) ${delay}s, transform 0.55s cubic-bezier(0.22,1,0.36,1) ${delay}s`;
     const obs = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) { el.style.opacity = "1"; el.style.transform = "translateY(0)"; obs.disconnect(); }
-    }, { threshold: 0.08, rootMargin: "0px 0px -32px 0px" });
+    }, { threshold: 0.08, rootMargin: "0px 0px -24px 0px" });
     obs.observe(el);
     return () => obs.disconnect();
   }, [delay]);
   return <div ref={ref} className={className}>{children}</div>;
+}
+
+/* ─── COUNTER ─── animated number on scroll into view ─── */
+function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const started = useRef(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !started.current) {
+        started.current = true;
+        const duration = 1600;
+        const steps = 60;
+        const inc = target / steps;
+        let current = 0;
+        const timer = setInterval(() => {
+          current += inc;
+          if (current >= target) { setCount(target); clearInterval(timer); }
+          else setCount(Math.floor(current));
+        }, duration / steps);
+      }
+    }, { threshold: 0.3 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [target]);
+  return <span ref={ref}>{count.toLocaleString("en-IN")}{suffix}</span>;
 }
 
 /* ─── ICONS ─── */
@@ -74,31 +102,44 @@ const Icons = {
   ChevronDown: () => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>),
 };
 
-/* ══════════════════════════════════════════
-   HERO — Mesh gradient + Kinetic typography
-══════════════════════════════════════════ */
+/* ════════════════════════════════════
+   HERO — mesh gradient + kinetic type
+════════════════════════════════════ */
 function HeroSection() {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 80]);
   const opacity = useTransform(scrollY, [0, 280], [1, 0]);
 
-  // Kinetic typography — rotating outcomes
-  const outcomes = ["Microsoft", "₹18 LPA", "TCS Digital", "6 Months", "Infosys", "₹14 LPA", "Dream Job"];
-  const [outcomeIdx, setOutcomeIdx] = useState(0);
-  const [outcomeVisible, setOutcomeVisible] = useState(true);
-
+  // Kinetic typography
+  const outcomes = ["Microsoft", "₹18 LPA", "TCS Digital", "Infosys", "₹14 LPA", "Dream Job", "6 Months"];
+  const [idx, setIdx] = useState(0);
+  const [visible, setVisible] = useState(true);
   useEffect(() => {
-    const interval = setInterval(() => {
-      setOutcomeVisible(false);
-      setTimeout(() => {
-        setOutcomeIdx(i => (i + 1) % outcomes.length);
-        setOutcomeVisible(true);
-      }, 300);
+    const iv = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => { setIdx(i => (i + 1) % outcomes.length); setVisible(true); }, 280);
     }, 2200);
-    return () => clearInterval(interval);
+    return () => clearInterval(iv);
   }, []);
 
-  // Animated mesh gradient canvas
+  // Countdown timer — next batch
+  const batchDate = useRef(new Date(Date.now() + 3 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000 + 22 * 60 * 1000));
+  const [countdown, setCountdown] = useState({ d: 3, h: 4, m: 22, s: 0 });
+  useEffect(() => {
+    const iv = setInterval(() => {
+      const diff = batchDate.current.getTime() - Date.now();
+      if (diff <= 0) { clearInterval(iv); return; }
+      setCountdown({
+        d: Math.floor(diff / 86400000),
+        h: Math.floor((diff % 86400000) / 3600000),
+        m: Math.floor((diff % 3600000) / 60000),
+        s: Math.floor((diff % 60000) / 1000),
+      });
+    }, 1000);
+    return () => clearInterval(iv);
+  }, []);
+
+  // Canvas mesh gradient
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -107,183 +148,179 @@ function HeroSection() {
     if (!ctx) return;
     let raf: number;
     let t = 0;
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
+    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
     resize();
     window.addEventListener("resize", resize);
-
     const draw = () => {
-      t += 0.003;
-      const w = canvas.width;
-      const h = canvas.height;
+      t += 0.004;
+      const w = canvas.width, h = canvas.height;
       ctx.clearRect(0, 0, w, h);
-
-      // Three overlapping radial gradients that drift
-      const g1x = w * (0.2 + 0.15 * Math.sin(t * 0.7));
-      const g1y = h * (0.3 + 0.1 * Math.cos(t * 0.5));
-      const g1 = ctx.createRadialGradient(g1x, g1y, 0, g1x, g1y, w * 0.6);
-      g1.addColorStop(0, "rgba(59,91,255,0.18)");
-      g1.addColorStop(1, "rgba(59,91,255,0)");
-      ctx.fillStyle = g1;
-      ctx.fillRect(0, 0, w, h);
-
-      const g2x = w * (0.75 + 0.12 * Math.cos(t * 0.6));
-      const g2y = h * (0.6 + 0.12 * Math.sin(t * 0.4));
-      const g2 = ctx.createRadialGradient(g2x, g2y, 0, g2x, g2y, w * 0.5);
-      g2.addColorStop(0, "rgba(255,122,61,0.10)");
-      g2.addColorStop(1, "rgba(255,122,61,0)");
-      ctx.fillStyle = g2;
-      ctx.fillRect(0, 0, w, h);
-
-      const g3x = w * (0.5 + 0.2 * Math.sin(t * 0.4 + 1));
-      const g3y = h * (0.15 + 0.08 * Math.cos(t * 0.8));
-      const g3 = ctx.createRadialGradient(g3x, g3y, 0, g3x, g3y, w * 0.4);
-      g3.addColorStop(0, "rgba(100,130,255,0.12)");
-      g3.addColorStop(1, "rgba(100,130,255,0)");
-      ctx.fillStyle = g3;
-      ctx.fillRect(0, 0, w, h);
-
+      // Blue glow top-left
+      const g1x = w * (0.15 + 0.12 * Math.sin(t * 0.7));
+      const g1y = h * (0.25 + 0.08 * Math.cos(t * 0.5));
+      const g1 = ctx.createRadialGradient(g1x, g1y, 0, g1x, g1y, w * 0.55);
+      g1.addColorStop(0, "rgba(59,91,255,0.22)"); g1.addColorStop(1, "rgba(59,91,255,0)");
+      ctx.fillStyle = g1; ctx.fillRect(0, 0, w, h);
+      // Orange glow bottom-right
+      const g2x = w * (0.8 + 0.1 * Math.cos(t * 0.6));
+      const g2y = h * (0.7 + 0.1 * Math.sin(t * 0.4));
+      const g2 = ctx.createRadialGradient(g2x, g2y, 0, g2x, g2y, w * 0.45);
+      g2.addColorStop(0, "rgba(255,122,61,0.14)"); g2.addColorStop(1, "rgba(255,122,61,0)");
+      ctx.fillStyle = g2; ctx.fillRect(0, 0, w, h);
+      // Purple glow center-top
+      const g3x = w * (0.5 + 0.18 * Math.sin(t * 0.35 + 1));
+      const g3y = h * (0.12 + 0.06 * Math.cos(t * 0.8));
+      const g3 = ctx.createRadialGradient(g3x, g3y, 0, g3x, g3y, w * 0.38);
+      g3.addColorStop(0, "rgba(120,100,255,0.14)"); g3.addColorStop(1, "rgba(120,100,255,0)");
+      ctx.fillStyle = g3; ctx.fillRect(0, 0, w, h);
       raf = requestAnimationFrame(draw);
     };
     draw();
     return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
   }, []);
 
+  const pad = (n: number) => String(n).padStart(2, "0");
+
   return (
     <section className="relative flex items-center bg-[#060D1F] overflow-hidden">
-      {/* Animated mesh gradient */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
-
-      {/* Dot grid — like Gradus but darker/subtler */}
+      {/* Dot grid */}
       <div className="absolute inset-0 pointer-events-none"
-        style={{ backgroundImage: "radial-gradient(circle, rgba(59,91,255,0.18) 1px, transparent 1px)", backgroundSize: "36px 36px", opacity: 0.35 }} />
-
-      {/* Vignette edges */}
+        style={{ backgroundImage: "radial-gradient(circle, rgba(59,91,255,0.22) 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
+      {/* Vignette */}
       <div className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse at center, transparent 40%, rgba(6,13,31,0.8) 100%)" }} />
+        style={{ background: "radial-gradient(ellipse at center, transparent 35%, rgba(6,13,31,0.75) 100%)" }} />
 
-      <motion.div style={{ y, opacity }} className="relative max-w-brand mx-auto px-6 text-center w-full py-16 md:py-24 lg:py-32">
+      <motion.div style={{ y, opacity }} className="relative max-w-brand mx-auto px-6 text-center w-full py-14 md:py-24 lg:py-32">
 
-        {/* Eyebrow pill */}
+        {/* Eyebrow — shorter for mobile */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-accent text-[11px] font-bold tracking-widest uppercase mb-7">
-          <motion.span animate={{ scale: [1, 1.25, 1] }} transition={{ duration: 1.4, repeat: Infinity }}>⚡</motion.span>
-          Live Cohort-Based Bootcamps · Max 5 Students
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-accent text-[11px] font-bold tracking-widest uppercase mb-6">
+          <motion.span animate={{ scale: [1, 1.3, 1] }} transition={{ duration: 1.4, repeat: Infinity }}>⚡</motion.span>
+          Live Bootcamps · Max 5 Students
         </motion.div>
 
-        {/* ── KINETIC HEADLINE ── */}
+        {/* Headline */}
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}>
-          <h1 className="text-[38px] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.06] tracking-tight mb-3">
+          <h1 className="text-[40px] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.06] tracking-tight mb-2">
             Get Hired.
           </h1>
-          <h1 className="text-[38px] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight mb-6 flex items-center justify-center gap-3 flex-wrap">
-            <span className="text-white/50 font-light">Not just</span>
+          <h1 className="text-[40px] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight mb-5">
+            <span className="text-white/40 font-light">Not just </span>
             <span style={{ background: "linear-gradient(135deg,#3B5BFF,#7B8FFF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
               Trained.
             </span>
           </h1>
         </motion.div>
 
-        {/* Kinetic rotating outcome */}
+        {/* Kinetic outcome — inline row */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
-          className="flex items-center justify-center gap-3 mb-7">
-          <span className="text-white/40 text-sm md:text-base font-medium">Our students land at</span>
-          <div className="min-w-[120px] h-8 flex items-center justify-center">
-            <AnimatePresence mode="wait">
-              {outcomeVisible && (
-                <motion.span key={outcomes[outcomeIdx]}
-                  initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-sm md:text-base font-extrabold px-3 py-1 rounded-full"
-                  style={{ background: "rgba(59,91,255,0.2)", color: "#7B8FFF", border: "1px solid rgba(59,91,255,0.3)" }}>
-                  {outcomes[outcomeIdx]}
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </div>
+          className="flex items-center justify-center gap-2 mb-6 flex-nowrap">
+          <span className="text-white/40 text-sm font-medium whitespace-nowrap">Our students land at</span>
+          <AnimatePresence mode="wait">
+            {visible && (
+              <motion.span key={outcomes[idx]}
+                initial={{ opacity: 0, y: 8, filter: "blur(6px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -8, filter: "blur(6px)" }}
+                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                className="text-sm font-extrabold px-3 py-1 rounded-full whitespace-nowrap"
+                style={{ background: "rgba(59,91,255,0.2)", color: "#8BA4FF", border: "1px solid rgba(59,91,255,0.35)" }}>
+                {outcomes[idx]}
+              </motion.span>
+            )}
+          </AnimatePresence>
         </motion.div>
 
         {/* Sub */}
         <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="text-[14px] md:text-[16px] text-white/50 max-w-lg mx-auto mb-8 leading-relaxed">
-          Live, mentor-led IT career programs. Real placement support.
-          Micro-batches of max 5 students.
+          className="text-[13px] md:text-[15px] text-white/50 max-w-md mx-auto mb-7 leading-relaxed">
+          Live, mentor-led IT career programs. Micro-batches of max 5 students. Real placement support.
         </motion.p>
 
         {/* CTAs */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
-          className="flex gap-3 justify-center mb-10 flex-wrap">
-          <motion.a href="/courses" whileHover={{ scale: 1.04, boxShadow: "0 0 32px rgba(59,91,255,0.5)" }} whileTap={{ scale: 0.97 }}
-            className="flex-1 sm:flex-none min-w-[148px] max-w-[210px] px-7 py-3.5 bg-primary text-white font-bold rounded-full text-[14px] shadow-lg shadow-primary/40 text-center transition-shadow">
+          transition={{ duration: 0.6, delay: 0.28 }}
+          className="flex gap-3 justify-center mb-8 flex-wrap">
+          <motion.a href="/courses"
+            whileHover={{ scale: 1.04, boxShadow: "0 0 36px rgba(59,91,255,0.55)" }}
+            whileTap={{ scale: 0.97 }}
+            className="flex-1 sm:flex-none min-w-[140px] max-w-[200px] px-6 py-3.5 bg-primary text-white font-bold rounded-full text-[14px] shadow-lg shadow-primary/40 text-center">
             Explore Courses
           </motion.a>
-          <motion.button onClick={openPopup} whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
-            className="flex-1 sm:flex-none min-w-[148px] max-w-[210px] px-7 py-3.5 bg-white/10 text-white font-bold rounded-full border border-white/20 text-[14px] backdrop-blur-sm">
+          <motion.button onClick={openPopup}
+            whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+            className="flex-1 sm:flex-none min-w-[140px] max-w-[200px] px-6 py-3.5 bg-white/10 text-white font-bold rounded-full border border-white/20 text-[14px] backdrop-blur-sm">
             Free Counseling
           </motion.button>
-          <motion.a href="https://wa.me/919936609430" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
-            className="hidden sm:flex items-center gap-2 px-7 py-3.5 bg-[#16A34A] text-white font-bold rounded-full text-[14px] shadow-lg">
+          <motion.a href="https://wa.me/919936609430"
+            whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+            className="hidden sm:flex items-center gap-2 px-6 py-3.5 bg-[#16A34A] text-white font-bold rounded-full text-[14px] shadow-lg">
             <Icons.WhatsApp /> WhatsApp
           </motion.a>
         </motion.div>
 
-        {/* Trust bar — 3 inline stats, no chips */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }}
+        {/* Batch countdown */}
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.42 }}
+          className="flex items-center justify-center gap-3 mb-8">
+          <div className="flex items-center gap-1 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+            <span className="text-[10px] text-white/40 font-semibold uppercase tracking-wider mr-1">Next batch in</span>
+            {[{ v: countdown.d, l: "d" }, { v: countdown.h, l: "h" }, { v: countdown.m, l: "m" }, { v: countdown.s, l: "s" }].map((t, i) => (
+              <span key={t.l} className="flex items-baseline gap-0.5">
+                {i > 0 && <span className="text-white/20 text-xs mx-0.5">:</span>}
+                <span className="text-white font-extrabold text-sm tabular-nums">{pad(t.v)}</span>
+                <span className="text-white/30 text-[10px]">{t.l}</span>
+              </span>
+            ))}
+          </div>
+          <span className="text-[10px] text-accent font-bold uppercase tracking-wider px-2 py-1 bg-accent/10 rounded-full border border-accent/20">
+            2 seats left
+          </span>
+        </motion.div>
+
+        {/* Trust stats */}
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.48 }}
           className="flex items-center justify-center gap-6 md:gap-10 flex-wrap">
-          {[
-            { n: "1,200+", l: "Students Trained" },
-            { n: "94%", l: "Placement Rate" },
-            { n: "60+", l: "Hiring Partners" },
-          ].map((s) => (
+          {[{ n: 1200, s: "+", l: "Students Trained" }, { n: 94, s: "%", l: "Placement Rate" }, { n: 60, s: "+", l: "Hiring Partners" }].map(s => (
             <div key={s.l} className="text-center">
-              <div className="text-lg md:text-2xl font-extrabold text-white">{s.n}</div>
-              <div className="text-[10px] md:text-[11px] text-white/40 font-semibold tracking-wider uppercase mt-0.5">{s.l}</div>
+              <div className="text-lg md:text-2xl font-extrabold text-white">
+                <Counter target={s.n} suffix={s.s} />
+              </div>
+              <div className="text-[10px] text-white/35 font-semibold tracking-wider uppercase mt-0.5">{s.l}</div>
             </div>
           ))}
         </motion.div>
       </motion.div>
 
-      {/* Section divider */}
-      <div className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none"
+      <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none"
         style={{ background: "linear-gradient(to top, #F6F8FC, transparent)" }} />
     </section>
   );
 }
 
-/* ══════════════════════════════════════
-   LIVE SOCIAL PROOF TICKER — Razorpay style
-══════════════════════════════════════ */
+/* ─── SOCIAL PROOF TICKER ─── */
 function SocialProofTicker() {
   const events = [
     "🎉 Rahul from Delhi just enrolled in Generative AI",
-    "✅ Priya from Noida got placed at TCS — ₹14 LPA",
-    "🔥 Batch 9 starts in 4 days — 2 seats left",
+    "✅ Priya from Noida placed at TCS — ₹14 LPA",
+    "🔥 Batch 9 starts in 3 days — 2 seats left",
     "🎉 Arjun from Bangalore placed at Infosys — ₹12 LPA",
     "✅ Sneha from Mumbai completed Cloud & DevOps",
     "🚀 Vikram from Hyderabad enrolled in Data Science",
-    "🎉 Ananya from Pune got placed at Wipro — ₹11 LPA",
+    "🎉 Ananya from Pune placed at Wipro — ₹11 LPA",
     "🔥 Free counseling slots filling fast — book now",
     "✅ Karan from Chennai placed at Accenture — ₹13 LPA",
     "🎉 Divya from Noida enrolled in Full Stack Engineering",
   ];
-  const doubled = [...events, ...events];
-
   return (
     <div className="bg-[#060D1F] border-t border-white/5 overflow-hidden py-2.5">
       <div className="flex animate-ticker whitespace-nowrap items-center">
-        {doubled.map((e, i) => (
-          <span key={i} className="inline-flex items-center mx-8 text-[12px] font-semibold text-white/60">
-            {e}
-            <span className="mx-8 text-white/20">·</span>
+        {[...events, ...events].map((e, i) => (
+          <span key={i} className="inline-flex items-center mx-8 text-[11px] font-semibold text-white/55">
+            {e}<span className="mx-8 text-white/15">·</span>
           </span>
         ))}
       </div>
@@ -294,7 +331,7 @@ function SocialProofTicker() {
 /* ─── ALUMNI MARQUEE ─── */
 function AlumniMarquee() {
   const logos = [
-    <span key="google" className="inline-flex items-center mx-10 text-[18px] md:text-[22px] font-bold tracking-tight">
+    <span key="google" className="inline-flex items-center mx-10 text-[18px] md:text-[22px] font-bold">
       <span style={{ color: "#4285F4" }}>G</span><span style={{ color: "#EA4335" }}>o</span><span style={{ color: "#FBBC05" }}>o</span><span style={{ color: "#4285F4" }}>g</span><span style={{ color: "#34A853" }}>l</span><span style={{ color: "#EA4335" }}>e</span>
     </span>,
     <span key="microsoft" className="inline-flex items-center gap-2 mx-10">
@@ -302,12 +339,12 @@ function AlumniMarquee() {
         <span style={{ background: "#F25022" }} className="rounded-[1px]" /><span style={{ background: "#7FBA00" }} className="rounded-[1px]" />
         <span style={{ background: "#00A4EF" }} className="rounded-[1px]" /><span style={{ background: "#FFB900" }} className="rounded-[1px]" />
       </span>
-      <span className="text-[18px] md:text-[22px] font-semibold text-gray-700 tracking-tight">Microsoft</span>
+      <span className="text-[18px] md:text-[22px] font-semibold text-gray-700">Microsoft</span>
     </span>,
     <span key="amazon" className="inline-flex items-center mx-10">
       <span className="flex flex-col items-start leading-none">
-        <span className="text-[18px] md:text-[22px] font-bold text-gray-900 tracking-tight">amazon</span>
-        <svg viewBox="0 0 100 18" width="65" height="10" className="ml-1 mt-0.5"><path d="M5 8 Q50 20 95 8" stroke="#FF9900" strokeWidth="3.5" fill="none" strokeLinecap="round"/><polygon points="90,4 98,9 90,14" fill="#FF9900"/></svg>
+        <span className="text-[18px] md:text-[22px] font-bold text-gray-900">amazon</span>
+        <svg viewBox="0 0 100 18" width="60" height="9"><path d="M5 8 Q50 20 95 8" stroke="#FF9900" strokeWidth="3.5" fill="none" strokeLinecap="round"/><polygon points="90,4 98,9 90,14" fill="#FF9900"/></svg>
       </span>
     </span>,
     <span key="ibm" className="inline-flex items-center mx-10 text-[18px] md:text-[22px] font-extrabold tracking-[0.15em]" style={{ color: "#1F70C1" }}>IBM</span>,
@@ -335,14 +372,14 @@ function AlumniMarquee() {
   );
 }
 
-/* ─── STATS ─── */
+/* ─── STATS with counter animation ─── */
 function StatsRow() {
   const stats = [
-    { value: "1,200+", label: "Students Trained", sub: "since 2021" },
-    { value: "800+", label: "Placements", sub: "across 60+ companies" },
-    { value: "94%", label: "Placement Rate", sub: "within 6 months" },
-    { value: "₹18 LPA", label: "Highest Package", sub: "FY 2024" },
-    { value: "4.9★", label: "Student Rating", sub: "from 800+ reviews" },
+    { raw: 1200, suffix: "+", label: "Students Trained", sub: "since 2021" },
+    { raw: 800, suffix: "+", label: "Placements", sub: "across 60+ companies" },
+    { raw: 94, suffix: "%", label: "Placement Rate", sub: "within 6 months" },
+    { display: "₹18 LPA", label: "Highest Package", sub: "FY 2024" },
+    { display: "4.9★", label: "Student Rating", sub: "from 800+ reviews" },
   ];
   return (
     <section className="py-12 md:py-16 bg-white">
@@ -350,10 +387,15 @@ function StatsRow() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 0.06} className={i === 4 ? "col-span-2 md:col-span-1" : ""}>
-              <motion.div whileHover={{ borderColor: "#3B5BFF", y: -4, boxShadow: "0 12px 32px -8px rgba(59,91,255,0.12)" }}
+              <motion.div
+                whileHover={{ borderColor: "#3B5BFF", y: -5, boxShadow: "0 16px 36px -8px rgba(59,91,255,0.14)" }}
                 transition={{ duration: 0.2 }}
                 className="text-center p-5 md:p-6 rounded-brand bg-soft border border-line cursor-default">
-                <div className="text-2xl md:text-3xl font-extrabold text-primary mb-1">{s.value}</div>
+                <div className="text-2xl md:text-3xl font-extrabold text-primary mb-1">
+                  {"raw" in s && s.raw !== undefined
+                    ? <Counter target={s.raw} suffix={s.suffix ?? ""} />
+                    : ("display" in s ? s.display : "")}
+                </div>
                 <div className="text-xs md:text-sm text-ink font-bold mb-0.5">{s.label}</div>
                 <div className="text-[10px] text-muted">{s.sub}</div>
               </motion.div>
@@ -387,18 +429,20 @@ function FeaturedCourses() {
           {featured.map((course, i) => (
             <Reveal key={course.slug} delay={i * 0.08}>
               <motion.a href={`/courses/${course.slug}`}
-                whileHover={{ y: -8, boxShadow: "0 24px 48px -12px rgba(59,91,255,0.2)" }}
-                whileTap={{ scale: 0.98 }} transition={{ duration: 0.25 }}
+                whileHover={{ y: -8, boxShadow: "0 24px 48px -12px rgba(59,91,255,0.22)", rotateX: 1, rotateY: -1 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.25 }}
+                style={{ transformStyle: "preserve-3d" }}
                 className="bg-white rounded-2xl overflow-hidden shadow-card flex flex-col block">
-                <div className="h-44 relative overflow-hidden">
-                  <img src={images[course.slug]} alt={course.title} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)" }} />
+                <div className="h-36 md:h-44 relative overflow-hidden">
+                  <img src={images[course.slug]} alt={course.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 60%, transparent 100%)" }} />
                   <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                    <span className="text-[10px] font-extrabold uppercase px-3 py-1.5 rounded-full" style={{ background: "rgba(59,91,255,0.9)", color: "#fff" }}>Max 5 Students</span>
-                    <span className="text-[10px] font-extrabold uppercase px-3 py-1.5 rounded-full" style={{ background: "rgba(22,163,74,0.9)", color: "#fff" }}>Live Mentorship</span>
+                    <span className="text-[9px] font-extrabold uppercase px-2.5 py-1 rounded-full bg-primary/90 text-white">Max 5 Students</span>
+                    <span className="text-[9px] font-extrabold uppercase px-2.5 py-1 rounded-full bg-green-600/90 text-white">Live Mentorship</span>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <h3 className="text-white font-extrabold text-[15px] leading-snug drop-shadow-lg">{course.title}</h3>
+                    <h3 className="text-white font-extrabold text-[14px] leading-snug">{course.title}</h3>
                   </div>
                 </div>
                 <div className="p-4 flex items-center justify-between">
@@ -441,8 +485,10 @@ function MicroBatchUSP() {
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {features.map((f, i) => (
             <Reveal key={f.title} delay={i * 0.07}>
-              <motion.div whileHover={{ y: -4, borderColor: "#3B5BFF", boxShadow: "0 16px 32px -8px rgba(59,91,255,0.1)" }}
+              <motion.div
+                whileHover={{ y: -5, borderColor: "#3B5BFF", boxShadow: "0 16px 36px -8px rgba(59,91,255,0.12)", rotateX: 1 }}
                 transition={{ duration: 0.2 }}
+                style={{ transformStyle: "preserve-3d" }}
                 className="p-5 md:p-6 rounded-brand bg-soft border border-line h-full">
                 <div className="w-10 h-10 bg-primary/8 rounded-xl flex items-center justify-center mb-3"><f.Icon /></div>
                 <h3 className="text-[13px] md:text-[15px] font-extrabold text-ink mb-2 leading-snug">{f.title}</h3>
@@ -458,7 +504,7 @@ function MicroBatchUSP() {
 
 /* ─── PLACEMENT PROCESS ─── */
 function PlacementProcess() {
-  const steps = ["Resume Building","Placement Training","Interview Questions","Internships Under Experts","Real-time Live Projects","Aptitude Preparation","Personality Development","Mock Interviews","Scheduling Interviews","Get Offer Letter 🎉"];
+  const steps = ["Resume Building", "Placement Training", "Interview Questions", "Internships Under Experts", "Real-time Live Projects", "Aptitude Preparation", "Personality Development", "Mock Interviews", "Scheduling Interviews", "Get Offer Letter 🎉"];
   return (
     <section className="py-16 md:py-20 bg-soft">
       <div className="max-w-brand mx-auto px-6">
@@ -470,10 +516,13 @@ function PlacementProcess() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
           {steps.map((step, i) => (
             <Reveal key={step} delay={i * 0.04}>
-              <motion.div whileHover={{ y: -4, borderColor: "#3B5BFF" }}
+              <motion.div
+                whileHover={{ y: -5, borderColor: "#3B5BFF", boxShadow: "0 12px 28px -8px rgba(59,91,255,0.12)" }}
                 className="relative p-4 md:p-5 bg-white rounded-brand border border-line text-center h-full flex flex-col items-center justify-center">
-                <motion.div className="w-8 h-8 bg-primary text-white text-xs font-extrabold rounded-full flex items-center justify-center mb-2 md:mb-3"
-                  whileHover={{ backgroundColor: "#FF7A3D" }} transition={{ duration: 0.2 }}>{i + 1}</motion.div>
+                <motion.div
+                  className="w-8 h-8 bg-primary text-white text-xs font-extrabold rounded-full flex items-center justify-center mb-2 md:mb-3"
+                  whileHover={{ backgroundColor: "#FF7A3D", scale: 1.1 }}
+                  transition={{ duration: 0.2 }}>{i + 1}</motion.div>
                 <p className="text-[12px] md:text-[13px] font-bold text-ink leading-snug">{step}</p>
               </motion.div>
             </Reveal>
@@ -487,9 +536,9 @@ function PlacementProcess() {
 /* ─── CAREER OUTCOMES ─── */
 function CareerOutcomes() {
   const roadmaps = [
-    { from: "₹4L", to: "₹8L", role: "Entry Level → Junior", color: "#3B5BFF", size: "normal" },
-    { from: "₹8L", to: "₹15L", role: "Junior → Mid Level", color: "#FF7A3D", size: "normal" },
-    { from: "₹15L", to: "₹30L", role: "Mid → Senior Level", color: "#16A34A", size: "featured" },
+    { from: "₹4L", to: "₹8L", role: "Entry Level → Junior", color: "#3B5BFF", featured: false },
+    { from: "₹8L", to: "₹15L", role: "Junior → Mid Level", color: "#FF7A3D", featured: false },
+    { from: "₹15L", to: "₹30L", role: "Mid → Senior Level", color: "#16A34A", featured: true },
   ];
   return (
     <section className="py-16 md:py-20 bg-white">
@@ -502,17 +551,18 @@ function CareerOutcomes() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
           {roadmaps.map((r, i) => (
             <Reveal key={r.role} delay={i * 0.08}>
-              <motion.div whileHover={{ scale: 1.03, boxShadow: "0 20px 40px -12px rgba(0,0,0,0.1)" }}
+              <motion.div
+                whileHover={{ scale: 1.04, boxShadow: `0 24px 48px -12px ${r.color}30` }}
                 transition={{ duration: 0.25 }}
-                className={`rounded-brand border text-center relative overflow-hidden ${r.size === "featured" ? "p-8 md:p-12 border-2" : "p-6 md:p-10 border"}`}
-                style={{ background: `${r.color}08`, borderColor: r.size === "featured" ? r.color : "#E8ECF4" }}>
-                {r.size === "featured" && (
-                  <div className="absolute top-3 right-3 text-[10px] font-extrabold uppercase px-2 py-1 rounded-full text-white" style={{ background: r.color }}>Goal</div>
+                className={`rounded-brand border text-center relative overflow-hidden ${r.featured ? "p-8 md:p-12 border-2" : "p-6 md:p-10 border"}`}
+                style={{ background: `${r.color}08`, borderColor: r.featured ? r.color : "#E8ECF4" }}>
+                {r.featured && (
+                  <div className="absolute top-3 right-3 text-[9px] font-extrabold uppercase px-2 py-1 rounded-full text-white" style={{ background: r.color }}>Goal</div>
                 )}
-                <div className={`font-extrabold mb-2 leading-tight ${r.size === "featured" ? "text-3xl md:text-5xl" : "text-2xl md:text-4xl"}`} style={{ color: r.color }}>
+                <div className={`font-extrabold mb-2 leading-tight ${r.featured ? "text-3xl md:text-5xl" : "text-2xl md:text-4xl"}`} style={{ color: r.color }}>
                   {r.from} → {r.to}
                 </div>
-                <div className="text-xs md:text-sm font-semibold text-muted leading-snug">{r.role}</div>
+                <div className="text-xs md:text-sm font-semibold text-muted">{r.role}</div>
               </motion.div>
             </Reveal>
           ))}
@@ -522,16 +572,16 @@ function CareerOutcomes() {
   );
 }
 
-/* ─── RECENT PLACEMENTS ─── */
+/* ─── PLACEMENT CARDS — colored initials, no broken photos ─── */
 function RecentPlacements() {
   const [activeIdx, setActiveIdx] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const placements = [
-    { photo: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&h=120&fit=crop&crop=faces&facepad=3", name: "Rohit S.", location: "Delhi", track: "Data Science & ML", company: "Microsoft", companyColor: "#00A4EF", pkg: "₹18 LPA", batch: "Batch 7 · 2024", quote: "Honestly didn't think I'd make it to Microsoft. The mock interviews here were brutal — exactly what real interviews are like." },
-    { photo: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=120&h=120&fit=crop&crop=faces&facepad=3", name: "Priya A.", location: "Noida", track: "Generative AI", company: "TCS", companyColor: "#CC0000", pkg: "₹14 LPA", batch: "Batch 6 · 2024", quote: "5 students per batch sounds small but that's exactly why it works. My mentor knew every single gap I had." },
-    { photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&h=120&fit=crop&crop=faces&facepad=3", name: "Arjun K.", location: "Bangalore", track: "Full Stack Engineering", company: "Infosys", companyColor: "#007CC3", pkg: "₹12 LPA", batch: "Batch 5 · 2023", quote: "Got placed before the program ended. The projects I built here got me shortlisted directly — no cold applying." },
-    { photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=faces&facepad=3", name: "Sneha M.", location: "Mumbai", track: "Cloud & DevOps", company: "Wipro", companyColor: "#341C5C", pkg: "₹11 LPA", batch: "Batch 6 · 2024", quote: "Career switch at 26 with no CS degree. They mapped out exactly what I needed and didn't waste my time on things I didn't." },
+    { initials: "RS", color: "#3B5BFF", bg: "#EEF2FF", name: "Rohit S.", location: "Delhi", track: "Data Science & ML", company: "Microsoft", companyColor: "#00A4EF", pkg: "₹18 LPA", batch: "Batch 7 · 2024", quote: "Honestly didn't think I'd make it to Microsoft. The mock interviews here were brutal — exactly what real interviews are like." },
+    { initials: "PA", color: "#CC0000", bg: "#FEF2F2", name: "Priya A.", location: "Noida", track: "Generative AI", company: "TCS", companyColor: "#CC0000", pkg: "₹14 LPA", batch: "Batch 6 · 2024", quote: "5 students per batch sounds small but that's exactly why it works. My mentor knew every single gap I had." },
+    { initials: "AK", color: "#007CC3", bg: "#EFF8FF", name: "Arjun K.", location: "Bangalore", track: "Full Stack Engineering", company: "Infosys", companyColor: "#007CC3", pkg: "₹12 LPA", batch: "Batch 5 · 2023", quote: "Got placed before the program ended. The projects I built here got me shortlisted directly — no cold applying." },
+    { initials: "SM", color: "#341C5C", bg: "#F5F3FF", name: "Sneha M.", location: "Mumbai", track: "Cloud & DevOps", company: "Wipro", companyColor: "#341C5C", pkg: "₹11 LPA", batch: "Batch 6 · 2024", quote: "Career switch at 26 with no CS degree. They mapped out exactly what I needed and didn't waste my time on things I didn't." },
   ];
 
   useEffect(() => {
@@ -553,13 +603,15 @@ function RecentPlacements() {
         <div ref={scrollRef} className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:pb-0">
           {placements.map((p, i) => (
             <Reveal key={p.name} delay={i * 0.06}>
-              <motion.div whileHover={{ y: -6, boxShadow: "0 20px 40px -12px rgba(14,21,38,0.15)" }}
+              <motion.div
+                whileHover={{ y: -6, boxShadow: "0 20px 40px -12px rgba(14,21,38,0.15)" }}
                 transition={{ duration: 0.25 }}
                 className="bg-white rounded-brand border border-line p-5 snap-start shrink-0 w-[290px] md:w-auto flex flex-col">
+                {/* Designed initial avatar — no broken photos */}
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full overflow-hidden bg-soft border-2 border-line shrink-0">
-                    <img src={p.photo} alt={p.name} className="w-full h-full object-cover"
-                      onError={(e) => { const t = e.target as HTMLImageElement; t.style.display = "none"; if (t.parentElement) t.parentElement.innerHTML = `<div style="width:100%;height:100%;background:#EEF2FF;display:flex;align-items:center;justify-content:center;font-weight:800;color:#3B5BFF;font-size:18px">${p.name[0]}</div>`; }} />
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center font-extrabold text-lg shrink-0"
+                    style={{ background: p.bg, color: p.color }}>
+                    {p.initials}
                   </div>
                   <div>
                     <div className="font-extrabold text-ink text-[14px] leading-tight">{p.name}</div>
@@ -580,8 +632,10 @@ function RecentPlacements() {
         </div>
         <div className="flex justify-center gap-2 mt-5 md:hidden">
           {placements.map((_, i) => (
-            <motion.div key={i} animate={{ width: i === activeIdx ? 20 : 6, opacity: i === activeIdx ? 1 : 0.3 }}
-              transition={{ duration: 0.25 }} className="h-1.5 rounded-full bg-primary" />
+            <motion.div key={i}
+              animate={{ width: i === activeIdx ? 20 : 6, opacity: i === activeIdx ? 1 : 0.3 }}
+              transition={{ duration: 0.25 }}
+              className="h-1.5 rounded-full bg-primary" />
           ))}
         </div>
       </div>
@@ -589,9 +643,7 @@ function RecentPlacements() {
   );
 }
 
-/* ══════════════════════════════
-   FAQ — conversion killer fixed
-══════════════════════════════ */
+/* ─── FAQ ─── */
 function FAQSection() {
   const [open, setOpen] = useState<number | null>(null);
   const faqs = [
@@ -600,26 +652,27 @@ function FAQSection() {
     { q: "Can I pay in EMI or after getting placed?", a: "Yes on both. We offer 0% EMI options through PayRupik and other partners. We also have a Pay After Placement option for eligible candidates where you pay only after you receive your first salary." },
     { q: "How many hours per week does the course require?", a: "Roughly 15–20 hours per week — 3 live sessions of 1.5 hours each, plus assignments, projects, and self-study. It's intensive by design. Half-commitment gives half-results." },
     { q: "I have no prior coding experience. Can I still join?", a: "Yes, most of our programs are designed for complete beginners. We start from fundamentals and build up. The only requirement is commitment and willingness to put in the hours. Many of our placed students had zero coding background when they started." },
-    { q: "What makes this different from Udemy or YouTube courses?", a: "Live mentorship, accountability, and placement support. Anyone can buy a Udemy course. Very few finish it. With max 5 students per batch, your mentor knows your name, your gaps, and follows up when you're stuck. We also connect you directly with hiring partners — YouTube won't do that." },
+    { q: "What makes this different from Udemy or YouTube courses?", a: "Live mentorship, accountability, and placement support. With max 5 students per batch, your mentor knows your name, your gaps, and follows up when you're stuck. We also connect you directly with hiring partners — YouTube won't do that." },
   ];
   return (
     <section className="py-16 md:py-20 bg-white">
       <div className="max-w-2xl mx-auto px-6">
         <Reveal className="text-center mb-10 md:mb-14">
           <span className="inline-block px-4 py-1.5 bg-primary-tint text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">FAQ</span>
-          <h2 className="text-2xl md:text-4xl font-extrabold text-ink mb-4">Questions Students Ask</h2>
-          <p className="text-muted text-sm md:text-base">Real answers. No marketing fluff.</p>
+          <h2 className="text-2xl md:text-4xl font-extrabold text-ink mb-3">Questions Students Ask</h2>
+          <p className="text-muted text-sm">Real answers. No marketing fluff.</p>
         </Reveal>
         <div className="space-y-3">
           {faqs.map((faq, i) => (
             <Reveal key={i} delay={i * 0.04}>
-              <motion.div whileHover={{ borderColor: open === i ? "#3B5BFF" : "#C4CAD6" }}
+              <motion.div
+                whileHover={{ borderColor: open === i ? "#3B5BFF" : "#C4CAD6" }}
                 className="border border-line rounded-brand overflow-hidden bg-soft cursor-pointer"
                 onClick={() => setOpen(open === i ? null : i)}>
                 <div className="flex items-center justify-between px-5 py-4 md:py-5">
                   <span className="font-bold text-ink text-[14px] md:text-[15px] pr-4 leading-snug">{faq.q}</span>
                   <motion.span animate={{ rotate: open === i ? 180 : 0 }} transition={{ duration: 0.25 }} className="text-muted shrink-0">
-                    <Icons.ChevronDown />
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                   </motion.span>
                 </div>
                 <AnimatePresence initial={false}>
@@ -671,7 +724,7 @@ function FinalCTA() {
             ))}
           </ul>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <motion.button onClick={openPopup} whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+            <motion.button onClick={openPopup} whileHover={{ scale: 1.04, boxShadow: "0 0 32px rgba(255,255,255,0.3)" }} whileTap={{ scale: 0.97 }}
               className="w-full sm:w-auto px-8 py-4 bg-white text-primary font-bold rounded-full text-[15px] shadow-xl">
               Book Free Counseling
             </motion.button>
