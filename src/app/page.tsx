@@ -186,7 +186,7 @@ function HeroSection() {
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
       {/* Dot grid */}
       <div className="absolute inset-0 pointer-events-none"
-        style={{ backgroundImage: "radial-gradient(circle, rgba(59,91,255,0.22) 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
+        style={{ backgroundImage: "radial-gradient(circle, rgba(59,91,255,0.18) 1px, transparent 1px)", backgroundSize: "36px 36px", opacity: 0.5 }} />
       {/* Vignette */}
       <div className="absolute inset-0 pointer-events-none"
         style={{ background: "radial-gradient(ellipse at center, transparent 35%, rgba(6,13,31,0.75) 100%)" }} />
@@ -263,20 +263,22 @@ function HeroSection() {
           </motion.a>
         </motion.div>
 
-        {/* Batch countdown */}
+        {/* Batch countdown — clean single line */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.42 }}
-          className="flex items-center justify-center gap-3 mb-8">
-          <div className="flex items-center gap-1 px-4 py-2 rounded-full bg-white/5 border border-white/10">
-            <span className="text-[10px] text-white/40 font-semibold uppercase tracking-wider mr-1">Next batch in</span>
+          className="flex items-center justify-center gap-3 mb-8 flex-wrap">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+            <span className="text-[10px] text-white/40 font-semibold uppercase tracking-wider">Next batch in</span>
+            <span className="text-white/20 text-xs">→</span>
             {[{ v: countdown.d, l: "d" }, { v: countdown.h, l: "h" }, { v: countdown.m, l: "m" }, { v: countdown.s, l: "s" }].map((t, i) => (
               <span key={t.l} className="flex items-baseline gap-0.5">
-                {i > 0 && <span className="text-white/20 text-xs mx-0.5">:</span>}
+                {i > 0 && <span className="text-white/20 text-xs">:</span>}
                 <span className="text-white font-extrabold text-sm tabular-nums">{pad(t.v)}</span>
                 <span className="text-white/30 text-[10px]">{t.l}</span>
               </span>
             ))}
           </div>
-          <span className="text-[10px] text-accent font-bold uppercase tracking-wider px-2 py-1 bg-accent/10 rounded-full border border-accent/20">
+          <span className="text-[10px] text-white font-bold uppercase tracking-wider px-3 py-1.5 rounded-full"
+            style={{ background: "#FF7A3D" }}>
             2 seats left
           </span>
         </motion.div>
@@ -533,36 +535,41 @@ function PlacementProcess() {
   );
 }
 
-/* ─── CAREER OUTCOMES ─── */
+/* ─── CAREER OUTCOMES — dark section for premium feel ─── */
 function CareerOutcomes() {
   const roadmaps = [
-    { from: "₹4L", to: "₹8L", role: "Entry Level → Junior", color: "#3B5BFF", featured: false },
-    { from: "₹8L", to: "₹15L", role: "Junior → Mid Level", color: "#FF7A3D", featured: false },
-    { from: "₹15L", to: "₹30L", role: "Mid → Senior Level", color: "#16A34A", featured: true },
+    { from: "₹4L", to: "₹8L", role: "Entry Level → Junior", color: "#6B8AFF", featured: false },
+    { from: "₹8L", to: "₹15L", role: "Junior → Mid Level", color: "#FF9A6C", featured: false },
+    { from: "₹15L", to: "₹30L", role: "Mid → Senior Level", color: "#4ADE80", featured: true },
   ];
   return (
-    <section className="py-16 md:py-20 bg-white">
-      <div className="max-w-brand mx-auto px-6">
+    <section className="py-16 md:py-20 bg-[#060D1F] relative overflow-hidden">
+      {/* subtle dot grid */}
+      <div className="absolute inset-0 pointer-events-none opacity-20"
+        style={{ backgroundImage: "radial-gradient(circle, rgba(59,91,255,0.3) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
+      <div className="max-w-brand mx-auto px-6 relative">
         <Reveal className="text-center mb-10 md:mb-14">
-          <span className="inline-block px-4 py-1.5 bg-primary-tint text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">Career Outcomes</span>
-          <h2 className="text-2xl md:text-4xl font-extrabold text-ink mb-4">Your Salary Growth Roadmap</h2>
-          <p className="text-muted text-sm md:text-base max-w-xl mx-auto">From your first IT job to senior-level packages.</p>
+          <span className="inline-block px-4 py-1.5 bg-white/10 text-white/70 text-xs font-bold rounded-full uppercase tracking-wider mb-4">Career Outcomes</span>
+          <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-4">Your Salary Growth Roadmap</h2>
+          <p className="text-white/45 text-sm md:text-base max-w-xl mx-auto">From your first IT job to senior-level packages.</p>
         </Reveal>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
           {roadmaps.map((r, i) => (
             <Reveal key={r.role} delay={i * 0.08}>
               <motion.div
-                whileHover={{ scale: 1.04, boxShadow: `0 24px 48px -12px ${r.color}30` }}
+                whileHover={{ scale: 1.04, boxShadow: `0 24px 48px -12px ${r.color}40` }}
                 transition={{ duration: 0.25 }}
                 className={`rounded-brand border text-center relative overflow-hidden ${r.featured ? "p-8 md:p-12 border-2" : "p-6 md:p-10 border"}`}
-                style={{ background: `${r.color}08`, borderColor: r.featured ? r.color : "#E8ECF4" }}>
+                style={{ background: `${r.color}12`, borderColor: r.featured ? r.color : "rgba(255,255,255,0.08)" }}>
                 {r.featured && (
-                  <div className="absolute top-3 right-3 text-[9px] font-extrabold uppercase px-2 py-1 rounded-full text-white" style={{ background: r.color }}>Goal</div>
+                  <div className="absolute top-3 right-3 text-[9px] font-extrabold uppercase px-2 py-1 rounded-full text-[#060D1F]"
+                    style={{ background: r.color }}>Goal</div>
                 )}
-                <div className={`font-extrabold mb-2 leading-tight ${r.featured ? "text-3xl md:text-5xl" : "text-2xl md:text-4xl"}`} style={{ color: r.color }}>
+                <div className={`font-extrabold mb-2 leading-tight ${r.featured ? "text-3xl md:text-5xl" : "text-2xl md:text-4xl"}`}
+                  style={{ color: r.color }}>
                   {r.from} → {r.to}
                 </div>
-                <div className="text-xs md:text-sm font-semibold text-muted">{r.role}</div>
+                <div className="text-xs md:text-sm font-semibold text-white/45">{r.role}</div>
               </motion.div>
             </Reveal>
           ))}
@@ -606,7 +613,7 @@ function RecentPlacements() {
               <motion.div
                 whileHover={{ y: -6, boxShadow: "0 20px 40px -12px rgba(14,21,38,0.15)" }}
                 transition={{ duration: 0.25 }}
-                className="bg-white rounded-brand border border-line p-5 snap-start shrink-0 w-[290px] md:w-auto flex flex-col">
+                className="bg-white rounded-brand border border-line p-5 snap-start shrink-0 w-[270px] md:w-auto flex flex-col">
                 {/* Designed initial avatar — no broken photos */}
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 rounded-full flex items-center justify-center font-extrabold text-lg shrink-0"

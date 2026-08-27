@@ -20,7 +20,7 @@ module.exports = {
         },
         ink: "#0E1526",
         muted: "#5B6478",
-        soft: "#F6F8FC",
+        soft: "#F7F6FF",
         line: "#E8ECF4",
         nav: "#DBDCE0",
       },
