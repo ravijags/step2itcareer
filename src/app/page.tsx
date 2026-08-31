@@ -110,15 +110,13 @@ function HeroSection() {
   const y = useTransform(scrollY, [0, 600], [0, 80]);
   const opacity = useTransform(scrollY, [0, 400], [1, 0]);
 
-  // Kinetic typography
+  // Kinetic typography — no visibility gap
   const outcomes = ["Microsoft", "₹18 LPA", "TCS Digital", "Infosys", "₹14 LPA", "Dream Job", "6 Months"];
   const [idx, setIdx] = useState(0);
-  const [visible, setVisible] = useState(true);
   useEffect(() => {
     const iv = setInterval(() => {
-      setVisible(false);
-      setTimeout(() => { setIdx(i => (i + 1) % outcomes.length); setVisible(true); }, 280);
-    }, 2200);
+      setIdx(i => (i + 1) % outcomes.length);
+    }, 2400);
     return () => clearInterval(iv);
   }, []);
 
@@ -215,24 +213,21 @@ function HeroSection() {
           </h1>
         </motion.div>
 
-        {/* Kinetic outcome — inline row */}
+        {/* Kinetic outcome — no blink, key-based swap */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
           className="flex items-center justify-center gap-2 mb-6 flex-nowrap">
           <span className="text-white/40 text-sm font-medium whitespace-nowrap">Our students land at</span>
-          {/* min-w prevents layout shift when word changes */}
-          <div className="relative min-w-[120px] flex items-center justify-center">
-            <AnimatePresence mode="popLayout">
-              {visible && (
-                <motion.span key={outcomes[idx]}
-                  initial={{ opacity: 0, y: 6, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -6, scale: 0.95 }}
-                  transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-sm font-extrabold px-3 py-1 rounded-full whitespace-nowrap absolute"
-                  style={{ background: "rgba(59,91,255,0.2)", color: "#8BA4FF", border: "1px solid rgba(59,91,255,0.35)" }}>
-                  {outcomes[idx]}
-                </motion.span>
-              )}
+          <div className="relative h-8 min-w-[120px] flex items-center justify-center overflow-hidden">
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.span key={idx}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className="text-sm font-extrabold px-3 py-1 rounded-full whitespace-nowrap absolute"
+                style={{ background: "rgba(59,91,255,0.2)", color: "#8BA4FF", border: "1px solid rgba(59,91,255,0.35)" }}>
+                {outcomes[idx]}
+              </motion.span>
             </AnimatePresence>
           </div>
         </motion.div>
@@ -559,23 +554,24 @@ function CareerOutcomes() {
         </Reveal>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
           {roadmaps.map((r, i) => (
-            <Reveal key={r.role} delay={i * 0.08}>
-              <motion.div
-                whileHover={{ scale: 1.04, boxShadow: `0 24px 48px -12px ${r.color}40` }}
-                transition={{ duration: 0.25 }}
-                className={`rounded-brand border text-center relative overflow-hidden ${r.featured ? "p-8 md:p-12 border-2" : "p-6 md:p-10 border"}`}
-                style={{ background: `${r.color}12`, borderColor: r.featured ? r.color : "rgba(255,255,255,0.08)" }}>
-                {r.featured && (
-                  <div className="absolute top-3 right-3 text-[9px] font-extrabold uppercase px-2 py-1 rounded-full text-[#060D1F]"
-                    style={{ background: r.color }}>Goal</div>
-                )}
-                <div className={`font-extrabold mb-2 leading-tight ${r.featured ? "text-3xl md:text-5xl" : "text-2xl md:text-4xl"}`}
-                  style={{ color: r.color }}>
-                  {r.from} → {r.to}
-                </div>
-                <div className="text-xs md:text-sm font-semibold text-white/45">{r.role}</div>
-              </motion.div>
-            </Reveal>
+            <motion.div key={r.role}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ scale: 1.04, boxShadow: `0 24px 48px -12px ${r.color}40` }}
+              className={`rounded-brand border text-center relative overflow-hidden ${r.featured ? "p-8 md:p-12 border-2" : "p-6 md:p-10 border"}`}
+              style={{ background: `${r.color}12`, borderColor: r.featured ? r.color : "rgba(255,255,255,0.08)" }}>
+              {r.featured && (
+                <div className="absolute top-3 right-3 text-[9px] font-extrabold uppercase px-2 py-1 rounded-full text-[#060D1F]"
+                  style={{ background: r.color }}>Goal</div>
+              )}
+              <div className={`font-extrabold mb-2 leading-tight ${r.featured ? "text-3xl md:text-5xl" : "text-2xl md:text-4xl"}`}
+                style={{ color: r.color }}>
+                {r.from} → {r.to}
+              </div>
+              <div className="text-xs md:text-sm font-semibold text-white/45">{r.role}</div>
+            </motion.div>
           ))}
         </div>
       </div>
