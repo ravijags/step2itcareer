@@ -10,7 +10,7 @@ function openPopup() {
 
 export default function HomePage() {
   useEffect(() => {
-    const t = setTimeout(() => openPopup(), 5000);
+    const t = setTimeout(() => openPopup(), 9000);
     return () => clearTimeout(t);
   }, []);
 
@@ -64,8 +64,8 @@ function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
     const obs = new IntersectionObserver(([e]) => {
       if (e.isIntersecting && !started.current) {
         started.current = true;
-        const duration = 1600;
-        const steps = 60;
+        const duration = 1000;
+        const steps = 40;
         const inc = target / steps;
         let current = 0;
         const timer = setInterval(() => {
@@ -182,7 +182,7 @@ function HeroSection() {
   const pad = (n: number) => String(n).padStart(2, "0");
 
   return (
-    <section className="relative flex items-center bg-[#060D1F] overflow-hidden">
+    <section className="relative flex items-center bg-[#060D1F] overflow-hidden" style={{ minHeight: "calc(100svh - 56px)" }}>
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
       {/* Dot grid */}
       <div className="absolute inset-0 pointer-events-none"
@@ -263,11 +263,12 @@ function HeroSection() {
           </motion.a>
         </motion.div>
 
-        {/* Batch countdown — clean single line */}
+        {/* Batch countdown + seats — single row */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.42 }}
-          className="flex items-center justify-center gap-3 mb-8 flex-wrap">
+          className="flex items-center justify-center gap-2 mb-8 flex-wrap">
           <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
-            <span className="text-[10px] text-white/40 font-semibold uppercase tracking-wider">Next batch in</span>
+            <span className="text-[10px] text-white/40 font-semibold uppercase tracking-wider hidden sm:inline">Next batch in</span>
+            <span className="text-[10px] text-white/40 font-semibold sm:hidden">Batch in</span>
             <span className="text-white/20 text-xs">→</span>
             {[{ v: countdown.d, l: "d" }, { v: countdown.h, l: "h" }, { v: countdown.m, l: "m" }, { v: countdown.s, l: "s" }].map((t, i) => (
               <span key={t.l} className="flex items-baseline gap-0.5">
@@ -277,7 +278,7 @@ function HeroSection() {
               </span>
             ))}
           </div>
-          <span className="text-[10px] text-white font-bold uppercase tracking-wider px-3 py-1.5 rounded-full"
+          <span className="text-[10px] text-white font-extrabold uppercase tracking-wide px-3 py-2 rounded-full"
             style={{ background: "#FF7A3D" }}>
             2 seats left
           </span>
@@ -609,12 +610,12 @@ function RecentPlacements() {
         </Reveal>
         <div ref={scrollRef} className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:pb-0">
           {placements.map((p, i) => (
-            <Reveal key={p.name} delay={i * 0.06}>
+            <Reveal key={p.name} delay={i * 0.06} className="snap-start shrink-0 w-[270px] md:w-auto">
               <motion.div
                 whileHover={{ y: -6, boxShadow: "0 20px 40px -12px rgba(14,21,38,0.15)" }}
                 transition={{ duration: 0.25 }}
-                className="bg-white rounded-brand border border-line p-5 snap-start shrink-0 w-[270px] md:w-auto flex flex-col">
-                {/* Designed initial avatar — no broken photos */}
+                className="bg-white rounded-brand border border-line p-5 flex flex-col h-full">
+                {/* Avatar + name */}
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 rounded-full flex items-center justify-center font-extrabold text-lg shrink-0"
                     style={{ background: p.bg, color: p.color }}>
@@ -625,8 +626,10 @@ function RecentPlacements() {
                     <div className="text-[11px] text-muted">{p.location} · {p.batch}</div>
                   </div>
                 </div>
+                {/* Quote — flex-1 stretches so all cards same height */}
                 <p className="text-[12px] text-muted leading-relaxed mb-4 flex-1">"{p.quote}"</p>
-                <div className="border-t border-line pt-3">
+                {/* Footer — always at bottom */}
+                <div className="border-t border-line pt-3 mt-auto">
                   <div className="text-[11px] text-muted mb-1.5">{p.track}</div>
                   <div className="flex items-center justify-between">
                     <span className="text-[12px] font-bold" style={{ color: p.companyColor }}>→ {p.company}</span>
