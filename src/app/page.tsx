@@ -107,8 +107,8 @@ const Icons = {
 ════════════════════════════════════ */
 function HeroSection() {
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 80]);
-  const opacity = useTransform(scrollY, [0, 280], [1, 0]);
+  const y = useTransform(scrollY, [0, 600], [0, 80]);
+  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
 
   // Kinetic typography
   const outcomes = ["Microsoft", "₹18 LPA", "TCS Digital", "Infosys", "₹14 LPA", "Dream Job", "6 Months"];
@@ -219,19 +219,22 @@ function HeroSection() {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
           className="flex items-center justify-center gap-2 mb-6 flex-nowrap">
           <span className="text-white/40 text-sm font-medium whitespace-nowrap">Our students land at</span>
-          <AnimatePresence mode="wait">
-            {visible && (
-              <motion.span key={outcomes[idx]}
-                initial={{ opacity: 0, y: 8, filter: "blur(6px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -8, filter: "blur(6px)" }}
-                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="text-sm font-extrabold px-3 py-1 rounded-full whitespace-nowrap"
-                style={{ background: "rgba(59,91,255,0.2)", color: "#8BA4FF", border: "1px solid rgba(59,91,255,0.35)" }}>
-                {outcomes[idx]}
-              </motion.span>
-            )}
-          </AnimatePresence>
+          {/* min-w prevents layout shift when word changes */}
+          <div className="relative min-w-[120px] flex items-center justify-center">
+            <AnimatePresence mode="popLayout">
+              {visible && (
+                <motion.span key={outcomes[idx]}
+                  initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -6, scale: 0.95 }}
+                  transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-sm font-extrabold px-3 py-1 rounded-full whitespace-nowrap absolute"
+                  style={{ background: "rgba(59,91,255,0.2)", color: "#8BA4FF", border: "1px solid rgba(59,91,255,0.35)" }}>
+                  {outcomes[idx]}
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </div>
         </motion.div>
 
         {/* Sub */}
@@ -626,8 +629,8 @@ function RecentPlacements() {
                     <div className="text-[11px] text-muted">{p.location} · {p.batch}</div>
                   </div>
                 </div>
-                {/* Quote — flex-1 stretches so all cards same height */}
-                <p className="text-[12px] text-muted leading-relaxed mb-4 flex-1">"{p.quote}"</p>
+                {/* Quote — min-height ensures all cards same layout */}
+                <p className="text-[12px] text-muted leading-relaxed mb-4 flex-1" style={{ minHeight: "80px" }}>"{p.quote}"</p>
                 {/* Footer — always at bottom */}
                 <div className="border-t border-line pt-3 mt-auto">
                   <div className="text-[11px] text-muted mb-1.5">{p.track}</div>
@@ -640,7 +643,7 @@ function RecentPlacements() {
             </Reveal>
           ))}
         </div>
-        <div className="flex justify-center gap-2 mt-5 md:hidden">
+        <div className="flex justify-center gap-2 mt-4 md:hidden">
           {placements.map((_, i) => (
             <motion.div key={i}
               animate={{ width: i === activeIdx ? 20 : 6, opacity: i === activeIdx ? 1 : 0.3 }}

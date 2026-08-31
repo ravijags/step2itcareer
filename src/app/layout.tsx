@@ -125,7 +125,7 @@ function Footer() {
               <li><a href="mailto:hello@step2itcareer.com" className="text-sm text-white/60 hover:text-white transition-colors">hello@step2itcareer.com</a></li>
               <li><a href="mailto:admissions@step2itcareer.com" className="text-sm text-white/60 hover:text-white transition-colors">admissions@step2itcareer.com</a></li>
               <li className="text-sm text-white/60 leading-relaxed">
-                Noida, Uttar Pradesh — 201303
+                Street No-2, House No. 904,<br />Noida Sec 45, Amrapali Sphere,<br />Gate No-6, Noida, UP 201303
               </li>
             </ul>
           </div>
