@@ -26,18 +26,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 function Nav() {
   return (
-    <header className="sticky top-0 z-40 bg-nav border-b border-line">
+    <header className="sticky top-0 z-40 bg-nav border-b border-white/8 backdrop-blur-md">
       <ScrollProgress />
       <nav className="max-w-brand mx-auto px-6 flex items-center justify-between py-3">
         <a href="/" className="flex items-center">
-          <Logo size="md" theme="light" />
+          <Logo size="md" theme="dark" />
         </a>
-        <div className="hidden md:flex items-center gap-1 bg-white rounded-full px-2 py-1.5 shadow-card border border-line">
+        <div className="hidden md:flex items-center gap-1 bg-white/8 rounded-full px-2 py-1.5 border border-white/10">
           <NavDropdown label="Courses" items={courseLinks} />
           <NavDropdown label="Internship" items={internshipLinks} />
           <NavDropdown label="Schooling Program" items={schoolingLinks} />
           <NavDropdown label="Resources" items={resourceLinks} />
-          <a href="/contact" className="px-4 py-2 text-[13.5px] font-semibold text-ink hover:text-primary transition-colors rounded-full">Contact Us</a>
+          <a href="/contact" className="px-4 py-2 text-[13.5px] font-semibold text-white/70 hover:text-white transition-colors rounded-full">Contact Us</a>
         </div>
         <a href="#" className="hidden md:inline-flex items-center px-5 py-2 bg-primary text-white text-[13.5px] font-bold rounded-full hover:bg-primary-deep transition-colors">
           Login / Sign In
@@ -51,15 +51,15 @@ function Nav() {
 function NavDropdown({ label, items }: { label: string; items: { name: string; href: string }[] }) {
   return (
     <div className="relative group">
-      <button className="flex items-center gap-1 px-4 py-2 text-[13.5px] font-semibold text-ink hover:text-primary transition-colors rounded-full hover:bg-soft">
+      <button className="flex items-center gap-1 px-4 py-2 text-[13.5px] font-semibold text-white/70 hover:text-white transition-colors rounded-full hover:bg-white/8">
         {label}
-        <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" className="mt-0.5">
+        <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" className="mt-0.5 opacity-60">
           <path d="M2 4l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
-      <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-brand shadow-deep border border-line opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+      <div className="absolute top-full left-0 mt-2 w-72 bg-[#0E1526] rounded-brand shadow-deep border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
         {items.map((item) => (
-          <a key={item.name} href={item.href} className="block px-4 py-3 text-[13px] font-semibold text-ink hover:text-primary hover:bg-soft transition-colors first:rounded-t-brand last:rounded-b-brand">
+          <a key={item.name} href={item.href} className="block px-4 py-3 text-[13px] font-semibold text-white/70 hover:text-white hover:bg-white/5 transition-colors first:rounded-t-brand last:rounded-b-brand">
             {item.name}
           </a>
         ))}
