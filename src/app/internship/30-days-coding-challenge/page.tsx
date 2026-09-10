@@ -33,7 +33,7 @@ export default function ThirtyDaysPage() {
       <div className="relative bg-[#060D1F] overflow-hidden">
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle, #3B5BFF 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
         <div className="absolute top-0 left-0 w-96 h-96 rounded-full opacity-20" style={{ background: "radial-gradient(circle, #FF7A3D, transparent 70%)", transform: "translate(-30%, -30%)" }} />
-        <div className="max-w-brand mx-auto px-6 py-16 md:py-24 relative">
+        <div className="max-w-brand mx-auto px-6 pt-28 pb-16 md:pt-36 md:pb-24 relative">
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <a href="/internship" className="text-white/40 hover:text-white/70 text-sm transition-colors">Internship</a>
             <span className="text-white/20">›</span>

@@ -71,3 +71,13 @@ a {
 .animate-ticker {
   animation: ticker 28s linear infinite;
 }
+
+/* Design 7 nav links — white on transparent/frosted dark nav */
+.nav-link {
+  color: rgba(255, 255, 255, 0.6);
+  transition: color 150ms ease, background 150ms ease;
+}
+.nav-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.07);
+}

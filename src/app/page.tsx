@@ -180,7 +180,7 @@ function HeroSection() {
   const pad = (n: number) => String(n).padStart(2, "0");
 
   return (
-    <section className="relative flex items-center bg-[#060D1F] overflow-hidden" style={{ minHeight: "calc(100svh - 56px)" }}>
+    <section className="relative flex items-center bg-[#060D1F] overflow-hidden" style={{ minHeight: "100svh", paddingTop: 56 }}>
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
       {/* Dot grid */}
       <div className="absolute inset-0 pointer-events-none"

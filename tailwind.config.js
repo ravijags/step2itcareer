@@ -22,7 +22,7 @@ module.exports = {
         muted: "#5B6478",
         soft: "#F7F6FF",
         line: "#E8ECF4",
-        nav: "#0A0F1E",
+        nav: "#DBDCE0",
       },
       fontFamily: {
         sans: ["Plus Jakarta Sans", "sans-serif"],

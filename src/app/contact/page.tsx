@@ -9,7 +9,7 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <div className="bg-[#0D1330] py-16 px-6 text-center">
+      <div className="bg-[#0D1330] pt-28 pb-16 px-6 text-center">
         <span className="inline-block px-4 py-1.5 bg-primary/20 text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">Get In Touch</span>
         <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4">Contact Us</h1>
         <p className="text-white/60 text-base max-w-xl mx-auto">Have questions about our programs? We are here to help. Reach out through any of the channels below.</p>

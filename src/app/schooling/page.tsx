@@ -47,7 +47,7 @@ export default function SchoolingPage() {
       {/* Hero */}
       <div className="relative bg-[#060D1F] overflow-hidden">
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle, #3B5BFF 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
-        <div className="max-w-brand mx-auto px-6 py-16 md:py-24 text-center relative">
+        <div className="max-w-brand mx-auto px-6 pt-28 pb-16 md:pt-36 md:pb-24 text-center relative">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/15 border border-primary/30 text-primary text-xs font-bold rounded-full uppercase tracking-widest mb-6">
             📚 School Coding Programs · Class 6 to 12
           </div>

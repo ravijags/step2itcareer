@@ -67,7 +67,7 @@ export default function MobileNav() {
       {/* ── Animated hamburger → X button ── */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="md:hidden p-2 rounded-lg text-ink relative w-10 h-10 flex items-center justify-center"
+        className="md:hidden p-2 rounded-lg text-white relative w-10 h-10 flex items-center justify-center"
         aria-label={open ? "Close menu" : "Open menu"}
       >
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">

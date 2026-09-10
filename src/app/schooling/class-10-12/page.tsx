@@ -12,7 +12,7 @@ export default function Class1012Page() {
       <div className="relative overflow-hidden" style={{ background: "linear-gradient(135deg, #1a0800 0%, #0D1330 60%, #060D1F 100%)" }}>
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle, #FF7A3D 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
         <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full opacity-15" style={{ background: "radial-gradient(circle, #FF7A3D, transparent 70%)", transform: "translate(-30%, 30%)" }} />
-        <div className="max-w-brand mx-auto px-6 py-16 md:py-24 relative text-center">
+        <div className="max-w-brand mx-auto px-6 pt-28 pb-16 md:pt-36 md:pb-24 relative text-center">
           <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
             <a href="/schooling" className="text-white/40 hover:text-white/70 text-sm transition-colors">Schooling Programs</a>
             <span className="text-white/20">›</span>

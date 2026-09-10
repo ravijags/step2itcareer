@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import MobileNav from "@/components/MobileNav";
 import PopupController from "@/components/PopupController";
 import Logo from "@/components/Logo";
-import ScrollProgress from "@/components/ScrollProgress";
+import NavClient from "@/components/NavClient";
 
 export const metadata: Metadata = {
   title: "Step2ITCareer-AI — Get Job-Ready. Get Hired.",
@@ -14,57 +13,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <Nav />
-        <main className="pb-16 md:pb-0" style={{ marginBottom: 0 }}>{children}</main>
+        <NavClient />
+        <main className="pb-16 md:pb-0">{children}</main>
         <Footer />
         <FloatingWhatsApp />
         <PopupController />
       </body>
     </html>
-  );
-}
-
-function Nav() {
-  return (
-    <header className="sticky top-0 z-40 bg-nav border-b border-white/8 backdrop-blur-md">
-      <ScrollProgress />
-      <nav className="max-w-brand mx-auto px-6 flex items-center justify-between py-3">
-        <a href="/" className="flex items-center">
-          <Logo size="md" theme="dark" />
-        </a>
-        <div className="hidden md:flex items-center gap-1 bg-white/8 rounded-full px-2 py-1.5 border border-white/10">
-          <NavDropdown label="Courses" items={courseLinks} />
-          <NavDropdown label="Internship" items={internshipLinks} />
-          <NavDropdown label="Schooling Program" items={schoolingLinks} />
-          <NavDropdown label="Resources" items={resourceLinks} />
-          <a href="/contact" className="px-4 py-2 text-[13.5px] font-semibold text-white/70 hover:text-white transition-colors rounded-full">Contact Us</a>
-        </div>
-        <a href="#" className="hidden md:inline-flex items-center px-5 py-2 bg-primary text-white text-[13.5px] font-bold rounded-full hover:bg-primary-deep transition-colors">
-          Login / Sign In
-        </a>
-        <MobileNav />
-      </nav>
-    </header>
-  );
-}
-
-function NavDropdown({ label, items }: { label: string; items: { name: string; href: string }[] }) {
-  return (
-    <div className="relative group">
-      <button className="flex items-center gap-1 px-4 py-2 text-[13.5px] font-semibold text-white/70 hover:text-white transition-colors rounded-full hover:bg-white/8">
-        {label}
-        <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" className="mt-0.5 opacity-60">
-          <path d="M2 4l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
-      <div className="absolute top-full left-0 mt-2 w-72 bg-[#0E1526] rounded-brand shadow-deep border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-        {items.map((item) => (
-          <a key={item.name} href={item.href} className="block px-4 py-3 text-[13px] font-semibold text-white/70 hover:text-white hover:bg-white/5 transition-colors first:rounded-t-brand last:rounded-b-brand">
-            {item.name}
-          </a>
-        ))}
-      </div>
-    </div>
   );
 }
 
@@ -150,39 +105,3 @@ function FloatingWhatsApp() {
     </a>
   );
 }
-
-const courseLinks = [
-  { name: "Generative AI & Multi-Agent Systems", href: "/courses/generative-ai-multi-agent" },
-  { name: "Data Science, ML & AI Engineering", href: "/courses/data-science-ml-ai" },
-  { name: "Data Analytics & Business Intelligence", href: "/courses/data-analytics-bi" },
-  { name: "Business Analyst & Product Management", href: "/courses/business-analyst-product-management" },
-  { name: "Full Stack Software Engineering", href: "/courses/full-stack-software-engineering" },
-  { name: "Cloud, DevOps & Platform Engineering", href: "/courses/cloud-devops-platform-engineering" },
-  { name: "Cybersecurity & Cloud Security", href: "/courses/cybersecurity-cloud-security" },
-  { name: "Software Testing & QA Automation", href: "/courses/software-testing-qa-automation" },
-  { name: "CPEP - Customized Excellence Program", href: "/courses/cpep-customized-professional-excellence" },
-  { name: "AI Automation & No-Code Solutions", href: "/courses/ai-automation-no-code" },
-  { name: "Digital Marketing & Growth Analytics", href: "/courses/digital-marketing-growth-analytics" },
-  { name: "System Design & Software Architecture", href: "/courses/system-design-software-architecture" },
-];
-
-const internshipLinks = [
-  { name: "30-Days Coding Challenge — ₹10,000", href: "/internship/30-days-coding-challenge" },
-  { name: "Summer/Winter Training — ₹6,000", href: "/internship/summer-winter-training" },
-];
-
-const schoolingLinks = [
-  { name: "Class 6–8 Coding Program — ₹5,000", href: "/schooling/class-6-8" },
-  { name: "Class 8–10 Coding Program — ₹10,000", href: "/schooling/class-8-10" },
-  { name: "Class 10–12 Coding Program — ₹10,000", href: "/schooling/class-10-12" },
-];
-
-const resourceLinks = [
-  { name: "Blogs", href: "#" },
-  { name: "Career", href: "#" },
-  { name: "About Us", href: "/about" },
-  { name: "Pay After Placement", href: "#" },
-  { name: "Tutorials", href: "#" },
-  { name: "Tech Trends", href: "#" },
-  { name: "Success Stories", href: "#" },
-];

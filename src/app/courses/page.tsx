@@ -21,7 +21,7 @@ export default function CoursesPage() {
 
   return (
     <div className="min-h-screen bg-soft">
-      <div className="bg-[#0D1330] py-16 px-6 text-center">
+      <div className="bg-[#0D1330] pt-28 pb-16 px-6 text-center">
         <span className="inline-block px-4 py-1.5 bg-primary/20 text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">
           All Programs
         </span>
