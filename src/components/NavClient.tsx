@@ -105,8 +105,7 @@ export default function NavClient() {
 
           <a
             href="#"
-            className="hidden md:inline-flex items-center px-5 py-2 text-[13px] font-bold rounded-full text-white bg-primary hover:bg-primary-deep transition-all"
-            style={{ boxShadow: frosted ? "0 0 22px rgba(59,91,255,0.35)" : "0 4px 16px rgba(59,91,255,0.35)" }}
+            className="btn-grad tap hidden md:inline-flex items-center px-5 py-2 text-[13px] font-bold rounded-full text-white"
           >
             Login / Sign In
           </a>

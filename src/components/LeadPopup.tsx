@@ -1,6 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence, type PanInfo } from "framer-motion";
+import { courses } from "@/lib/courses";
+import { Icon } from "@/components/Icons";
+import { Grain, Slashes } from "@/components/Decor";
 
 export default function LeadPopup({ submitted, onSubmit, onClose }: {
   submitted: boolean;
@@ -9,138 +13,113 @@ export default function LeadPopup({ submitted, onSubmit, onClose }: {
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [formData, setFormData] = useState({ name: "", phone: "", email: "", program: "" });
+  const [form, setForm] = useState({ name: "", phone: "", email: "", program: "" });
+
+  const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+    setForm(f => ({ ...f, [k]: e.target.value }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
+    if (!form.name.trim() || !form.phone.trim()) { setError("Name and WhatsApp number are required."); return; }
+    setLoading(true); setError("");
     try {
-      const res = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      if (res.ok) onSubmit();
-      else setError("Something went wrong. WhatsApp us directly.");
-    } catch {
-      setError("Something went wrong. WhatsApp us directly.");
-    } finally {
-      setLoading(false);
-    }
+      const res = await fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+      if (res.ok) onSubmit(); else setError("Something went wrong. WhatsApp us directly.");
+    } catch { setError("Something went wrong. WhatsApp us directly."); }
+    finally { setLoading(false); }
+  };
+
+  const onDragEnd = (_: unknown, info: PanInfo) => {
+    if (info.offset.y > 110 || info.velocity.y > 600) onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center sm:p-6">
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/65 backdrop-blur-sm" onClick={onClose} />
+    <AnimatePresence>
+      <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center sm:p-6">
+        <motion.div
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          className="absolute inset-0"
+          style={{ background: "rgba(7,11,24,0.62)", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)" }}
+          onClick={onClose}
+        />
 
-      {/* Modal */}
-      <div className="relative w-full sm:max-w-2xl bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col" style={{ maxHeight: "90dvh" }}>
-
-        {/* Close button */}
-        <button onClick={onClose}
-          className="absolute top-4 right-4 z-20 w-9 h-9 bg-black/10 hover:bg-black/20 rounded-full flex items-center justify-center text-white sm:text-gray-500 transition-colors text-sm font-bold">
-          ✕
-        </button>
-
-        {submitted ? (
-          <div className="p-10 sm:p-16 text-center">
-            <div className="text-5xl mb-4">🎉</div>
-            <h3 className="text-xl sm:text-2xl font-extrabold text-ink mb-2">You're on the list!</h3>
-            <p className="text-muted text-sm mb-6">Our advisor will call you back within a few hours.</p>
-            <a href="https://wa.me/919936609430"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#16A34A] text-white font-bold rounded-full hover:bg-green-700 transition-colors text-sm">
-              💬 WhatsApp Us Directly
-            </a>
+        <motion.div
+          initial={{ y: "100%", opacity: 0.6 }} animate={{ y: 0, opacity: 1 }} exit={{ y: "100%", opacity: 0 }}
+          transition={{ type: "spring", stiffness: 380, damping: 36 }}
+          drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={{ top: 0, bottom: 0.55 }} onDragEnd={onDragEnd}
+          className="relative w-full sm:max-w-[440px] bg-white rounded-t-[26px] sm:rounded-[26px] overflow-hidden flex flex-col"
+          style={{ maxHeight: "92dvh", boxShadow: "0 -16px 60px rgba(0,0,0,0.35)", paddingBottom: "env(safe-area-inset-bottom)" }}
+          role="dialog" aria-modal="true" aria-label="Book free counseling"
+        >
+          <div className="relative bg-ink2 px-6 pt-3 pb-5 shrink-0 overflow-hidden">
+            <Grain />
+            <Slashes side="right" tone="primary" opacity={0.12} height={260} dot={false} />
+            <div className="relative mx-auto mb-3 w-9 h-1 rounded-full bg-white/25 sm:hidden" aria-hidden />
+            <button onClick={onClose} aria-label="Close"
+              className="absolute top-3 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors z-10">
+              <Icon.Close size={16} />
+            </button>
+            <div className="relative flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.15em] text-[#FF9A6C] mb-1.5">
+              <span className="relative inline-block w-2 h-2 rounded-full bg-[#4ADE80] pulse-ring text-[#4ADE80]" />
+              3 counselors online
+            </div>
+            <h3 className="relative text-[22px] font-extrabold text-white tracking-tight leading-tight">Get job-ready. Get hired.</h3>
+            <p className="relative text-[13px] text-white/50 mt-1">We call back within 2 hours · Free · No obligation</p>
           </div>
-        ) : (
-          <div className="flex flex-col sm:flex-row overflow-y-auto">
 
-            {/* Mobile top banner (replaces left panel on mobile) */}
-            <div className="sm:hidden bg-[#0D1330] px-6 py-5 shrink-0">
-              <p className="text-accent text-[10px] font-extrabold uppercase tracking-widest mb-1">⚡ Free · No Obligation</p>
-              <h3 className="text-lg font-extrabold text-white">Get Job-Ready. Get Hired.</h3>
-              <p className="text-white/50 text-xs mt-1">Expert 1:1 Counseling · Max 5/Batch · Placement Support</p>
-            </div>
-
-            {/* Desktop left panel */}
-            <div className="hidden sm:flex flex-col justify-center w-[44%] shrink-0 bg-[#0D1330] p-10 relative overflow-hidden">
-              <div className="absolute inset-0 opacity-[0.06]"
-                style={{ backgroundImage: "radial-gradient(circle, #3B5BFF 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
-              <p className="text-accent text-xs font-extrabold uppercase tracking-widest mb-3 relative">Free Career Counseling</p>
-              <h3 className="text-2xl font-extrabold text-white mb-6 leading-snug relative">
-                Get Job-Ready.<br />Get Hired.
-              </h3>
-              <ul className="space-y-4 relative">
-                {["Expert 1:1 Career Consultation", "Micro-Batch Mentorship (5 max)", "Placement Support Until Offer", "EMI & Scholarship Options"].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm text-white/70 font-medium">
-                    <span className="text-green-400 mt-0.5 shrink-0">✓</span>{item}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8 pt-6 border-t border-white/10 relative">
-                <p className="text-[10px] text-white/40 uppercase tracking-wider mb-0.5">Talk directly to</p>
-                <p className="text-sm font-extrabold text-white">Ashvani Srivastava</p>
-                <p className="text-xs text-white/40">Founder & CEO · +91 99366 09430</p>
+          <div className="overflow-y-auto">
+            {submitted ? (
+              <div className="px-6 py-12 text-center">
+                <div className="mx-auto mb-5 w-[76px] h-[76px] rounded-full flex items-center justify-center" style={{ background: "var(--grad-primary)", boxShadow: "0 16px 40px rgba(59,91,255,0.35)" }}>
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+                    <motion.path d="M5 12l4.5 4.5L19 7" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }} />
+                  </svg>
+                </div>
+                <h4 className="text-[22px] font-extrabold text-ink tracking-tight mb-2">You're on the list</h4>
+                <p className="text-[14px] text-muted mb-7">Ashvani's team will call you back within a few hours.</p>
+                <a href="https://wa.me/919936609430" className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#16A34A] text-white font-bold rounded-full text-[14px] tap">
+                  <Icon.WhatsApp size={18} /> WhatsApp us directly
+                </a>
               </div>
-            </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="px-5 sm:px-6 pt-5 pb-6 flex flex-col gap-3">
+                <div className="fl">
+                  <input id="lp-name" placeholder=" " value={form.name} onChange={set("name")} autoComplete="name" required />
+                  <label htmlFor="lp-name">Full name</label>
+                </div>
+                <div className="fl">
+                  <input id="lp-phone" placeholder=" " value={form.phone} onChange={set("phone")} inputMode="tel" autoComplete="tel" required />
+                  <label htmlFor="lp-phone">WhatsApp number</label>
+                </div>
+                <div className="fl">
+                  <input id="lp-email" placeholder=" " value={form.email} onChange={set("email")} inputMode="email" autoComplete="email" />
+                  <label htmlFor="lp-email">Email (optional)</label>
+                </div>
+                <div className="fl">
+                  <select id="lp-program" value={form.program} onChange={set("program")} className={form.program ? "has-value" : ""}>
+                    <option value=""></option>
+                    {courses.map(c => <option key={c.slug} value={c.title}>{c.title}</option>)}
+                    <option value="Internship">Internship</option>
+                    <option value="Schooling Program">Schooling program</option>
+                  </select>
+                  <label htmlFor="lp-program">Interested program (optional)</label>
+                  <Icon.ChevronDown size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+                </div>
 
-            {/* Form panel */}
-            <div className="flex-1 p-6 sm:p-10 overflow-y-auto">
-              <h3 className="text-lg sm:text-xl font-extrabold text-ink mb-1">Book Free Counseling</h3>
-              <p className="text-muted text-sm mb-5">We'll call you back — usually within 2 hours.</p>
-
-              <form onSubmit={handleSubmit} className="space-y-3">
-                <input required type="text" placeholder="Full Name *"
-                  value={formData.name}
-                  onChange={e => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3.5 rounded-xl border border-line text-sm font-medium text-ink placeholder:text-muted/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all bg-soft" />
-                <input required type="tel" placeholder="WhatsApp Number *"
-                  value={formData.phone}
-                  onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-4 py-3.5 rounded-xl border border-line text-sm font-medium text-ink placeholder:text-muted/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all bg-soft" />
-                <input type="email" placeholder="Email Address (optional)"
-                  value={formData.email}
-                  onChange={e => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3.5 rounded-xl border border-line text-sm font-medium text-ink placeholder:text-muted/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all bg-soft" />
-                <select value={formData.program}
-                  onChange={e => setFormData({ ...formData, program: e.target.value })}
-                  className="w-full px-4 py-3.5 rounded-xl border border-line text-sm font-medium text-ink focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all bg-soft">
-                  <option value="">Interested Program (optional)</option>
-                  <option>Generative AI & Multi-Agent Systems Engineering</option>
-                  <option>Data Science, Machine Learning & AI Engineering</option>
-                  <option>Data Analytics & Business Intelligence</option>
-                  <option>Business Analyst & Product Management</option>
-                  <option>Full Stack Software Engineering</option>
-                  <option>Cloud, DevOps & Platform Engineering</option>
-                  <option>Cybersecurity & Cloud Security</option>
-                  <option>Software Testing & QA Automation Engineering</option>
-                  <option>CPEP - Customized Excellence Program</option>
-                  <option>AI Automation & No-Code Solutions</option>
-                  <option>Digital Marketing & Growth Analytics</option>
-                  <option>System Design & Software Architecture</option>
-                  <option>Internship Program</option>
-                  <option>Schooling Program (Class 6–12)</option>
-                  <option>Not sure yet — need guidance</option>
-                </select>
-
-                {error && <p className="text-red-500 text-xs font-semibold">{error}</p>}
+                {error && <p className="text-[13px] text-red-600 font-semibold -mt-1">{error}</p>}
 
                 <button type="submit" disabled={loading}
-                  className="w-full py-4 bg-primary text-white font-extrabold rounded-xl text-sm transition-all hover:bg-primary-deep disabled:opacity-50 disabled:cursor-not-allowed"
-                  style={{ boxShadow: "0 4px 20px rgba(59,91,255,0.35)" }}>
-                  {loading ? "Sending..." : "Request Free Callback →"}
+                  className="btn-grad tap mt-1 w-full py-4 rounded-full text-white font-extrabold text-[15px] flex items-center justify-center gap-2 disabled:opacity-70">
+                  {loading ? "Sending…" : <>Request free callback <Icon.ArrowRight size={16} /></>}
                 </button>
-
-                <p className="text-center text-[11px] text-muted pt-1">
-                  Or <a href="https://wa.me/919936609430" className="text-[#16A34A] font-bold hover:underline">WhatsApp us directly</a>
+                <p className="text-center text-[13px] text-muted">
+                  or <a href="https://wa.me/919936609430" className="text-[#16A34A] font-bold">WhatsApp us directly</a>
                 </p>
               </form>
-            </div>
+            )}
           </div>
-        )}
+        </motion.div>
       </div>
-    </div>
+    </AnimatePresence>
   );
 }

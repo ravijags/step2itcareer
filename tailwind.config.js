@@ -21,6 +21,7 @@ module.exports = {
         ink: "#0E1526",
         muted: "#5B6478",
         soft: "#F7F6FF",
+        ink2: "#070B18",
         line: "#E8ECF4",
         nav: "#DBDCE0",
       },

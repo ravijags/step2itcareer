@@ -3,6 +3,9 @@ import "./globals.css";
 import PopupController from "@/components/PopupController";
 import Logo from "@/components/Logo";
 import NavClient from "@/components/NavClient";
+import Loader from "@/components/Loader";
+import PageTransition from "@/components/PageTransition";
+import { Grain, Slashes } from "@/components/Decor";
 
 export const metadata: Metadata = {
   title: "Step2ITCareer-AI — Get Job-Ready. Get Hired.",
@@ -13,8 +16,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
+        <Loader />
         <NavClient />
-        <main className="pb-16 md:pb-0">{children}</main>
+        <main><PageTransition>{children}</PageTransition></main>
         <Footer />
         <FloatingWhatsApp />
         <PopupController />
@@ -25,8 +29,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 function Footer() {
   return (
-    <footer className="bg-ink text-white pt-14 pb-8">
-      <div className="max-w-brand mx-auto px-6">
+    <footer className="relative bg-ink2 text-white pt-16 pb-24 md:pb-8 overflow-hidden">
+      <Grain />
+      <Slashes side="right" tone="primary" opacity={0.07} height={640} />
+      <div className="relative max-w-brand mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
           <div>
             <div className="mb-3">
@@ -87,7 +93,7 @@ function Footer() {
         </div>
 
         <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-white/40">© 2025 Step2ITCareer-AI. All rights reserved.</p>
+          <p className="text-xs text-white/40">© {new Date().getFullYear()} Step2ITCareer-AI. All rights reserved.</p>
           <p className="text-xs text-white/40">Built with love for ambitious learners</p>
         </div>
       </div>

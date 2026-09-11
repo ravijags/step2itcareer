@@ -1,0 +1,59 @@
+/* One icon voice for the entire site. Stroke 1.8, round caps, 24 viewBox.
+   Use <Icon.Users size={18} className="text-primary" /> — colour comes from currentColor. */
+
+type P = { size?: number; className?: string; strokeWidth?: number; style?: React.CSSProperties };
+
+function base({ size = 20, className = "", strokeWidth = 1.8, style }: P) {
+  return {
+    width: size, height: size, viewBox: "0 0 24 24", fill: "none",
+    stroke: "currentColor", strokeWidth, strokeLinecap: "round" as const, strokeLinejoin: "round" as const,
+    className, style, "aria-hidden": true,
+  };
+}
+
+export const Icon = {
+  Users: (p: P) => (<svg {...base(p)}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>),
+  Route: (p: P) => (<svg {...base(p)}><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M12 19h4.5a3.5 3.5 0 0 0 0-7h-9a3.5 3.5 0 0 1 0-7H12"/></svg>),
+  Calendar: (p: P) => (<svg {...base(p)}><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 15h2M14 15h2"/></svg>),
+  Trophy: (p: P) => (<svg {...base(p)}><path d="M6 9H4a2 2 0 0 1-2-2V5h4"/><path d="M18 9h2a2 2 0 0 0 2-2V5h-4"/><path d="M6 4h12v6a6 6 0 0 1-12 0V4z"/><path d="M12 16v4M8 21h8"/></svg>),
+  Refresh: (p: P) => (<svg {...base(p)}><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>),
+  Target: (p: P) => (<svg {...base(p)}><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>),
+  School: (p: P) => (<svg {...base(p)}><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/><path d="M22 9v6"/></svg>),
+  Briefcase: (p: P) => (<svg {...base(p)}><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg>),
+  Trend: (p: P) => (<svg {...base(p)}><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>),
+  Star: (p: P) => (<svg {...base(p)}><path d="M12 3l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.8 6.1 21l1.2-6.5L2.5 9.9l6.6-.9L12 3z"/></svg>),
+  Video: (p: P) => (<svg {...base(p)}><rect x="3" y="6" width="13" height="12" rx="3"/><path d="M16 10l5-3v10l-5-3"/></svg>),
+  Bolt: (p: P) => (<svg {...base(p)}><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>),
+  ArrowRight: (p: P) => (<svg {...base(p)}><path d="M5 12h14M13 6l6 6-6 6"/></svg>),
+  ArrowUpRight: (p: P) => (<svg {...base(p)}><path d="M7 17L17 7M9 7h8v8"/></svg>),
+  ChevronDown: (p: P) => (<svg {...base(p)}><path d="M6 9l6 6 6-6"/></svg>),
+  Check: (p: P) => (<svg {...base(p)}><path d="M5 12l4.5 4.5L19 7"/></svg>),
+  Quote: (p: P) => (<svg {...base(p)} fill="currentColor" stroke="none"><path d="M6.5 11H4a5 5 0 0 1 5-5v2a3 3 0 0 0-3 3h.5a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h2.5zm11 0H15a5 5 0 0 1 5-5v2a3 3 0 0 0-3 3h.5a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H15a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h2.5z"/></svg>),
+  Hand: (p: P) => (<svg {...base(p)}><path d="M8 13V5a1.5 1.5 0 0 1 3 0v6"/><path d="M11 11V4a1.5 1.5 0 0 1 3 0v7"/><path d="M14 11V6a1.5 1.5 0 0 1 3 0v8"/><path d="M8 13l-1.7-2.3a1.6 1.6 0 0 0-2.6 1.9L7 18a6 6 0 0 0 10 1.5V14"/></svg>),
+  Flame: (p: P) => (<svg {...base(p)}><path d="M12 22c4 0 7-3 7-7 0-3.5-2.5-5.5-3.5-8.5C14 9 13 10 12.5 12c-1-2-1-4.5-.5-7C8 8 5 11 5 15c0 4 3 7 7 7z"/></svg>),
+  Confetti: (p: P) => (<svg {...base(p)}><path d="M4 20l4-12 8 8-12 4z"/><path d="M14 4l1 2M19 6l-2 1M20 12l-2-1M9 4l.5 2"/></svg>),
+  Phone: (p: P) => (<svg {...base(p)}><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>),
+  WhatsApp: (p: P) => (<svg width={p.size ?? 20} height={p.size ?? 20} viewBox="0 0 24 24" fill="currentColor" className={p.className} style={p.style} aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12.05 21.8h-.01a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4a9.9 9.9 0 0 1-1.5-5.3c0-5.4 4.4-9.9 9.9-9.9 2.6 0 5.1 1 7 2.9a9.8 9.8 0 0 1 2.9 7c0 5.4-4.4 9.9-9.9 9.9zm8.4-18.3A11.8 11.8 0 0 0 12.05 0C5.5 0 .2 5.3.2 11.9c0 2.1.5 4.1 1.6 5.9L0 24l6.3-1.7a11.9 11.9 0 0 0 5.7 1.4c6.6 0 11.9-5.3 11.9-11.9 0-3.2-1.2-6.2-3.5-8.4z"/></svg>),
+  Close: (p: P) => (<svg {...base(p)}><path d="M18 6L6 18M6 6l12 12"/></svg>),
+  Sparkle: (p: P) => (<svg {...base(p)}><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/><path d="M19 17l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>),
+};
+
+/* Duotone container: the icon sits in a rounded square with a soft gradient wash.
+   tone="primary" | "accent" */
+export function IconTile({ children, tone = "primary", size = 40, dark = false }: {
+  children: React.ReactNode; tone?: "primary" | "accent"; size?: number; dark?: boolean;
+}) {
+  const isP = tone === "primary";
+  const bg = dark
+    ? isP ? "rgba(139,164,255,0.14)" : "rgba(255,154,108,0.16)"
+    : isP ? "rgba(59,91,255,0.12)" : "rgba(255,122,61,0.14)";
+  const wash = isP ? "rgba(59,91,255,0.22)" : "rgba(255,122,61,0.24)";
+  const color = dark ? (isP ? "#8BA4FF" : "#FF9A6C") : (isP ? "#3B5BFF" : "#FF7A3D");
+  return (
+    <div style={{ width: size, height: size, borderRadius: size * 0.3, background: bg, color, position: "relative" }}
+      className="flex items-center justify-center shrink-0">
+      <div style={{ position: "absolute", inset: 0, borderRadius: size * 0.3, background: `linear-gradient(135deg, ${wash}, transparent 70%)` }} />
+      <div className="relative">{children}</div>
+    </div>
+  );
+}
