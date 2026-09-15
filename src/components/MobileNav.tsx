@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "@/components/Logo";
 
@@ -45,6 +46,8 @@ type Section = "courses" | "internship" | "schooling" | "resources" | null;
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<Section>(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -99,6 +102,10 @@ export default function MobileNav() {
         </svg>
       </button>
 
+      {/* Overlay is portaled to <body>: the fixed header uses backdrop-filter, which would
+          otherwise become the containing block for this fixed drawer and clip it to 56px. */}
+      {mounted && createPortal(
+        <>
       {/* ── Backdrop ── */}
       <AnimatePresence>
         {open && (
@@ -175,6 +182,9 @@ export default function MobileNav() {
           </motion.div>
         )}
       </AnimatePresence>
+        </>,
+        document.body
+      )}
     </>
   );
 }

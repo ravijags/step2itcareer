@@ -657,7 +657,11 @@ function RecentPlacements() {
                   exit={{ opacity: 0, x: -140, rotate: -10, transition: { duration: 0.3 } }}
                   transition={{ duration: 0.45, ease: EASE }}
                   className="absolute inset-x-0 top-0" style={{ zIndex: 10 - k, touchAction: "pan-y" }}>
-                  <PlacementCard p={p} style={{ boxShadow: k === 0 ? "0 16px 40px rgba(14,21,38,0.14), inset 0 1px 0 #fff" : "inset 0 1px 0 #fff", border: "1px solid #E6E3F7" }} />
+                  {k === 0 ? (
+                    <PlacementCard p={p} style={{ boxShadow: "0 16px 40px rgba(14,21,38,0.14), inset 0 1px 0 #fff", border: "1px solid #E6E3F7" }} />
+                  ) : (
+                    <div className="h-[262px] rounded-[20px] bg-white" style={{ border: "1px solid #E6E3F7", boxShadow: "inset 0 1px 0 #fff" }} aria-hidden />
+                  )}
                 </motion.div>
               ))}
             </AnimatePresence>

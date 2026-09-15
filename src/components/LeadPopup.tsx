@@ -44,7 +44,7 @@ export default function LeadPopup({ submitted, onSubmit, onClose }: {
         />
 
         <motion.div
-          initial={{ y: "100%", opacity: 0.6 }} animate={{ y: 0, opacity: 1 }} exit={{ y: "100%", opacity: 0 }}
+          initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
           transition={{ type: "spring", stiffness: 380, damping: 36 }}
           drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={{ top: 0, bottom: 0.55 }} onDragEnd={onDragEnd}
           className="relative w-full sm:max-w-[440px] bg-white rounded-t-[26px] sm:rounded-[26px] overflow-hidden flex flex-col"
