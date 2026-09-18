@@ -177,7 +177,7 @@ function HeroSection() {
           </motion.h1>
           <motion.h1 initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.14, ease: EASE }}
             className="text-[44px] sm:text-6xl lg:text-[76px] font-extrabold leading-[1.02] tracking-[-0.03em] mb-5">
-            <span className="text-white/30 font-light">Not just </span>
+            <span className="text-white/45 font-light">Not just </span>
             <span className="grad-text">Trained.</span>
           </motion.h1>
 
@@ -199,13 +199,13 @@ function HeroSection() {
 
           <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.22, ease: EASE }}
             className="text-[14px] md:text-[16px] text-white/50 max-w-md mx-auto lg:mx-0 mb-6 leading-relaxed">
-            Live, mentor-led IT career programs. Micro-batches of max 5 students. Real placement support until your offer letter.
+            Live, mentor-led IT career programs. Micro-batches of max 5. Placement support until your offer.
           </motion.p>
 
           {/* Duotone chips */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.34 }}
             className="flex flex-wrap justify-center lg:justify-start gap-2 mb-7">
-            {[{ I: Icon.Video, l: "Live classes" }, { I: Icon.Users, l: "1:1 mentor" }, { I: Icon.Briefcase, l: "Placement support" }].map(({ I, l }) => (
+            {[{ I: Icon.Video, l: "Live classes" }, { I: Icon.Users, l: "1:1 mentor" }, { I: Icon.Briefcase, l: "Placement" }].map(({ I, l }) => (
               <span key={l} className="inline-flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-full text-[12px] font-semibold text-white/65 bg-white/[0.05] border border-white/[0.09]">
                 <span className="w-6 h-6 rounded-lg bg-primary/20 text-[#8BA4FF] flex items-center justify-center"><I size={13} /></span>{l}
               </span>
@@ -516,7 +516,7 @@ function PlacementPath() {
             {pts.map((p, i) => {
               const on = i < lit;
               const goal = i === 9;
-              const right = i < 5;
+              const right = i < 4;
               const label = steps[i];
               return (
                 <g key={i}>
@@ -625,7 +625,7 @@ function RecentPlacements() {
                   drag={k === 0 ? "x" : false} dragConstraints={{ left: 0, right: 0 }} dragElastic={0.6} onDragEnd={onDragEnd}
                   initial={{ opacity: 0, scale: 0.86, y: 30 }}
                   animate={{ opacity: k === 0 ? 1 : 0.85 - k * 0.3, scale: 1 - k * 0.06, y: k * 12, rotate: k === 0 ? 0 : k === 1 ? 2 : -3, x: 0 }}
-                  exit={{ opacity: 0, x: -140, rotate: -10, transition: { duration: 0.3 } }}
+                  exit={{ opacity: 0, x: -48, scale: 0.96, transition: { duration: 0.18 } }}
                   transition={{ duration: 0.45, ease: EASE }}
                   className="absolute inset-x-0 top-0" style={{ zIndex: 10 - k, touchAction: "pan-y" }}>
                   {k === 0 ? (
