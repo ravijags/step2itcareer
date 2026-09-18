@@ -174,3 +174,8 @@ a {
   .tap:active { transform: none; }
   * { scroll-behavior: auto !important; }
 }
+
+/* Homepage hero height: on phones the sticky bar covers the bottom 64px, so the dark block
+   (hero + ticker) must end above it on the first screen. Desktop has no bar. */
+.hero-h { min-height: calc(100svh - 150px); }
+@media (min-width: 768px) { .hero-h { min-height: 100svh; } }

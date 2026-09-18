@@ -156,7 +156,7 @@ function HeroSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative flex items-center overflow-hidden" style={{ minHeight: "100svh", paddingTop: 56 }}>
+    <section ref={sectionRef} className="hero-h relative flex items-center overflow-hidden" style={{ paddingTop: 56 }}>
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
       <Grain />
       <Slashes side="left" tone="primary" opacity={0.09} height={760} />
@@ -408,7 +408,7 @@ function FeaturedCourses() {
           <a key={course.slug} href={`/courses/${course.slug}`}
             className="tap shrink-0 w-[82vw] max-w-[340px] bg-white rounded-[20px] overflow-hidden transition-all duration-300"
             style={{ boxShadow: active === i ? "0 0 0 1.5px rgba(59,91,255,0.55), 0 18px 44px rgba(59,91,255,0.22)" : "0 2px 12px rgba(14,21,38,0.06)", transform: active === i ? "scale(1)" : "scale(0.96)", opacity: active === i ? 1 : 0.75 }}>
-            <CourseArt slug={course.slug} category={course.category} title={course.title} />
+            <CourseArt slug={course.slug} category={course.category} title={course.title} priority={i === 0} />
             <div className="p-4 flex items-center justify-between card-lift">
               <div><div className="text-[18px] font-extrabold text-ink tracking-tight">{course.feeDisplay}</div><div className="text-[12px] text-muted">{course.duration} · live</div></div>
               <span className="btn-grad text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>
@@ -429,7 +429,7 @@ function FeaturedCourses() {
               whileHover={{ y: -8, boxShadow: "0 0 0 1.5px rgba(59,91,255,0.5), 0 28px 56px -12px rgba(59,91,255,0.28)" }}
               transition={{ duration: 0.28, ease: EASE }}
               className="group block bg-white rounded-[20px] overflow-hidden" style={{ boxShadow: "0 2px 12px rgba(14,21,38,0.06)" }}>
-              <div className="transition-transform duration-500 group-hover:scale-[1.03] origin-center"><CourseArt slug={course.slug} category={course.category} title={course.title} /></div>
+              <div className="transition-transform duration-500 group-hover:scale-[1.03] origin-center"><CourseArt slug={course.slug} category={course.category} title={course.title} priority={i === 0} /></div>
               <div className="p-5 flex items-center justify-between card-lift bg-white relative">
                 <div><div className="text-[20px] font-extrabold text-ink tracking-tight">{course.feeDisplay}</div><div className="text-[12px] text-muted">{course.duration} · live</div></div>
                 <span className="btn-grad text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>

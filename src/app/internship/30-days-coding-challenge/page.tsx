@@ -1,4 +1,5 @@
 import { Grain, Slashes } from "@/components/Decor";
+import { Icon } from "@/components/Icons";
 import SkillIcon from "@/components/inner/SkillIcon";
 import type { Metadata } from "next";
 
@@ -57,7 +58,7 @@ export default function ThirtyDaysPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <a href="https://wa.me/919936609430" className="inline-flex items-center justify-center gap-2 px-8 py-4 tap bg-[#16A34A] text-white font-bold rounded-full text-[15px] shadow-lg shadow-green-900/30 hover:bg-green-700 transition-colors">
-              Enroll via WhatsApp
+              <Icon.WhatsApp size={17} /> Enroll via WhatsApp
             </a>
             <a href="tel:+919936609430" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-white font-bold rounded-full border border-white/20 text-[15px] hover:bg-white/15 transition-colors">
               Call Us
@@ -68,7 +69,7 @@ export default function ThirtyDaysPage() {
 
       {/* Stats Bar */}
       <div style={{ background: "var(--grad-primary)" }}>
-        <div className="max-w-brand mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="max-w-brand mx-auto px-6 pt-12 md:pt-16 pb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map((s) => (
             <div key={s.label} className="text-center">
               <div className="text-2xl md:text-3xl font-extrabold text-white">{s.value}</div>
@@ -79,7 +80,7 @@ export default function ThirtyDaysPage() {
       </div>
 
       {/* Overview + Quick Facts */}
-      <section className="overlap-up pt-22 md:pt-32 pb-14 md:pb-20 bg-soft">
+      <section className="pt-14 md:pt-20 pb-14 md:pb-20 bg-soft">
         <div className="max-w-brand mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left: Program Details */}
@@ -126,10 +127,10 @@ export default function ThirtyDaysPage() {
                   ))}
                 </div>
                 <a href="https://wa.me/919936609430" className="flex items-center justify-center gap-2 w-full py-4 tap bg-[#16A34A] text-white font-bold rounded-xl text-sm hover:bg-green-700 transition-colors">
-                  Enroll via WhatsApp
+                  <Icon.WhatsApp size={17} /> Enroll via WhatsApp
                 </a>
-                <a href="tel:+919936609430" className="flex items-center justify-center w-full py-3.5 mt-2 bg-soft text-ink font-bold rounded-xl text-sm hover:bg-line transition-colors border border-line">
-                  +91 99366 09430
+                <a href="tel:+919936609430" className="tap flex items-center justify-center gap-2 w-full py-3.5 mt-2 bg-white text-ink font-bold rounded-xl text-sm border border-[#E6E3F7] card-lift">
+                  <Icon.Phone size={16} className="text-primary" /> Call +91 99366 09430
                 </a>
                 <p className="text-[11px] text-muted text-center mt-4">EMI options available · Free trial class first</p>
               </div>
@@ -220,7 +221,7 @@ export default function ThirtyDaysPage() {
           <p className="text-white/50 mb-8 max-w-lg mx-auto">30 days. 2,000+ problems. One mentor. Join Monday. Get interview-ready.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="https://wa.me/919936609430" className="w-full sm:w-auto px-8 py-4 tap bg-[#16A34A] text-white font-bold rounded-full text-[15px] hover:bg-green-700 transition-colors">
-              WhatsApp to Enroll
+              <Icon.WhatsApp size={17} /> WhatsApp to Enroll
             </a>
             <a href="tel:+919936609430" className="w-full sm:w-auto px-8 py-4 bg-white/10 text-white font-bold rounded-full border border-white/20 text-[15px] hover:bg-white/15 transition-colors">
               Call +91 99366 09430

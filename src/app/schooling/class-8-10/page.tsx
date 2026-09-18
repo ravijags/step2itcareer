@@ -46,8 +46,8 @@ export default function Class810Page() {
       </div>
 
       {/* Stats */}
-      <div style={{ background: "#7C3AED" }}>
-        <div className="max-w-brand mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div style={{ background: "linear-gradient(135deg, #6D28D9, #7B5BFF)" }}>
+        <div className="max-w-brand mx-auto px-6 pt-12 md:pt-16 pb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[{ value: "₹10,000", label: "Program Fee" }, { value: "1:1", label: "Mentorship" }, { value: "Max 5", label: "Students/Batch" }, { value: "Real", label: "Projects Built" }].map((s) => (
             <div key={s.label} className="text-center">
               <div className="text-2xl font-extrabold text-white">{s.value}</div>
@@ -58,7 +58,7 @@ export default function Class810Page() {
       </div>
 
       {/* Overview + Card */}
-      <section className="overlap-up pt-22 md:pt-32 pb-14 md:pb-20 bg-soft">
+      <section className="pt-14 md:pt-20 pb-14 md:pb-20 bg-soft">
         <div className="max-w-brand mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">

@@ -46,8 +46,8 @@ export default function Class1012Page() {
       </div>
 
       {/* Stats */}
-      <div style={{ background: "#FF7A3D" }}>
-        <div className="max-w-brand mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div style={{ background: "var(--grad-accent)" }}>
+        <div className="max-w-brand mx-auto px-6 pt-12 md:pt-16 pb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[{ value: "₹10,000", label: "Program Fee" }, { value: "GitHub", label: "Portfolio Built" }, { value: "AI Tools", label: "Industry Exposure" }, { value: "1:1", label: "Mentorship" }].map((s) => (
             <div key={s.label} className="text-center">
               <div className="text-xl md:text-2xl font-extrabold text-white">{s.value}</div>
@@ -58,7 +58,7 @@ export default function Class1012Page() {
       </div>
 
       {/* Overview + Card */}
-      <section className="overlap-up pt-22 md:pt-32 pb-14 md:pb-20 bg-soft">
+      <section className="pt-14 md:pt-20 pb-14 md:pb-20 bg-soft">
         <div className="max-w-brand mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
@@ -134,7 +134,7 @@ export default function Class1012Page() {
       </section>
 
       {/* CTA */}
-      <section className="py-14 text-center relative overflow-hidden" style={{ background: "linear-gradient(135deg, #FF7A3D 0%, #e05a1a 100%)" }}>
+      <section className="relative z-10 cut-top overlap-up pt-24 md:pt-32 pb-16 md:pb-20 text-center overflow-hidden" style={{ background: "linear-gradient(135deg, #FF7A3D 0%, #e05a1a 100%)" }}>
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
         <div className="relative max-w-brand mx-auto px-6">
           <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-4">Arrive at College Ready to Build.</h2>

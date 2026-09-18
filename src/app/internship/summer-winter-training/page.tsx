@@ -1,4 +1,5 @@
 import { Grain, Slashes } from "@/components/Decor";
+import { Icon } from "@/components/Icons";
 import SkillIcon from "@/components/inner/SkillIcon";
 import type { Metadata } from "next";
 
@@ -59,8 +60,8 @@ export default function SummerWinterPage() {
             Build industry-ready skills during your college break. Work on live projects, get 1:1 mentorship, and earn a certificate that actually counts — across 14+ in-demand tech tracks.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <a href="https://wa.me/919936609430" className="inline-flex items-center justify-center gap-2 px-8 py-4 btn-grad tap text-white font-bold rounded-full text-[15px] shadow-lg shadow-primary/30 hover:bg-primary-deep transition-colors">
-              Apply via WhatsApp
+            <a href="https://wa.me/919936609430" className="inline-flex items-center justify-center gap-2 px-8 py-4 tap bg-[#16A34A] text-white font-bold rounded-full text-[15px] shadow-lg shadow-primary/30 hover:bg-green-700 transition-colors">
+              <Icon.WhatsApp size={17} /> Apply via WhatsApp
             </a>
             <a href="tel:+919936609430" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-white font-bold rounded-full border border-white/20 text-[15px]">
               Call Us
@@ -71,7 +72,7 @@ export default function SummerWinterPage() {
 
       {/* Quick Stats */}
       <div style={{ background: "var(--grad-primary)" }}>
-        <div className="max-w-brand mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="max-w-brand mx-auto px-6 pt-12 md:pt-16 pb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { value: "4–8", label: "Weeks" },
             { value: "14+", label: "Tech Tracks" },
@@ -87,7 +88,7 @@ export default function SummerWinterPage() {
       </div>
 
       {/* Overview + Enrollment Card */}
-      <section className="overlap-up pt-22 md:pt-32 pb-14 md:pb-20 bg-soft">
+      <section className="pt-14 md:pt-20 pb-14 md:pb-20 bg-soft">
         <div className="max-w-brand mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
@@ -139,11 +140,11 @@ export default function SummerWinterPage() {
                     </div>
                   ))}
                 </div>
-                <a href="https://wa.me/919936609430" className="flex items-center justify-center gap-2 w-full py-4 btn-grad tap text-white font-bold rounded-xl text-sm hover:bg-primary-deep transition-colors">
-                  Apply via WhatsApp
+                <a href="https://wa.me/919936609430" className="flex items-center justify-center gap-2 w-full py-4 tap bg-[#16A34A] text-white font-bold rounded-xl text-sm hover:bg-green-700 transition-colors">
+                  <Icon.WhatsApp size={17} /> Apply via WhatsApp
                 </a>
-                <a href="tel:+919936609430" className="flex items-center justify-center w-full py-3.5 mt-2 bg-soft text-ink font-bold rounded-xl text-sm hover:bg-line transition-colors border border-line">
-                  +91 99366 09430
+                <a href="tel:+919936609430" className="tap flex items-center justify-center gap-2 w-full py-3.5 mt-2 bg-white text-ink font-bold rounded-xl text-sm border border-[#E6E3F7] card-lift">
+                  <Icon.Phone size={16} className="text-primary" /> Call +91 99366 09430
                 </a>
                 <p className="text-[11px] text-muted text-center mt-4">Free orientation class · No advance required</p>
               </div>
@@ -220,8 +221,8 @@ export default function SummerWinterPage() {
           <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-4">Make This Break Count</h2>
           <p className="text-white/50 mb-8 max-w-lg mx-auto">Build real skills. Ship a real project. Get placement-ready. Apply today.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="https://wa.me/919936609430" className="w-full sm:w-auto px-8 py-4 btn-grad tap text-white font-bold rounded-full text-[15px] hover:bg-primary-deep transition-colors">
-              Apply via WhatsApp
+            <a href="https://wa.me/919936609430" className="w-full sm:w-auto px-8 py-4 tap bg-[#16A34A] text-white font-bold rounded-full text-[15px] hover:bg-green-700 transition-colors">
+              <Icon.WhatsApp size={17} /> Apply via WhatsApp
             </a>
             <a href="tel:+919936609430" className="w-full sm:w-auto px-8 py-4 bg-white/10 text-white font-bold rounded-full border border-white/20 text-[15px]">
               Call +91 99366 09430
