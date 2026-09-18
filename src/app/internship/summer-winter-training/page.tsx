@@ -1,3 +1,5 @@
+import { Grain, Slashes } from "@/components/Decor";
+import SkillIcon from "@/components/inner/SkillIcon";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -33,17 +35,19 @@ export default function SummerWinterPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <div className="relative bg-[#060D1F] overflow-hidden">
+      <div className="relative z-10 cut-bottom bg-ink2 overflow-hidden">
+        <Grain />
+        <Slashes side="left" tone="primary" opacity={0.09} height={700} />
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle, #3B5BFF 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-15" style={{ background: "radial-gradient(circle, #3B5BFF, transparent 70%)", transform: "translate(30%, -30%)" }} />
-        <div className="max-w-brand mx-auto px-6 pt-28 pb-16 md:pt-36 md:pb-24 relative">
+        <div className="max-w-brand mx-auto px-6 pt-32 pb-24 md:pt-40 md:pb-32 relative">
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <a href="/internship" className="text-white/40 hover:text-white/70 text-sm transition-colors">Internship</a>
             <span className="text-white/20">›</span>
             <span className="text-white/60 text-sm">Summer & Winter Training</span>
           </div>
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/15 border border-primary/30 text-primary text-xs font-bold rounded-full uppercase tracking-widest mb-6">
-            🎓 4–8 Weeks · ₹6,000 · 14+ Tech Tracks
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/30 text-[#FF9A6C] text-[11px] font-extrabold rounded-full uppercase tracking-[0.16em] mb-6">
+            4–8 Weeks · ₹6,000 · 14+ Tech Tracks
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 max-w-3xl">
             Summer & Winter<br />
@@ -55,18 +59,18 @@ export default function SummerWinterPage() {
             Build industry-ready skills during your college break. Work on live projects, get 1:1 mentorship, and earn a certificate that actually counts — across 14+ in-demand tech tracks.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <a href="https://wa.me/919936609430" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white font-bold rounded-full text-[15px] shadow-lg shadow-primary/30 hover:bg-primary-deep transition-colors">
-              💬 Apply via WhatsApp
+            <a href="https://wa.me/919936609430" className="inline-flex items-center justify-center gap-2 px-8 py-4 btn-grad tap text-white font-bold rounded-full text-[15px] shadow-lg shadow-primary/30 hover:bg-primary-deep transition-colors">
+              Apply via WhatsApp
             </a>
             <a href="tel:+919936609430" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-white font-bold rounded-full border border-white/20 text-[15px]">
-              📞 Call Us
+              Call Us
             </a>
           </div>
         </div>
       </div>
 
       {/* Quick Stats */}
-      <div className="bg-primary">
+      <div style={{ background: "var(--grad-primary)" }}>
         <div className="max-w-brand mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { value: "4–8", label: "Weeks" },
@@ -83,7 +87,7 @@ export default function SummerWinterPage() {
       </div>
 
       {/* Overview + Enrollment Card */}
-      <section className="py-14 md:py-20 bg-soft">
+      <section className="overlap-up pt-22 md:pt-32 pb-14 md:pb-20 bg-soft">
         <div className="max-w-brand mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
@@ -107,7 +111,7 @@ export default function SummerWinterPage() {
                     { icon: "🔁", text: "Lifetime access to alumni community" },
                   ].map((item) => (
                     <div key={item.text} className="flex items-start gap-3 bg-white p-4 rounded-xl border border-line">
-                      <span className="text-lg shrink-0">{item.icon}</span>
+                      <SkillIcon emoji={item.icon} size={30} className="w-fit shrink-0" />
                       <span className="text-sm font-semibold text-ink">{item.text}</span>
                     </div>
                   ))}
@@ -117,7 +121,7 @@ export default function SummerWinterPage() {
 
             {/* Enrollment Card */}
             <div>
-              <div className="bg-white rounded-brand border border-line p-6 shadow-card sticky top-24">
+              <div className="bg-white rounded-[18px] border border-[#E6E3F7] card-lift tap p-6 shadow-card sticky top-24">
                 <div className="text-3xl font-extrabold text-ink mb-1">₹6,000</div>
                 <div className="text-sm text-muted mb-5">One-time · All inclusive</div>
                 <div className="space-y-3 mb-6">
@@ -135,11 +139,11 @@ export default function SummerWinterPage() {
                     </div>
                   ))}
                 </div>
-                <a href="https://wa.me/919936609430" className="flex items-center justify-center gap-2 w-full py-4 bg-primary text-white font-bold rounded-xl text-sm hover:bg-primary-deep transition-colors">
-                  💬 Apply via WhatsApp
+                <a href="https://wa.me/919936609430" className="flex items-center justify-center gap-2 w-full py-4 btn-grad tap text-white font-bold rounded-xl text-sm hover:bg-primary-deep transition-colors">
+                  Apply via WhatsApp
                 </a>
                 <a href="tel:+919936609430" className="flex items-center justify-center w-full py-3.5 mt-2 bg-soft text-ink font-bold rounded-xl text-sm hover:bg-line transition-colors border border-line">
-                  📞 +91 99366 09430
+                  +91 99366 09430
                 </a>
                 <p className="text-[11px] text-muted text-center mt-4">Free orientation class · No advance required</p>
               </div>
@@ -152,14 +156,14 @@ export default function SummerWinterPage() {
       <section className="py-14 md:py-20 bg-white">
         <div className="max-w-brand mx-auto px-6">
           <div className="text-center mb-10">
-            <span className="inline-block px-4 py-1.5 bg-primary-tint text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">Choose Your Track</span>
+            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-[11px] font-extrabold rounded-full uppercase tracking-[0.18em] mb-4">Choose Your Track</span>
             <h2 className="text-2xl md:text-3xl font-extrabold text-ink">14+ Internship Tracks</h2>
             <p className="text-muted text-sm mt-2">Pick the technology that matches your career goal</p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
             {tracks.map((track) => (
               <div key={track.name} className="bg-soft rounded-xl border border-line p-4 text-center hover:border-primary hover:shadow-card transition-all duration-200 cursor-default">
-                <div className="text-2xl mb-2">{track.icon}</div>
+                <SkillIcon emoji={track.icon} size={40} className="w-fit mx-auto mb-3" />
                 <div className="text-xs font-extrabold text-ink leading-snug">{track.name}</div>
                 <div className="text-[10px] text-primary font-semibold mt-1">{track.category}</div>
               </div>
@@ -172,13 +176,13 @@ export default function SummerWinterPage() {
       <section className="py-14 md:py-20 bg-soft">
         <div className="max-w-brand mx-auto px-6">
           <div className="text-center mb-10">
-            <span className="inline-block px-4 py-1.5 bg-primary-tint text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">Program Flow</span>
+            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-[11px] font-extrabold rounded-full uppercase tracking-[0.18em] mb-4">Program Flow</span>
             <h2 className="text-2xl md:text-3xl font-extrabold text-ink">8-Week Journey</h2>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
             {timeline.map((t, i) => (
               <div key={t.phase} className="bg-white p-5 rounded-brand border border-line relative hover:border-primary hover:shadow-card transition-all duration-200">
-                <div className="w-8 h-8 bg-primary text-white text-xs font-extrabold rounded-full flex items-center justify-center mb-4">{i + 1}</div>
+                <div className="w-8 h-8 btn-grad text-white text-xs font-extrabold rounded-full flex items-center justify-center mb-4">{i + 1}</div>
                 <div className="text-[10px] font-bold text-primary uppercase tracking-wider mb-1">{t.phase}</div>
                 <h3 className="font-extrabold text-ink text-sm mb-2">{t.title}</h3>
                 <p className="text-xs text-muted leading-relaxed">{t.desc}</p>
@@ -198,7 +202,7 @@ export default function SummerWinterPage() {
             {["B.Tech / M.Tech Students", "BCA / MCA Students", "Diploma Students", "Fresh Graduates", "Job Seekers", "Working Professionals"].map((who) => (
               <div key={who} className="bg-soft rounded-xl border border-line p-4 text-center">
                 <div className="text-2xl mb-2">
-                  {who.includes("B.Tech") ? "🎓" : who.includes("BCA") ? "📚" : who.includes("Diploma") ? "📜" : who.includes("Fresh") ? "🌱" : who.includes("Job") ? "🔍" : "💼"}
+                  {who.includes("B.Tech") ? "" : who.includes("BCA") ? "" : who.includes("Diploma") ? "" : who.includes("Fresh") ? "" : who.includes("Job") ? "" : ""}
                 </div>
                 <div className="text-xs font-bold text-ink leading-snug">{who}</div>
               </div>
@@ -208,17 +212,19 @@ export default function SummerWinterPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-14 md:py-16 bg-[#060D1F] text-center relative overflow-hidden">
+      <section className="relative z-10 cut-top overlap-up pt-24 md:pt-32 pb-16 md:pb-20 bg-ink2 text-center overflow-hidden">
+        <Grain />
+        <Slashes side="left" tone="primary" opacity={0.09} height={700} />
         <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
         <div className="relative max-w-brand mx-auto px-6">
           <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-4">Make This Break Count</h2>
           <p className="text-white/50 mb-8 max-w-lg mx-auto">Build real skills. Ship a real project. Get placement-ready. Apply today.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="https://wa.me/919936609430" className="w-full sm:w-auto px-8 py-4 bg-primary text-white font-bold rounded-full text-[15px] hover:bg-primary-deep transition-colors">
-              💬 Apply via WhatsApp
+            <a href="https://wa.me/919936609430" className="w-full sm:w-auto px-8 py-4 btn-grad tap text-white font-bold rounded-full text-[15px] hover:bg-primary-deep transition-colors">
+              Apply via WhatsApp
             </a>
             <a href="tel:+919936609430" className="w-full sm:w-auto px-8 py-4 bg-white/10 text-white font-bold rounded-full border border-white/20 text-[15px]">
-              📞 Call +91 99366 09430
+              Call +91 99366 09430
             </a>
           </div>
         </div>

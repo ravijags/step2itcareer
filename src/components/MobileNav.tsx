@@ -73,33 +73,14 @@ export default function MobileNav() {
         className="md:hidden p-2 rounded-lg text-white relative w-10 h-10 flex items-center justify-center"
         aria-label={open ? "Close menu" : "Open menu"}
       >
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-          {/* Top bar */}
-          <motion.line
-            x1="3" y1="6" x2="19" y2="6"
-            stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-            animate={open
-              ? { x1: 4, y1: 4, x2: 18, y2: 18 }
-              : { x1: 3, y1: 6, x2: 19, y2: 6 }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          />
-          {/* Middle bar */}
-          <motion.line
-            x1="3" y1="11" x2="19" y2="11"
-            stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-            animate={open ? { opacity: 0, x1: 11, x2: 11 } : { opacity: 1, x1: 3, x2: 19 }}
-            transition={{ duration: 0.2 }}
-          />
-          {/* Bottom bar */}
-          <motion.line
-            x1="3" y1="16" x2="19" y2="16"
-            stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-            animate={open
-              ? { x1: 4, y1: 18, x2: 18, y2: 4 }
-              : { x1: 3, y1: 16, x2: 19, y2: 16 }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          />
-        </svg>
+        <span aria-hidden className="relative block w-[22px] h-[16px]">
+          <span className="absolute left-0 right-0 h-[2px] rounded bg-current transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+            style={{ top: open ? 7 : 0, transform: open ? "rotate(45deg)" : "none" }} />
+          <span className="absolute left-0 right-0 h-[2px] rounded bg-current transition-all duration-200"
+            style={{ top: 7, opacity: open ? 0 : 1, transform: open ? "scaleX(0)" : "none" }} />
+          <span className="absolute left-0 right-0 h-[2px] rounded bg-current transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+            style={{ top: open ? 7 : 14, transform: open ? "rotate(-45deg)" : "none" }} />
+        </span>
       </button>
 
       {/* Overlay is portaled to <body>: the fixed header uses backdrop-filter, which would

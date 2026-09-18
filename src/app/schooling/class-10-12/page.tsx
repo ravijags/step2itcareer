@@ -1,3 +1,5 @@
+import { Grain, Slashes } from "@/components/Decor";
+import SkillIcon from "@/components/inner/SkillIcon";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,17 +11,19 @@ export default function Class1012Page() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <div className="relative overflow-hidden" style={{ background: "linear-gradient(135deg, #1a0800 0%, #0D1330 60%, #060D1F 100%)" }}>
+      <div className="relative z-10 cut-bottom overflow-hidden" style={{ background: "linear-gradient(135deg, #1a0800 0%, #0D1330 60%, #060D1F 100%)" }}>
+        <Grain />
+        <Slashes side="left" tone="primary" opacity={0.09} height={700} />
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle, #FF7A3D 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
         <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full opacity-15" style={{ background: "radial-gradient(circle, #FF7A3D, transparent 70%)", transform: "translate(-30%, 30%)" }} />
-        <div className="max-w-brand mx-auto px-6 pt-28 pb-16 md:pt-36 md:pb-24 relative text-center">
+        <div className="max-w-brand mx-auto px-6 pt-32 pb-24 md:pt-40 md:pb-32 relative text-center">
           <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
             <a href="/schooling" className="text-white/40 hover:text-white/70 text-sm transition-colors">Schooling Programs</a>
             <span className="text-white/20">›</span>
             <span className="text-white/60 text-sm">Class 10–12</span>
           </div>
           <div className="inline-flex items-center gap-2 px-5 py-2 text-xs font-bold rounded-full uppercase tracking-widest mb-6" style={{ background: "rgba(255,122,61,0.15)", border: "1px solid rgba(255,122,61,0.3)", color: "#FF9966" }}>
-            🚀 Class 10, 11 & 12 · ₹10,000 · Pre-College Tech Prep
+            Class 10, 11 & 12 · ₹10,000 · Pre-College Tech Prep
           </div>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6">
             From Student to<br />
@@ -32,10 +36,10 @@ export default function Class1012Page() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="https://wa.me/919936609430" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-bold rounded-full text-[15px] shadow-lg" style={{ background: "#FF7A3D" }}>
-              💬 Enroll via WhatsApp
+              Enroll via WhatsApp
             </a>
             <a href="tel:+919936609430" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-white font-bold rounded-full border border-white/20 text-[15px]">
-              📞 Talk to a Mentor
+              Talk to a Mentor
             </a>
           </div>
         </div>
@@ -54,7 +58,7 @@ export default function Class1012Page() {
       </div>
 
       {/* Overview + Card */}
-      <section className="py-14 md:py-20 bg-soft">
+      <section className="overlap-up pt-22 md:pt-32 pb-14 md:pb-20 bg-soft">
         <div className="max-w-brand mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
@@ -71,7 +75,7 @@ export default function Class1012Page() {
                   { icon: "🌐", title: "Industry Technologies", desc: "Python, Java, SQL, HTML/CSS/JS, Git — the actual tools employers want." },
                 ].map((item) => (
                   <div key={item.title} className="bg-white p-5 rounded-brand border border-line">
-                    <div className="text-2xl mb-3">{item.icon}</div>
+                    <SkillIcon emoji={item.icon} size={40} className="w-fit mb-3" />
                     <h3 className="font-extrabold text-ink text-sm mb-1">{item.title}</h3>
                     <p className="text-xs text-muted leading-relaxed">{item.desc}</p>
                   </div>
@@ -80,7 +84,7 @@ export default function Class1012Page() {
             </div>
 
             <div>
-              <div className="bg-white rounded-brand border border-line p-6 shadow-card sticky top-24">
+              <div className="bg-white rounded-[18px] border border-[#E6E3F7] card-lift tap p-6 shadow-card sticky top-24">
                 <div className="text-3xl font-extrabold text-ink mb-1">₹10,000</div>
                 <div className="text-sm text-muted mb-5">One-time · All inclusive</div>
                 <div className="space-y-3 mb-6">
@@ -92,10 +96,10 @@ export default function Class1012Page() {
                   ))}
                 </div>
                 <a href="https://wa.me/919936609430" className="flex items-center justify-center gap-2 w-full py-4 font-bold rounded-xl text-sm text-white hover:opacity-90 transition-opacity" style={{ background: "#FF7A3D" }}>
-                  💬 Enroll via WhatsApp
+                  Enroll via WhatsApp
                 </a>
                 <a href="tel:+919936609430" className="flex items-center justify-center w-full py-3.5 mt-2 bg-soft text-ink font-bold rounded-xl text-sm hover:bg-line transition-colors border border-line">
-                  📞 +91 99366 09430
+                  +91 99366 09430
                 </a>
               </div>
             </div>
@@ -137,10 +141,10 @@ export default function Class1012Page() {
           <p className="text-white/70 mb-8">Not just study theory — but ship real projects from day one.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="https://wa.me/919936609430" className="w-full sm:w-auto px-8 py-4 bg-white font-bold rounded-full text-[15px] hover:bg-soft transition-colors" style={{ color: "#FF7A3D" }}>
-              💬 WhatsApp to Enroll
+              WhatsApp to Enroll
             </a>
             <a href="tel:+919936609430" className="w-full sm:w-auto px-8 py-4 bg-white/10 text-white font-bold rounded-full border border-white/30 text-[15px]">
-              📞 Call Us
+              Call Us
             </a>
           </div>
         </div>

@@ -1,3 +1,5 @@
+import { Grain, Slashes } from "@/components/Decor";
+import SkillIcon from "@/components/inner/SkillIcon";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,11 +11,13 @@ export default function InternshipPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <div className="relative bg-[#060D1F] overflow-hidden">
+      <div className="relative z-10 cut-bottom bg-ink2 overflow-hidden">
+        <Grain />
+        <Slashes side="left" tone="primary" opacity={0.09} height={700} />
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle, #3B5BFF 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
-        <div className="max-w-brand mx-auto px-6 pt-28 pb-16 md:pt-36 md:pb-24 text-center relative">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/15 border border-primary/30 text-primary text-xs font-bold rounded-full uppercase tracking-widest mb-6">
-            🎓 Internship Programs
+        <div className="max-w-brand mx-auto px-6 pt-32 pb-24 md:pt-40 md:pb-32 text-center relative">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/30 text-[#FF9A6C] text-[11px] font-extrabold rounded-full uppercase tracking-[0.16em] mb-6">
+            Internship Programs
           </div>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6">
             Build Real Skills.<br />
@@ -28,7 +32,7 @@ export default function InternshipPage() {
       </div>
 
       {/* Program Cards */}
-      <section className="py-16 md:py-20 bg-soft">
+      <section className="overlap-up pt-24 md:pt-32 pb-16 md:pb-20 bg-soft">
         <div className="max-w-brand mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
@@ -44,7 +48,7 @@ export default function InternshipPage() {
                     </span>
                     <h2 className="text-xl md:text-2xl font-extrabold text-ink leading-snug">30-Day Coding Challenge</h2>
                   </div>
-                  <div className="text-3xl shrink-0">⚡</div>
+                  <div className="text-3xl shrink-0"></div>
                 </div>
                 <p className="text-muted text-sm leading-relaxed mb-6">
                   Master Java or Python with 2,000+ coding problems. Daily tasks, live doubt sessions, coding round prep — get interview-ready in 30 days.
@@ -78,7 +82,7 @@ export default function InternshipPage() {
                     </span>
                     <h2 className="text-xl md:text-2xl font-extrabold text-ink leading-snug">Summer & Winter Training</h2>
                   </div>
-                  <div className="text-3xl shrink-0">🎓</div>
+                  <div className="text-3xl shrink-0"></div>
                 </div>
                 <p className="text-muted text-sm leading-relaxed mb-6">
                   Build industry-ready skills during your college break. Live projects, 1:1 mentorship, and a completion certificate across 14+ tech tracks.
@@ -93,7 +97,7 @@ export default function InternshipPage() {
                 </div>
                 <div className="mt-auto flex items-center justify-between pt-4 border-t border-line">
                   <div className="text-2xl font-extrabold text-ink">₹6,000</div>
-                  <span className="inline-flex items-center gap-1.5 px-5 py-2.5 text-white text-sm font-bold rounded-full group-hover:opacity-90 transition-opacity" style={{ background: "#3B5BFF" }}>
+                  <span className="inline-flex items-center gap-1.5 px-5 py-2.5 text-white text-sm font-bold rounded-full group-hover:opacity-90 transition-opacity" style={{ background: "var(--grad-primary)" }}>
                     View Program →
                   </span>
                 </div>
@@ -117,8 +121,8 @@ export default function InternshipPage() {
               { icon: "👨‍🏫", title: "Dedicated Mentor", desc: "Same mentor throughout your program" },
               { icon: "🎖️", title: "Certificate + Portfolio", desc: "Proof of skills that employers respect" },
             ].map((item) => (
-              <div key={item.title} className="text-center p-5 bg-soft rounded-brand border border-line">
-                <div className="text-3xl mb-3">{item.icon}</div>
+              <div key={item.title} className="text-center p-5 bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap">
+                <SkillIcon emoji={item.icon} size={40} className="w-fit mx-auto mb-3" />
                 <h3 className="font-extrabold text-ink text-sm mb-1">{item.title}</h3>
                 <p className="text-xs text-muted">{item.desc}</p>
               </div>
@@ -128,12 +132,14 @@ export default function InternshipPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-12 px-6 bg-primary text-center">
+      <section className="relative z-10 cut-top overlap-up pt-24 md:pt-32 pb-16 md:pb-20 px-6 text-center overflow-hidden" style={{ background: "var(--grad-primary)" }}>
+        <Grain />
+        <Slashes side="right" tone="white" opacity={0.09} height={560} />
         <h2 className="text-2xl font-extrabold text-white mb-4">Not sure which program fits you?</h2>
         <p className="text-white/70 mb-6">Talk to our mentor for free — no pressure, just clarity.</p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="https://wa.me/919936609430" className="w-full sm:w-auto px-8 py-4 bg-white text-primary font-bold rounded-full hover:bg-soft transition-colors">💬 WhatsApp Us</a>
-          <a href="tel:+919936609430" className="w-full sm:w-auto px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full hover:bg-green-700 transition-colors">📞 Call Us</a>
+          <a href="https://wa.me/919936609430" className="w-full sm:w-auto px-8 py-4 tap bg-white text-primary font-bold rounded-full hover:bg-soft transition-colors">WhatsApp Us</a>
+          <a href="tel:+919936609430" className="w-full sm:w-auto px-8 py-4 tap bg-[#16A34A] text-white font-bold rounded-full hover:bg-green-700 transition-colors">Call Us</a>
         </div>
       </section>
     </div>

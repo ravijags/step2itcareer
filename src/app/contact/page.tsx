@@ -1,3 +1,5 @@
+import { Grain, Slashes } from "@/components/Decor";
+import SkillIcon from "@/components/inner/SkillIcon";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,8 +11,10 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <div className="bg-[#0D1330] pt-28 pb-16 px-6 text-center">
-        <span className="inline-block px-4 py-1.5 bg-primary/20 text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">Get In Touch</span>
+      <div className="relative z-10 cut-bottom bg-ink2 overflow-hidden pt-32 pb-24 md:pt-40 md:pb-32 px-6 text-center">
+        <Grain />
+        <Slashes side="left" tone="primary" opacity={0.09} height={700} />
+        <span className="inline-block px-4 py-1.5 bg-accent/10 border border-accent/30 text-[#FF9A6C] text-[11px] font-extrabold rounded-full uppercase tracking-[0.16em] mb-4">Get In Touch</span>
         <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4">Contact Us</h1>
         <p className="text-white/60 text-base max-w-xl mx-auto">Have questions about our programs? We are here to help. Reach out through any of the channels below.</p>
       </div>
@@ -23,17 +27,17 @@ export default function ContactPage() {
             <h2 className="text-2xl font-extrabold text-ink mb-8">Reach Out Directly</h2>
 
             <div className="space-y-6">
-              <div className="flex items-start gap-4 p-5 bg-soft rounded-brand border border-line">
-                <div className="w-11 h-11 bg-primary-tint rounded-full flex items-center justify-center text-xl shrink-0">📞</div>
+              <div className="flex items-start gap-4 p-5 bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap">
+                <SkillIcon emoji="📞" size={44} className="w-fit shrink-0" />
                 <div>
                   <div className="font-extrabold text-ink mb-1">Phone & WhatsApp</div>
                   <a href="tel:+919936609430" className="text-primary font-bold text-lg block hover:underline">+91 99366 09430</a>
-                  <a href="https://wa.me/message/332FS7CGCHY5N1" className="text-[#16A34A] text-sm font-semibold mt-1 block">💬 WhatsApp Business →</a>
+                  <a href="https://wa.me/message/332FS7CGCHY5N1" className="text-[#16A34A] text-sm font-semibold mt-1 block">WhatsApp Business →</a>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-5 bg-soft rounded-brand border border-line">
-                <div className="w-11 h-11 bg-primary-tint rounded-full flex items-center justify-center text-xl shrink-0">✉️</div>
+              <div className="flex items-start gap-4 p-5 bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap">
+                <SkillIcon emoji="📧" size={44} className="w-fit shrink-0" />
                 <div>
                   <div className="font-extrabold text-ink mb-2">Email Addresses</div>
                   {[
@@ -51,8 +55,8 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-5 bg-soft rounded-brand border border-line">
-                <div className="w-11 h-11 bg-primary-tint rounded-full flex items-center justify-center text-xl shrink-0">📍</div>
+              <div className="flex items-start gap-4 p-5 bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap">
+                <SkillIcon emoji="🗺️" size={44} className="w-fit shrink-0" />
                 <div>
                   <div className="font-extrabold text-ink mb-1">Office Address</div>
                   <p className="text-sm text-muted leading-relaxed">
@@ -64,8 +68,8 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-5 bg-soft rounded-brand border border-line">
-                <div className="w-11 h-11 bg-primary-tint rounded-full flex items-center justify-center text-xl shrink-0">🌐</div>
+              <div className="flex items-start gap-4 p-5 bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap">
+                <SkillIcon emoji="🌐" size={44} className="w-fit shrink-0" />
                 <div>
                   <div className="font-extrabold text-ink mb-2">Follow Us</div>
                   <div className="flex flex-wrap gap-3">
@@ -92,35 +96,35 @@ export default function ContactPage() {
             <h2 className="text-2xl font-extrabold text-ink mb-8">Quick Actions</h2>
             <div className="space-y-4">
               <a href="https://wa.me/919936609430" className="flex items-center gap-4 p-6 bg-[#16A34A] text-white rounded-brand hover:opacity-90 transition-opacity">
-                <span className="text-3xl">💬</span>
+                <SkillIcon emoji="💬" size={44} dark className="w-fit shrink-0" />
                 <div>
                   <div className="font-extrabold text-lg">WhatsApp Us Now</div>
                   <div className="text-white/80 text-sm">Fastest way to reach us — instant reply</div>
                 </div>
               </a>
               <a href="tel:+919936609430" className="flex items-center gap-4 p-6 bg-primary text-white rounded-brand hover:opacity-90 transition-opacity">
-                <span className="text-3xl">📞</span>
+                <SkillIcon emoji="📞" size={44} className="w-fit shrink-0" />
                 <div>
                   <div className="font-extrabold text-lg">Call Us Directly</div>
                   <div className="text-white/80 text-sm">+91 99366 09430 — Mon to Sat, 9am–7pm</div>
                 </div>
               </a>
               <a href="mailto:admissions@step2itcareer.com" className="flex items-center gap-4 p-6 bg-soft border border-line rounded-brand hover:border-primary transition-colors">
-                <span className="text-3xl">🎓</span>
+                <SkillIcon emoji="🎓" size={44} className="w-fit shrink-0" />
                 <div>
                   <div className="font-extrabold text-ink text-lg">Admissions Enquiry</div>
                   <div className="text-muted text-sm">admissions@step2itcareer.com</div>
                 </div>
               </a>
               <a href="mailto:corporate@step2itcareer.com" className="flex items-center gap-4 p-6 bg-soft border border-line rounded-brand hover:border-primary transition-colors">
-                <span className="text-3xl">🤝</span>
+                <SkillIcon emoji="🤝" size={44} className="w-fit shrink-0" />
                 <div>
                   <div className="font-extrabold text-ink text-lg">Corporate & Partnerships</div>
                   <div className="text-muted text-sm">corporate@step2itcareer.com</div>
                 </div>
               </a>
               <a href="/courses" className="flex items-center gap-4 p-6 bg-soft border border-line rounded-brand hover:border-primary transition-colors">
-                <span className="text-3xl">📚</span>
+                <SkillIcon emoji="📚" size={44} className="w-fit shrink-0" />
                 <div>
                   <div className="font-extrabold text-ink text-lg">Browse Our Programs</div>
                   <div className="text-muted text-sm">12 career-launching tech programs</div>
@@ -132,8 +136,8 @@ export default function ContactPage() {
               <h3 className="font-extrabold text-ink mb-2">Founder Direct Contact</h3>
               <p className="text-sm text-muted mb-3">Ashvani Srivastava — Founder & CEO</p>
               <div className="flex gap-3">
-                <a href="tel:+919936609430" className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-full">📞 Call</a>
-                <a href="https://wa.me/919936609430" className="px-4 py-2 bg-[#16A34A] text-white text-xs font-bold rounded-full">💬 WhatsApp</a>
+                <a href="tel:+919936609430" className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-full">Call</a>
+                <a href="https://wa.me/919936609430" className="px-4 py-2 bg-[#16A34A] text-white text-xs font-bold rounded-full">WhatsApp</a>
               </div>
             </div>
           </div>

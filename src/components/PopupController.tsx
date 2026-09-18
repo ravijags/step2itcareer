@@ -14,10 +14,11 @@ export default function PopupController() {
     return () => window.removeEventListener("openLeadPopup", handler);
   }, []);
 
-  // Auto-show on inner pages after 5s on every load
+  // Auto-show once per session, on any page, after 9s. Dismissing counts as shown.
   useEffect(() => {
-    if (window.location.pathname === "/") return;
-    const t = setTimeout(() => setOpen(true), 5000);
+    const KEY = "s2it-popup-shown";
+    if (sessionStorage.getItem(KEY)) return;
+    const t = setTimeout(() => { sessionStorage.setItem(KEY, "1"); setOpen(true); }, 9000);
     return () => clearTimeout(t);
   }, []);
 

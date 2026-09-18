@@ -1,3 +1,5 @@
+import { Grain, Slashes } from "@/components/Decor";
+import SkillIcon from "@/components/inner/SkillIcon";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -30,17 +32,19 @@ export default function ThirtyDaysPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <div className="relative bg-[#060D1F] overflow-hidden">
+      <div className="relative z-10 cut-bottom bg-ink2 overflow-hidden">
+        <Grain />
+        <Slashes side="left" tone="primary" opacity={0.09} height={700} />
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle, #3B5BFF 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
         <div className="absolute top-0 left-0 w-96 h-96 rounded-full opacity-20" style={{ background: "radial-gradient(circle, #FF7A3D, transparent 70%)", transform: "translate(-30%, -30%)" }} />
-        <div className="max-w-brand mx-auto px-6 pt-28 pb-16 md:pt-36 md:pb-24 relative">
+        <div className="max-w-brand mx-auto px-6 pt-32 pb-24 md:pt-40 md:pb-32 relative">
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <a href="/internship" className="text-white/40 hover:text-white/70 text-sm transition-colors">Internship</a>
             <span className="text-white/20">›</span>
             <span className="text-white/60 text-sm">30-Day Coding Challenge</span>
           </div>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/15 border border-accent/30 text-accent text-xs font-bold rounded-full uppercase tracking-widest mb-6">
-            ⚡ 30 Days · ₹10,000 · Starts Any Monday
+            30 Days · ₹10,000 · Starts Any Monday
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 max-w-3xl">
             30-Day Coding<br />
@@ -52,18 +56,18 @@ export default function ThirtyDaysPage() {
             Master Java or Python through 2,000+ structured problems, live mentorship, and daily coding sessions — built to make you interview-ready in 30 days flat.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <a href="https://wa.me/919936609430" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full text-[15px] shadow-lg shadow-green-900/30 hover:bg-green-700 transition-colors">
-              💬 Enroll via WhatsApp
+            <a href="https://wa.me/919936609430" className="inline-flex items-center justify-center gap-2 px-8 py-4 tap bg-[#16A34A] text-white font-bold rounded-full text-[15px] shadow-lg shadow-green-900/30 hover:bg-green-700 transition-colors">
+              Enroll via WhatsApp
             </a>
             <a href="tel:+919936609430" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-white font-bold rounded-full border border-white/20 text-[15px] hover:bg-white/15 transition-colors">
-              📞 Call Us
+              Call Us
             </a>
           </div>
         </div>
       </div>
 
       {/* Stats Bar */}
-      <div className="bg-primary">
+      <div style={{ background: "var(--grad-primary)" }}>
         <div className="max-w-brand mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map((s) => (
             <div key={s.label} className="text-center">
@@ -75,7 +79,7 @@ export default function ThirtyDaysPage() {
       </div>
 
       {/* Overview + Quick Facts */}
-      <section className="py-14 md:py-20 bg-soft">
+      <section className="overlap-up pt-22 md:pt-32 pb-14 md:pb-20 bg-soft">
         <div className="max-w-brand mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left: Program Details */}
@@ -93,7 +97,7 @@ export default function ThirtyDaysPage() {
                   { icon: "🏆", title: "Completion Certificate", desc: "Industry-recognized certificate + GitHub portfolio of solved problems." },
                 ].map((item) => (
                   <div key={item.title} className="bg-white p-5 rounded-brand border border-line">
-                    <div className="text-2xl mb-3">{item.icon}</div>
+                    <SkillIcon emoji={item.icon} size={40} className="w-fit mb-3" />
                     <h3 className="font-extrabold text-ink text-sm mb-1">{item.title}</h3>
                     <p className="text-xs text-muted leading-relaxed">{item.desc}</p>
                   </div>
@@ -103,7 +107,7 @@ export default function ThirtyDaysPage() {
 
             {/* Right: Enrollment Card */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-brand border border-line p-6 shadow-card sticky top-24">
+              <div className="bg-white rounded-[18px] border border-[#E6E3F7] card-lift tap p-6 shadow-card sticky top-24">
                 <div className="text-3xl font-extrabold text-ink mb-1">₹10,000</div>
                 <div className="text-sm text-muted mb-5">One-time · All inclusive</div>
                 <div className="space-y-3 mb-6">
@@ -121,11 +125,11 @@ export default function ThirtyDaysPage() {
                     </div>
                   ))}
                 </div>
-                <a href="https://wa.me/919936609430" className="flex items-center justify-center gap-2 w-full py-4 bg-[#16A34A] text-white font-bold rounded-xl text-sm hover:bg-green-700 transition-colors">
-                  💬 Enroll via WhatsApp
+                <a href="https://wa.me/919936609430" className="flex items-center justify-center gap-2 w-full py-4 tap bg-[#16A34A] text-white font-bold rounded-xl text-sm hover:bg-green-700 transition-colors">
+                  Enroll via WhatsApp
                 </a>
                 <a href="tel:+919936609430" className="flex items-center justify-center w-full py-3.5 mt-2 bg-soft text-ink font-bold rounded-xl text-sm hover:bg-line transition-colors border border-line">
-                  📞 +91 99366 09430
+                  +91 99366 09430
                 </a>
                 <p className="text-[11px] text-muted text-center mt-4">EMI options available · Free trial class first</p>
               </div>
@@ -138,14 +142,14 @@ export default function ThirtyDaysPage() {
       <section className="py-14 md:py-20 bg-white">
         <div className="max-w-brand mx-auto px-6">
           <div className="text-center mb-12">
-            <span className="inline-block px-4 py-1.5 bg-primary-tint text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">Curriculum</span>
+            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-[11px] font-extrabold rounded-full uppercase tracking-[0.18em] mb-4">Curriculum</span>
             <h2 className="text-2xl md:text-3xl font-extrabold text-ink">4-Week Breakdown</h2>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
             {curriculum.map((week, i) => (
-              <div key={week.week} className="bg-soft rounded-brand border border-line p-5 hover:border-primary hover:shadow-card transition-all duration-200">
+              <div key={week.week} className="bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap p-5 hover:border-primary hover:shadow-card transition-all duration-200">
                 <div className="inline-flex items-center gap-2 mb-4">
-                  <div className="w-8 h-8 bg-primary text-white text-xs font-extrabold rounded-full flex items-center justify-center">{i + 1}</div>
+                  <div className="w-8 h-8 btn-grad text-white text-xs font-extrabold rounded-full flex items-center justify-center">{i + 1}</div>
                   <div>
                     <div className="text-[10px] font-bold text-primary uppercase tracking-wider">{week.week}</div>
                     <div className="text-sm font-extrabold text-ink">{week.title}</div>
@@ -154,7 +158,7 @@ export default function ThirtyDaysPage() {
                 <ul className="space-y-1.5">
                   {week.topics.map((t) => (
                     <li key={t} className="flex items-start gap-2 text-xs text-muted">
-                      <span className="text-[#16A34A] mt-0.5 shrink-0">✓</span>{t}
+                      <span className="text-[#16A34A] mt-0.5 shrink-0"></span>{t}
                     </li>
                   ))}
                 </ul>
@@ -180,7 +184,7 @@ export default function ThirtyDaysPage() {
               { icon: "🚀", title: "Ambitious Beginners", desc: "Ready to commit 30 days to build a real, tangible coding skill." },
             ].map((item) => (
               <div key={item.title} className="bg-white p-5 rounded-brand border border-line hover:border-accent hover:shadow-card transition-all duration-200">
-                <div className="text-2xl mb-3">{item.icon}</div>
+                <SkillIcon emoji={item.icon} size={40} className="w-fit mb-3" />
                 <h3 className="font-extrabold text-ink text-sm mb-1">{item.title}</h3>
                 <p className="text-xs text-muted leading-relaxed">{item.desc}</p>
               </div>
@@ -197,7 +201,7 @@ export default function ThirtyDaysPage() {
           </div>
           <div className="space-y-4">
             {faqs.map((faq) => (
-              <div key={faq.q} className="bg-soft rounded-brand border border-line p-5">
+              <div key={faq.q} className="bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap p-5">
                 <h3 className="font-extrabold text-ink text-sm mb-2">{faq.q}</h3>
                 <p className="text-sm text-muted leading-relaxed">{faq.a}</p>
               </div>
@@ -207,17 +211,19 @@ export default function ThirtyDaysPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-14 md:py-16 bg-[#060D1F] text-center relative overflow-hidden">
+      <section className="relative z-10 cut-top overlap-up pt-24 md:pt-32 pb-16 md:pb-20 bg-ink2 text-center overflow-hidden">
+        <Grain />
+        <Slashes side="left" tone="primary" opacity={0.09} height={700} />
         <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
         <div className="relative max-w-brand mx-auto px-6">
           <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-4">Ready for the Challenge?</h2>
           <p className="text-white/50 mb-8 max-w-lg mx-auto">30 days. 2,000+ problems. One mentor. Join Monday. Get interview-ready.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="https://wa.me/919936609430" className="w-full sm:w-auto px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full text-[15px] hover:bg-green-700 transition-colors">
-              💬 WhatsApp to Enroll
+            <a href="https://wa.me/919936609430" className="w-full sm:w-auto px-8 py-4 tap bg-[#16A34A] text-white font-bold rounded-full text-[15px] hover:bg-green-700 transition-colors">
+              WhatsApp to Enroll
             </a>
             <a href="tel:+919936609430" className="w-full sm:w-auto px-8 py-4 bg-white/10 text-white font-bold rounded-full border border-white/20 text-[15px] hover:bg-white/15 transition-colors">
-              📞 Call +91 99366 09430
+              Call +91 99366 09430
             </a>
           </div>
         </div>

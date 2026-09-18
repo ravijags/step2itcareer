@@ -6,6 +6,7 @@ import { courses } from "@/lib/courses";
 import { Icon, IconTile } from "@/components/Icons";
 import { Grain, Slashes, CornerSlash } from "@/components/Decor";
 import Magnetic from "@/components/Magnetic";
+import CourseArt from "@/components/CourseArt";
 
 function openPopup() {
   window.dispatchEvent(new CustomEvent("openLeadPopup"));
@@ -22,11 +23,6 @@ const PLACEMENTS = [
 ];
 
 export default function HomePage() {
-  useEffect(() => {
-    const t = setTimeout(() => openPopup(), 9000);
-    return () => clearTimeout(t);
-  }, []);
-
   return (
     <>
       <div className="relative z-10 cut-bottom bg-ink2">
@@ -378,31 +374,6 @@ function StatsRow() {
 }
 
 /* ───────────────────────── COURSES ───────────────────────── */
-const COURSE_ART: Record<string, { hue: string; glowAt: string }> = {
-  "generative-ai-multi-agent": { hue: "rgba(123,91,255,0.55)", glowAt: "70% 30%" },
-  "data-science-ml-ai": { hue: "rgba(59,91,255,0.5)", glowAt: "30% 60%" },
-  "cpep-customized-professional-excellence": { hue: "rgba(255,122,61,0.42)", glowAt: "60% 70%" },
-};
-
-function CourseArt({ slug, title }: { slug: string; title: string }) {
-  const a = COURSE_ART[slug] ?? { hue: "rgba(59,91,255,0.5)", glowAt: "50% 50%" };
-  return (
-    <div className="relative h-[150px] md:h-[170px] overflow-hidden bg-[#0A1428]">
-      <Grain />
-      <div className="absolute inset-0" style={{ background: `radial-gradient(circle at ${a.glowAt}, ${a.hue}, transparent 60%)` }} />
-      <Slashes side="right" tone="white" opacity={0.1} height={280} dot={false} />
-      <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px)", backgroundSize: "22px 22px", opacity: 0.35 }} />
-      <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-        <span className="text-[10px] font-extrabold uppercase tracking-wide px-2.5 py-1 rounded-full text-white" style={{ background: "var(--grad-primary)" }}>Max 5</span>
-        <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full text-[#4ADE80] border border-[#4ADE80]/35 bg-[#4ADE80]/15"><span className="w-1.5 h-1.5 rounded-full bg-[#4ADE80]" />Live</span>
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 p-4 pt-10" style={{ background: "linear-gradient(to top, rgba(10,20,40,0.95), transparent)" }}>
-        <h3 className="text-white font-extrabold text-[15px] md:text-[16px] leading-snug">{title}</h3>
-      </div>
-    </div>
-  );
-}
-
 function FeaturedCourses() {
   const featured = courses.filter(c => ["generative-ai-multi-agent", "data-science-ml-ai", "cpep-customized-professional-excellence"].includes(c.slug));
   const [active, setActive] = useState(0);
@@ -437,7 +408,7 @@ function FeaturedCourses() {
           <a key={course.slug} href={`/courses/${course.slug}`}
             className="tap shrink-0 w-[82vw] max-w-[340px] bg-white rounded-[20px] overflow-hidden transition-all duration-300"
             style={{ boxShadow: active === i ? "0 0 0 1.5px rgba(59,91,255,0.55), 0 18px 44px rgba(59,91,255,0.22)" : "0 2px 12px rgba(14,21,38,0.06)", transform: active === i ? "scale(1)" : "scale(0.96)", opacity: active === i ? 1 : 0.75 }}>
-            <CourseArt slug={course.slug} title={course.title} />
+            <CourseArt slug={course.slug} category={course.category} title={course.title} />
             <div className="p-4 flex items-center justify-between card-lift">
               <div><div className="text-[18px] font-extrabold text-ink tracking-tight">{course.feeDisplay}</div><div className="text-[12px] text-muted">{course.duration} · live</div></div>
               <span className="btn-grad text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>
@@ -458,7 +429,7 @@ function FeaturedCourses() {
               whileHover={{ y: -8, boxShadow: "0 0 0 1.5px rgba(59,91,255,0.5), 0 28px 56px -12px rgba(59,91,255,0.28)" }}
               transition={{ duration: 0.28, ease: EASE }}
               className="group block bg-white rounded-[20px] overflow-hidden" style={{ boxShadow: "0 2px 12px rgba(14,21,38,0.06)" }}>
-              <div className="transition-transform duration-500 group-hover:scale-[1.03] origin-center"><CourseArt slug={course.slug} title={course.title} /></div>
+              <div className="transition-transform duration-500 group-hover:scale-[1.03] origin-center"><CourseArt slug={course.slug} category={course.category} title={course.title} /></div>
               <div className="p-5 flex items-center justify-between card-lift bg-white relative">
                 <div><div className="text-[20px] font-extrabold text-ink tracking-tight">{course.feeDisplay}</div><div className="text-[12px] text-muted">{course.duration} · live</div></div>
                 <span className="btn-grad text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>

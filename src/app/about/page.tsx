@@ -1,3 +1,5 @@
+import { Grain, Slashes } from "@/components/Decor";
+import SkillIcon from "@/components/inner/SkillIcon";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -66,8 +68,10 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <div className="bg-[#0D1330] py-20 px-6 text-center">
-        <span className="inline-block px-4 py-1.5 bg-primary/20 text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">About Us</span>
+      <div className="relative z-10 cut-bottom bg-ink2 overflow-hidden pb-24 md:pb-32 py-20 px-6 text-center">
+        <Grain />
+        <Slashes side="left" tone="primary" opacity={0.09} height={700} />
+        <span className="inline-block px-4 py-1.5 bg-accent/10 border border-accent/30 text-[#FF9A6C] text-[11px] font-extrabold rounded-full uppercase tracking-[0.16em] mb-4">About Us</span>
         <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-6">Meet Our Team</h1>
         <p className="text-white/60 text-base max-w-2xl mx-auto leading-relaxed">
           At Step2ITCareer-AI, education meets technology. Our team brings together EdTech leaders, technology professionals, educators, AI specialists, curriculum designers, career mentors, and student-success experts.
@@ -84,7 +88,7 @@ export default function AboutPage() {
               { icon: "💡", title: "Our Approach", desc: "Learn → Build → Showcase → Get Hired. We combine education, technology, industry expertise, and career guidance in one ecosystem." },
             ].map((item) => (
               <div key={item.title} className="bg-white p-8 rounded-brand border border-line">
-                <div className="text-4xl mb-4">{item.icon}</div>
+                <SkillIcon emoji={item.icon} size={40} className="w-fit mb-3" />
                 <h3 className="font-extrabold text-ink text-lg mb-3">{item.title}</h3>
                 <p className="text-muted text-sm leading-relaxed">{item.desc}</p>
               </div>
@@ -97,12 +101,12 @@ export default function AboutPage() {
       <section className="py-16 px-6 bg-white">
         <div className="max-w-brand mx-auto">
           <div className="text-center mb-12">
-            <span className="inline-block px-4 py-1.5 bg-primary-tint text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-4">Leadership</span>
+            <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-[11px] font-extrabold rounded-full uppercase tracking-[0.18em] mb-4">Leadership</span>
             <h2 className="text-2xl md:text-3xl font-extrabold text-ink">Leadership Team</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {leadership.map((m) => (
-              <div key={m.name} className="bg-soft rounded-brand border border-line p-6 text-center hover:border-primary hover:shadow-card transition-all duration-200">
+              <div key={m.name} className="bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap p-6 text-center hover:border-primary hover:shadow-card transition-all duration-200">
                 <div className="w-16 h-16 bg-primary text-white font-extrabold text-2xl rounded-full flex items-center justify-center mx-auto mb-4">{m.initial}</div>
                 <h3 className="font-extrabold text-ink mb-1">{m.name}</h3>
                 <p className="text-xs font-bold text-primary mb-1">{m.role}</p>
@@ -124,7 +128,7 @@ export default function AboutPage() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {team.members.map((m) => (
-                <div key={m.name} className="bg-white rounded-brand border border-line p-5 hover:shadow-card transition-all duration-200 flex gap-4">
+                <div key={m.name} className="bg-white rounded-[18px] border border-[#E6E3F7] card-lift tap p-5 hover:shadow-card transition-all duration-200 flex gap-4">
                   <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-extrabold text-lg shrink-0"
                     style={{ background: team.color }}>{m.initial}</div>
                   <div>
@@ -140,12 +144,14 @@ export default function AboutPage() {
       ))}
 
       {/* CTA */}
-      <section className="py-16 px-6 bg-primary text-center">
+      <section className="relative z-10 cut-top overlap-up pt-24 md:pt-32 pb-16 md:pb-20 px-6 overflow-hidden text-center" style={{ background: "var(--grad-primary)" }}>
+        <Grain />
+        <Slashes side="right" tone="white" opacity={0.09} height={560} />
         <h2 className="text-2xl md:text-3xl font-extrabold text-white mb-4">One Team. One Purpose.</h2>
         <p className="text-white/70 mb-8 max-w-xl mx-auto">Different roles. Different expertise. One common objective — to make learners more skilled, confident and career-ready.</p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="https://wa.me/919936609430" className="px-8 py-4 bg-white text-primary font-bold rounded-full">Book Free Counseling</a>
-          <a href="/courses" className="px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full">Explore Programs</a>
+          <a href="https://wa.me/919936609430" className="px-8 py-4 tap bg-white text-primary font-bold rounded-full">Book Free Counseling</a>
+          <a href="/courses" className="px-8 py-4 tap bg-[#16A34A] text-white font-bold rounded-full">Explore Programs</a>
         </div>
       </section>
     </div>

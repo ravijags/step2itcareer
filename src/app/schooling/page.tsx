@@ -1,3 +1,5 @@
+import { Grain, Slashes } from "@/components/Decor";
+import SkillIcon from "@/components/inner/SkillIcon";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -45,11 +47,13 @@ export default function SchoolingPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <div className="relative bg-[#060D1F] overflow-hidden">
+      <div className="relative z-10 cut-bottom bg-ink2 overflow-hidden">
+        <Grain />
+        <Slashes side="left" tone="primary" opacity={0.09} height={700} />
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle, #3B5BFF 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
-        <div className="max-w-brand mx-auto px-6 pt-28 pb-16 md:pt-36 md:pb-24 text-center relative">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/15 border border-primary/30 text-primary text-xs font-bold rounded-full uppercase tracking-widest mb-6">
-            📚 School Coding Programs · Class 6 to 12
+        <div className="max-w-brand mx-auto px-6 pt-32 pb-24 md:pt-40 md:pb-32 text-center relative">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/30 text-[#FF9A6C] text-[11px] font-extrabold rounded-full uppercase tracking-[0.16em] mb-6">
+            School Coding Programs · Class 6 to 12
           </div>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6">
             Give Your Child<br />
@@ -64,7 +68,7 @@ export default function SchoolingPage() {
       </div>
 
       {/* Program Cards */}
-      <section className="py-16 md:py-20 bg-soft">
+      <section className="overlap-up pt-24 md:pt-32 pb-16 md:pb-20 bg-soft">
         <div className="max-w-brand mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {programs.map((prog) => (
@@ -80,13 +84,13 @@ export default function SchoolingPage() {
                       <h2 className="text-xl font-extrabold text-ink">{prog.class}</h2>
                       <p className="text-sm font-semibold" style={{ color: prog.color }}>{prog.tagline}</p>
                     </div>
-                    <div className="text-3xl shrink-0">{prog.icon}</div>
+                    <SkillIcon emoji={prog.icon} size={44} className="w-fit shrink-0" />
                   </div>
                   <p className="text-muted text-sm leading-relaxed mb-6">{prog.desc}</p>
                   <ul className="space-y-2 mb-6">
                     {prog.highlights.map((h) => (
                       <li key={h} className="flex items-center gap-2 text-xs font-semibold text-ink">
-                        <span className="font-bold" style={{ color: prog.color }}>✓</span>{h}
+                        <span className="font-bold" style={{ color: prog.color }}></span>{h}
                       </li>
                     ))}
                   </ul>
@@ -116,8 +120,8 @@ export default function SchoolingPage() {
               { icon: "🏗️", title: "Project-Based", desc: "Kids build real things, not just read theory" },
               { icon: "📊", title: "Progress Updates", desc: "Weekly reports so parents stay informed" },
             ].map((item) => (
-              <div key={item.title} className="text-center p-5 bg-soft rounded-brand border border-line">
-                <div className="text-3xl mb-3">{item.icon}</div>
+              <div key={item.title} className="text-center p-5 bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap">
+                <SkillIcon emoji={item.icon} size={40} className="w-fit mx-auto mb-3" />
                 <h3 className="font-extrabold text-ink text-sm mb-1">{item.title}</h3>
                 <p className="text-xs text-muted">{item.desc}</p>
               </div>
@@ -127,12 +131,14 @@ export default function SchoolingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-12 px-6 bg-primary text-center">
+      <section className="relative z-10 cut-top overlap-up pt-24 md:pt-32 pb-16 md:pb-20 px-6 text-center overflow-hidden" style={{ background: "var(--grad-primary)" }}>
+        <Grain />
+        <Slashes side="right" tone="white" opacity={0.09} height={560} />
         <h2 className="text-2xl font-extrabold text-white mb-4">Help Your Child Discover the Joy of Coding</h2>
         <p className="text-white/70 mb-6">Learn · Think · Create · Innovate</p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="https://wa.me/919936609430" className="w-full sm:w-auto px-8 py-4 bg-white text-primary font-bold rounded-full hover:bg-soft transition-colors">💬 WhatsApp to Enroll</a>
-          <a href="tel:+919936609430" className="w-full sm:w-auto px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full hover:bg-green-700 transition-colors">📞 Call Us</a>
+          <a href="https://wa.me/919936609430" className="w-full sm:w-auto px-8 py-4 tap bg-white text-primary font-bold rounded-full hover:bg-soft transition-colors">WhatsApp to Enroll</a>
+          <a href="tel:+919936609430" className="w-full sm:w-auto px-8 py-4 tap bg-[#16A34A] text-white font-bold rounded-full hover:bg-green-700 transition-colors">Call Us</a>
         </div>
       </section>
     </div>
