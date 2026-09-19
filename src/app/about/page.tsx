@@ -130,7 +130,7 @@ export default function AboutPage() {
               {team.members.map((m) => (
                 <div key={m.name} className="bg-white rounded-[18px] border border-[#E6E3F7] card-lift tap p-5 hover:shadow-card transition-all duration-200 flex gap-4">
                   <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-extrabold text-lg shrink-0"
-                    style={{ background: team.color }}>{m.initial}</div>
+                    style={{ background: `linear-gradient(135deg, ${team.color}, ${team.color}CC)`, boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3)" }}>{m.initial}</div>
                   <div>
                     <h3 className="font-extrabold text-ink text-sm mb-0.5">{m.name}</h3>
                     <p className="text-xs font-bold mb-1" style={{ color: team.color }}>{m.role}</p>

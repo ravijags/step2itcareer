@@ -6,6 +6,7 @@ import NavClient from "@/components/NavClient";
 import Loader from "@/components/Loader";
 import PageTransition from "@/components/PageTransition";
 import { Grain, Slashes } from "@/components/Decor";
+import MobileDock from "@/components/MobileDock";
 
 export const metadata: Metadata = {
   title: "Step2ITCareer-AI — Get Job-Ready. Get Hired.",
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Loader />
         <NavClient />
         <main><PageTransition>{children}</PageTransition></main>
+        <MobileDock />
         <Footer />
         <FloatingWhatsApp />
         <PopupController />
@@ -29,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 function Footer() {
   return (
-    <footer className="relative bg-ink2 text-white pt-16 pb-24 md:pb-8 overflow-hidden">
+    <footer className="relative bg-ink2 text-white pt-16 pb-28 md:pb-8 overflow-hidden">
       <Grain />
       <Slashes side="right" tone="primary" opacity={0.07} height={640} />
       <div className="relative max-w-brand mx-auto px-6">

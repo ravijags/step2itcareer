@@ -38,7 +38,6 @@ export default function HomePage() {
       <RecentPlacements />
       <FAQSection />
       <FinalCTA />
-      <MobileStickyBar />
     </>
   );
 }
@@ -204,10 +203,10 @@ function HeroSection() {
 
           {/* Duotone chips */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.34 }}
-            className="flex flex-wrap justify-center lg:justify-start gap-2 mb-7">
+            className="flex flex-nowrap justify-center lg:justify-start gap-1.5 mb-7">
             {[{ I: Icon.Video, l: "Live classes" }, { I: Icon.Users, l: "1:1 mentor" }, { I: Icon.Briefcase, l: "Placement" }].map(({ I, l }) => (
-              <span key={l} className="inline-flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-full text-[12px] font-semibold text-white/65 bg-white/[0.05] border border-white/[0.09]">
-                <span className="w-6 h-6 rounded-lg bg-primary/20 text-[#8BA4FF] flex items-center justify-center"><I size={13} /></span>{l}
+              <span key={l} className="inline-flex items-center gap-1.5 pl-1 pr-2.5 py-1 rounded-full text-[11.5px] font-semibold text-white/65 bg-white/[0.05] border border-white/[0.09] whitespace-nowrap">
+                <span className="w-5 h-5 rounded-md bg-primary/20 text-[#8BA4FF] flex items-center justify-center"><I size={12} /></span>{l}
               </span>
             ))}
           </motion.div>
@@ -729,16 +728,6 @@ function FinalCTA() {
   );
 }
 
-/* ───────────────────────── STICKY BAR ───────────────────────── */
-function MobileStickyBar() {
-  return (
-    <motion.div initial={{ y: 100 }} animate={{ y: 0 }} transition={{ delay: 1.2, duration: 0.5, ease: EASE }}
-      className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white/95 backdrop-blur-md flex"
-      style={{ paddingBottom: "env(safe-area-inset-bottom)", boxShadow: "0 -1px 0 #E6E3F7, 0 -12px 30px rgba(14,21,38,0.08)" }}>
-      <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: "var(--grad-primary)", opacity: 0.6 }} />
-      <a href="https://wa.me/919936609430" className="tap flex-1 py-2.5 text-[11px] font-bold text-[#16A34A] border-r border-line flex flex-col items-center justify-center gap-0.5"><Icon.WhatsApp size={20} /><span>WhatsApp</span></a>
-      <button onClick={openPopup} className="flex-1 py-2.5 text-[13px] font-extrabold text-white" style={{ background: "var(--grad-primary)" }}>Apply now</button>
-      <a href="tel:+919936609430" className="tap flex-1 py-2.5 text-[11px] font-bold text-ink border-l border-line flex flex-col items-center justify-center gap-0.5"><Icon.Phone size={18} /><span>Call</span></a>
-    </motion.div>
-  );
-}
+/* ───────────────────────── MOBILE DOCK ─────────────────────────
+   A floating frosted pill instead of a strip glued to the edge. Hides on scroll-down,
+   returns on scroll-up (native-app behaviour), always visible near top and bottom. */

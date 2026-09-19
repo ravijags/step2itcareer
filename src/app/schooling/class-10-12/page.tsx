@@ -1,4 +1,5 @@
 import { Grain, Slashes } from "@/components/Decor";
+import { Icon } from "@/components/Icons";
 import SkillIcon from "@/components/inner/SkillIcon";
 import type { Metadata } from "next";
 
@@ -35,8 +36,8 @@ export default function Class1012Page() {
             Bridge the gap between school education and real-world technology skills. Python, Java, SQL, GitHub, AI tools, and a portfolio — before you even step into college.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="https://wa.me/919936609430" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-bold rounded-full text-[15px] shadow-lg" style={{ background: "#FF7A3D" }}>
-              Enroll via WhatsApp
+            <a href="https://wa.me/919936609430" className="tap w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-bold rounded-full text-[15px] shadow-lg bg-[#16A34A]">
+              <Icon.WhatsApp size={17} /> Enroll via WhatsApp
             </a>
             <a href="tel:+919936609430" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-white font-bold rounded-full border border-white/20 text-[15px]">
               Talk to a Mentor
@@ -95,11 +96,11 @@ export default function Class1012Page() {
                     </div>
                   ))}
                 </div>
-                <a href="https://wa.me/919936609430" className="flex items-center justify-center gap-2 w-full py-4 font-bold rounded-xl text-sm text-white hover:opacity-90 transition-opacity" style={{ background: "#FF7A3D" }}>
-                  Enroll via WhatsApp
+                <a href="https://wa.me/919936609430" className="tap flex items-center justify-center gap-2 w-full py-4 font-bold rounded-xl text-sm text-white bg-[#16A34A]" style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2)" }}>
+                  <Icon.WhatsApp size={17} /> Enroll via WhatsApp
                 </a>
-                <a href="tel:+919936609430" className="flex items-center justify-center w-full py-3.5 mt-2 bg-soft text-ink font-bold rounded-xl text-sm hover:bg-line transition-colors border border-line">
-                  +91 99366 09430
+                <a href="tel:+919936609430" className="tap flex items-center justify-center gap-2 w-full py-3.5 mt-2 bg-white text-ink font-bold rounded-xl text-sm border border-[#E6E3F7] card-lift">
+                  <Icon.Phone size={16} className="text-primary" /> Call +91 99366 09430
                 </a>
               </div>
             </div>
