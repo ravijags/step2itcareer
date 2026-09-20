@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import "./globals.css";
 import PopupController from "@/components/PopupController";
 import Logo from "@/components/Logo";
@@ -31,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 function Footer() {
   return (
-    <footer className="relative bg-ink2 text-white pt-16 pb-28 md:pb-8 overflow-hidden">
+    <footer className="relative bg-ink2 text-white pt-16 pb-24 md:pb-8 overflow-hidden">
       <Grain />
       <Slashes side="right" tone="primary" opacity={0.07} height={640} />
       <div className="relative max-w-brand mx-auto px-6">
@@ -62,7 +63,7 @@ function Footer() {
             <h4 className="text-sm font-bold mb-4 text-white/80 uppercase tracking-wider">Quick Links</h4>
             <ul className="space-y-2">
               {[["Home", "/"], ["All Courses", "/courses"], ["Internship", "/internship"], ["Schooling Program", "/schooling"], ["About Us", "/about"], ["Contact Us", "/contact"]].map(([name, href]) => (
-                <li key={name}><a href={href} className="text-sm text-white/60 hover:text-white transition-colors">{name}</a></li>
+                <li key={name}><Link href={href} className="text-sm text-white/60 hover:text-white transition-colors">{name}</Link></li>
               ))}
             </ul>
           </div>

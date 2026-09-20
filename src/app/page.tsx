@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence, type PanInfo } from "framer-motion";
 import { courses } from "@/lib/courses";
@@ -13,6 +15,7 @@ function openPopup() {
 }
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const MotionLink = motion.create(Link);
 
 /* ───────────────────────── DATA ───────────────────────── */
 const PLACEMENTS = [
@@ -160,7 +163,7 @@ function HeroSection() {
       <Grain />
       <Slashes side="left" tone="primary" opacity={0.09} height={760} />
       <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(59,91,255,0.18) 1px, transparent 1px)", backgroundSize: "36px 36px", opacity: 0.4 }} />
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at center, transparent 40%, rgba(7,11,24,0.75) 100%)" }} />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 60%, transparent 45%, rgba(7,11,24,0.55) 100%)" }} />
 
       <div className="relative max-w-brand mx-auto px-6 w-full py-12 md:py-20 lg:py-24 grid lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-16 items-center">
         {/* Left — copy */}
@@ -215,7 +218,7 @@ function HeroSection() {
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3, ease: EASE }}
             className="flex gap-3 justify-center lg:justify-start mb-6">
             <Magnetic className="flex-1 sm:flex-none max-w-[200px]">
-              <a href="/courses" className="btn-grad tap block w-full sm:w-auto sm:min-w-[170px] px-4 sm:px-7 py-4 text-white font-extrabold rounded-full text-[14px] sm:text-[15px] text-center whitespace-nowrap">Explore courses</a>
+              <Link href="/courses" className="btn-grad tap block w-full sm:w-auto sm:min-w-[170px] px-4 sm:px-7 py-4 text-white font-extrabold rounded-full text-[14px] sm:text-[15px] text-center whitespace-nowrap">Explore courses</Link>
             </Magnetic>
             <Magnetic className="flex-1 sm:flex-none max-w-[200px]">
               <button onClick={openPopup} className="btn-ghost-dark tap block w-full sm:w-auto sm:min-w-[170px] px-4 sm:px-7 py-4 text-white font-bold rounded-full text-[14px] sm:text-[15px] whitespace-nowrap">Free counseling</button>
@@ -404,7 +407,7 @@ function FeaturedCourses() {
       {/* Mobile: snap carousel with peek + active glow · Desktop: 3-up grid */}
       <div ref={rowRef} className="snap-row flex gap-4 overflow-x-auto scrollbar-hide px-6 pb-2 md:hidden" style={{ scrollPaddingInline: 24 }}>
         {featured.map((course, i) => (
-          <a key={course.slug} href={`/courses/${course.slug}`}
+          <Link key={course.slug} href={`/courses/${course.slug}`}
             className="tap shrink-0 w-[82vw] max-w-[340px] bg-white rounded-[20px] overflow-hidden transition-all duration-300"
             style={{ boxShadow: active === i ? "0 0 0 1.5px rgba(59,91,255,0.55), 0 18px 44px rgba(59,91,255,0.22)" : "0 2px 12px rgba(14,21,38,0.06)", transform: active === i ? "scale(1)" : "scale(0.96)", opacity: active === i ? 1 : 0.75 }}>
             <CourseArt slug={course.slug} category={course.category} title={course.title} priority={i === 0} />
@@ -412,7 +415,7 @@ function FeaturedCourses() {
               <div><div className="text-[18px] font-extrabold text-ink tracking-tight">{course.feeDisplay}</div><div className="text-[12px] text-muted">{course.duration} · live</div></div>
               <span className="btn-grad text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>
             </div>
-          </a>
+          </Link>
         ))}
       </div>
       <div className="flex md:hidden justify-center gap-1.5 mt-4">
@@ -424,7 +427,7 @@ function FeaturedCourses() {
       <div className="hidden md:grid max-w-brand mx-auto px-6 grid-cols-3 gap-6">
         {featured.map((course, i) => (
           <Reveal key={course.slug} delay={i * 0.08}>
-            <motion.a href={`/courses/${course.slug}`}
+            <MotionLink href={`/courses/${course.slug}`}
               whileHover={{ y: -8, boxShadow: "0 0 0 1.5px rgba(59,91,255,0.5), 0 28px 56px -12px rgba(59,91,255,0.28)" }}
               transition={{ duration: 0.28, ease: EASE }}
               className="group block bg-white rounded-[20px] overflow-hidden" style={{ boxShadow: "0 2px 12px rgba(14,21,38,0.06)" }}>
@@ -433,13 +436,13 @@ function FeaturedCourses() {
                 <div><div className="text-[20px] font-extrabold text-ink tracking-tight">{course.feeDisplay}</div><div className="text-[12px] text-muted">{course.duration} · live</div></div>
                 <span className="btn-grad text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>
               </div>
-            </motion.a>
+            </MotionLink>
           </Reveal>
         ))}
       </div>
 
       <Reveal className="text-center mt-10">
-        <Magnetic><a href="/courses" className="btn-grad tap inline-flex items-center gap-2 px-8 py-4 text-white font-extrabold rounded-full text-[15px]">View all 12 courses <Icon.ArrowRight size={16} /></a></Magnetic>
+        <Magnetic><Link href="/courses" className="btn-grad tap inline-flex items-center gap-2 px-8 py-4 text-white font-extrabold rounded-full text-[15px]">View all 12 courses <Icon.ArrowRight size={16} /></Link></Magnetic>
       </Reveal>
     </section>
   );

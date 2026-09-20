@@ -68,8 +68,8 @@ export default function ThirtyDaysPage() {
       </div>
 
       {/* Stats Bar */}
-      <div style={{ background: "var(--grad-primary)" }}>
-        <div className="max-w-brand mx-auto px-6 pt-12 md:pt-16 pb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="overlap-up" style={{ background: "var(--grad-primary)" }}>
+        <div className="max-w-brand mx-auto px-6 pt-[calc(var(--cut)+20px)] md:pt-[calc(var(--cut)+28px)] pb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map((s) => (
             <div key={s.label} className="text-center">
               <div className="text-2xl md:text-3xl font-extrabold text-white">{s.value}</div>

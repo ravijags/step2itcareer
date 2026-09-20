@@ -1,6 +1,6 @@
 "use client";
-/* Floating glass dock — the mobile conversion surface on every page.
-   Same frosted-dark material as the nav, so the top and bottom of the screen book-end the page. */
+/* Mobile action bar — the familiar app tab-bar shape, finished in the Ascent material:
+   frosted white glass, a gradient hairline, plain icons on the sides, one gradient pill in the middle. */
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Icon } from "@/components/Icons";
@@ -14,45 +14,35 @@ export default function MobileDock() {
   useEffect(() => { const t = setTimeout(() => setReady(true), 900); return () => clearTimeout(t); }, []);
 
   return (
-    <motion.div
-      initial={{ y: 120, opacity: 0 }} animate={ready ? { y: 0, opacity: 1 } : { y: 120, opacity: 0 }}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed left-4 right-4 z-40 md:hidden"
-      style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 12px)" }}
-      role="navigation" aria-label="Quick actions"
+    <motion.nav
+      initial={{ y: 90 }} animate={{ y: ready ? 0 : 90 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      aria-label="Quick actions"
+      className="fixed bottom-0 inset-x-0 z-40 md:hidden"
+      style={{
+        background: "rgba(255,255,255,0.86)",
+        backdropFilter: "blur(18px) saturate(150%)", WebkitBackdropFilter: "blur(18px) saturate(150%)",
+        boxShadow: "0 -10px 30px rgba(14,21,38,0.08)",
+        paddingBottom: "max(10px, env(safe-area-inset-bottom, 0px))",
+      }}
     >
-      <div
-        className="relative flex items-center gap-1 p-1.5 rounded-full"
-        style={{
-          background: "rgba(10,15,32,0.84)",
-          backdropFilter: "blur(18px) saturate(140%)", WebkitBackdropFilter: "blur(18px) saturate(140%)",
-          border: "1px solid rgba(255,255,255,0.1)",
-          boxShadow: "0 18px 50px rgba(3,6,20,0.45), inset 0 1px 0 rgba(255,255,255,0.08)",
-        }}
-      >
-        <a href="https://wa.me/919936609430" aria-label="WhatsApp us"
-          className="tap flex flex-col items-center justify-center w-[64px] h-[52px] rounded-full gap-0.5">
-          <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: "rgba(22,163,74,0.18)", color: "#4ADE80" }}>
-            <Icon.WhatsApp size={17} />
-          </span>
-          <span className="text-[9px] font-bold text-white/55 tracking-wide">WhatsApp</span>
+      <div className="absolute top-0 inset-x-0 h-[1.5px]" style={{ background: "linear-gradient(90deg, rgba(59,91,255,0.35), rgba(123,91,255,0.55), rgba(59,91,255,0.35))" }} aria-hidden />
+      <div className="grid grid-cols-[76px_1fr_76px] items-center px-3 pt-2.5">
+        <a href="https://wa.me/919936609430" aria-label="WhatsApp us" className="tap flex flex-col items-center gap-1 py-1 text-[#16A34A]">
+          <Icon.WhatsApp size={22} />
+          <span className="text-[10px] font-bold tracking-wide text-[#16A34A]">WhatsApp</span>
         </a>
-
         <button onClick={openPopup}
-          className="tap flex-1 h-[52px] rounded-full text-white font-extrabold text-[14px] flex items-center justify-center gap-2"
-          style={{ background: "var(--grad-primary)", boxShadow: "0 10px 26px rgba(59,91,255,0.4), inset 0 1px 0 rgba(255,255,255,0.28)" }}>
+          className="tap h-11 rounded-full text-white font-extrabold text-[14px] flex items-center justify-center gap-2"
+          style={{ background: "var(--grad-primary)", boxShadow: "0 8px 22px rgba(59,91,255,0.35), inset 0 1px 0 rgba(255,255,255,0.28)" }}>
           <span className="relative inline-block w-2 h-2 rounded-full bg-[#4ADE80] pulse-ring text-[#4ADE80]" aria-hidden />
           Free counseling
         </button>
-
-        <a href="tel:+919936609430" aria-label="Call us"
-          className="tap flex flex-col items-center justify-center w-[64px] h-[52px] rounded-full gap-0.5">
-          <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: "rgba(255,255,255,0.08)", color: "#fff" }}>
-            <Icon.Phone size={15} />
-          </span>
-          <span className="text-[9px] font-bold text-white/55 tracking-wide">Call</span>
+        <a href="tel:+919936609430" aria-label="Call us" className="tap flex flex-col items-center gap-1 py-1 text-ink">
+          <Icon.Phone size={20} />
+          <span className="text-[10px] font-bold tracking-wide text-ink/80">Call</span>
         </a>
       </div>
-    </motion.div>
+    </motion.nav>
   );
 }

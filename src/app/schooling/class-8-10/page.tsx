@@ -47,8 +47,8 @@ export default function Class810Page() {
       </div>
 
       {/* Stats */}
-      <div style={{ background: "linear-gradient(135deg, #6D28D9, #7B5BFF)" }}>
-        <div className="max-w-brand mx-auto px-6 pt-12 md:pt-16 pb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="overlap-up" style={{ background: "linear-gradient(135deg, #6D28D9, #7B5BFF)" }}>
+        <div className="max-w-brand mx-auto px-6 pt-[calc(var(--cut)+20px)] md:pt-[calc(var(--cut)+28px)] pb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[{ value: "₹10,000", label: "Program Fee" }, { value: "1:1", label: "Mentorship" }, { value: "Max 5", label: "Students/Batch" }, { value: "Real", label: "Projects Built" }].map((s) => (
             <div key={s.label} className="text-center">
               <div className="text-2xl font-extrabold text-white">{s.value}</div>

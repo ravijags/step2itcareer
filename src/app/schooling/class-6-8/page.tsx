@@ -47,8 +47,8 @@ export default function Class68Page() {
       </div>
 
       {/* Stats */}
-      <div style={{ background: "var(--grad-primary)" }}>
-        <div className="max-w-brand mx-auto px-6 pt-12 md:pt-16 pb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="overlap-up" style={{ background: "var(--grad-primary)" }}>
+        <div className="max-w-brand mx-auto px-6 pt-[calc(var(--cut)+20px)] md:pt-[calc(var(--cut)+28px)] pb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[{ value: "₹5,000", label: "Program Fee" }, { value: "Max 5", label: "Students/Batch" }, { value: "Live", label: "Interactive Classes" }, { value: "100%", label: "Project-Based" }].map((s) => (
             <div key={s.label} className="text-center">
               <div className="text-2xl font-extrabold text-white">{s.value}</div>

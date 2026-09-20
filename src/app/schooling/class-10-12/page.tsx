@@ -47,8 +47,8 @@ export default function Class1012Page() {
       </div>
 
       {/* Stats */}
-      <div style={{ background: "var(--grad-accent)" }}>
-        <div className="max-w-brand mx-auto px-6 pt-12 md:pt-16 pb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="overlap-up" style={{ background: "var(--grad-accent)" }}>
+        <div className="max-w-brand mx-auto px-6 pt-[calc(var(--cut)+20px)] md:pt-[calc(var(--cut)+28px)] pb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[{ value: "₹10,000", label: "Program Fee" }, { value: "GitHub", label: "Portfolio Built" }, { value: "AI Tools", label: "Industry Exposure" }, { value: "1:1", label: "Mentorship" }].map((s) => (
             <div key={s.label} className="text-center">
               <div className="text-xl md:text-2xl font-extrabold text-white">{s.value}</div>

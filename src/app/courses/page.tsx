@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { courses } from "@/lib/courses";
@@ -7,6 +9,8 @@ import { Grain, Slashes } from "@/components/Decor";
 import { Icon } from "@/components/Icons";
 import CourseArt from "@/components/CourseArt";
 import CTABand from "@/components/inner/CTABand";
+
+const MotionLink = motion.create(Link);
 
 const categories = [
   { key: "all", label: "All programs" },
@@ -58,7 +62,7 @@ export default function CoursesPage() {
         <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           <AnimatePresence mode="popLayout">
             {filtered.map((course, i) => (
-              <motion.a
+              <MotionLink
                 key={course.slug} layout href={`/courses/${course.slug}`}
                 initial={{ opacity: 0, y: 18, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, scale: 0.96 }}
                 transition={{ duration: 0.35, delay: i * 0.03, ease: [0.22, 1, 0.36, 1] }}
@@ -79,7 +83,7 @@ export default function CoursesPage() {
                     <span className="btn-grad text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>
                   </div>
                 </div>
-              </motion.a>
+              </MotionLink>
             ))}
           </AnimatePresence>
         </motion.div>

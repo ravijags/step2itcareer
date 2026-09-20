@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -120,9 +122,9 @@ export default function MobileNav() {
           >
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-line bg-white shrink-0">
-              <a href="/" onClick={close}>
+              <Link href="/" onClick={close}>
                 <Logo size="sm" theme="light" />
-              </a>
+              </Link>
               <motion.button
                 onClick={close}
                 whileTap={{ scale: 0.9 }}
@@ -141,9 +143,9 @@ export default function MobileNav() {
               <NavAccordion label="Internship" section="internship" expanded={expanded} onToggle={toggle} items={internshipLinks} onClose={close} />
               <NavAccordion label="Schooling Program" section="schooling" expanded={expanded} onToggle={toggle} items={schoolingLinks} onClose={close} />
               <NavAccordion label="Resources" section="resources" expanded={expanded} onToggle={toggle} items={resourceLinks} onClose={close} />
-              <a href="/contact" onClick={close} className="flex items-center justify-between px-5 py-4 text-[14px] font-bold text-ink hover:bg-soft border-b border-line transition-colors">
+              <Link href="/contact" onClick={close} className="flex items-center justify-between px-5 py-4 text-[14px] font-bold text-ink hover:bg-soft border-b border-line transition-colors">
                 Contact Us
-              </a>
+              </Link>
             </div>
 
             {/* Footer CTAs */}
@@ -206,11 +208,11 @@ function NavAccordion({ label, section, expanded, onToggle, items, onClose }: {
             className="overflow-hidden bg-soft"
           >
             {items.map((item) => (
-              <a key={item.name} href={item.href} onClick={onClose}
+              <Link key={item.name} href={item.href} onClick={onClose}
                 className="flex items-center px-8 py-3 text-[13px] font-semibold text-muted hover:text-primary hover:bg-white transition-colors border-b border-line/50 last:border-0">
                 <span className="mr-2 text-primary/40">›</span>
                 {item.name}
-              </a>
+              </Link>
             ))}
           </motion.div>
         )}

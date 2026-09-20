@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
@@ -71,19 +73,19 @@ export default function NavClient() {
         className="fixed top-0 left-0 right-0 z-40"
         style={{
           height: NAV_HEIGHT,
-          background: frosted ? "rgba(8,12,28,0.86)" : "transparent",
+          background: frosted ? "rgba(14,20,44,0.78)" : "transparent",
           backdropFilter: frosted ? "blur(16px) saturate(140%)" : "none",
           WebkitBackdropFilter: frosted ? "blur(16px) saturate(140%)" : "none",
-          borderBottom: frosted ? "1px solid rgba(255,255,255,0.07)" : "1px solid transparent",
+          borderBottom: frosted ? "1px solid rgba(139,164,255,0.22)" : "1px solid transparent",
           transition: "background 300ms ease, backdrop-filter 300ms ease, border-color 300ms ease",
         }}
       >
         <ScrollProgress />
 
         <nav className="max-w-brand mx-auto px-6 h-full flex items-center justify-between">
-          <a href="/" className="flex items-center" aria-label="Step2ITCareer-AI home">
+          <Link href="/" className="flex items-center" aria-label="Step2ITCareer-AI home">
             <Logo size="md" theme="dark" />
-          </a>
+          </Link>
 
           {/* Desktop links — pill container */}
           <div
@@ -98,9 +100,9 @@ export default function NavClient() {
             <NavDropdown label="Internship" items={internshipLinks} />
             <NavDropdown label="Schooling Program" items={schoolingLinks} />
             <NavDropdown label="Resources" items={resourceLinks} />
-            <a href="/contact" className="nav-link px-4 py-2 text-[13px] font-semibold rounded-full">
+            <Link href="/contact" className="nav-link px-4 py-2 text-[13px] font-semibold rounded-full">
               Contact Us
-            </a>
+            </Link>
           </div>
 
           <a
@@ -141,9 +143,9 @@ function NavDropdown({ label, items }: { label: string; items: { name: string; h
         }}
       >
         {items.map((item) => (
-          <a key={item.name} href={item.href} className="nav-link block px-4 py-3 text-[12.5px] font-semibold" style={{ borderRadius: 0 }}>
+          <Link key={item.name} href={item.href} className="nav-link block px-4 py-3 text-[12.5px] font-semibold" style={{ borderRadius: 0 }}>
             {item.name}
-          </a>
+          </Link>
         ))}
       </div>
     </div>
