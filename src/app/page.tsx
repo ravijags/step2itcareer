@@ -15,6 +15,16 @@ function openPopup() {
 }
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+/* Batches start Mondays at 10:00. Counts down to the next one and rolls over weekly. */
+function nextBatchStart() {
+  const d = new Date();
+  d.setHours(10, 0, 0, 0);
+  let add = (8 - d.getDay()) % 7;
+  if (add === 0 && Date.now() > d.getTime()) add = 7;
+  d.setDate(d.getDate() + add);
+  return d;
+}
 const MotionLink = motion.create(Link);
 
 /* ───────────────────────── DATA ───────────────────────── */
@@ -36,6 +46,7 @@ export default function HomePage() {
       <StatsRow />
       <FeaturedCourses />
       <MicroBatchUSP />
+      <MentorSection />
       <PlacementPath />
       <CareerOutcomes />
       <RecentPlacements />
@@ -108,7 +119,7 @@ function HeroSection() {
     return () => clearInterval(iv);
   }, []);
 
-  const batchDate = useRef(new Date(Date.now() + 3 * 86400000 + 4 * 3600000 + 22 * 60000));
+  const batchDate = useRef(nextBatchStart());
   const [cd, setCd] = useState({ d: 3, h: 4, m: 22, s: 0 });
   useEffect(() => {
     const iv = setInterval(() => {
@@ -229,7 +240,7 @@ function HeroSection() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.44 }}
             className="flex items-center justify-center lg:justify-start gap-2 flex-wrap">
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08]">
-              <span className="text-[11px] text-white/40 font-semibold whitespace-nowrap">Batch in</span>
+              <span className="text-[11px] text-white/40 font-semibold whitespace-nowrap">Next batch <span className="text-white/25">·</span> Mon 10 AM <span className="text-white/25">·</span></span>
               {[{ v: cd.d, l: "d" }, { v: cd.h, l: "h" }, { v: cd.m, l: "m" }, { v: cd.s, l: "s" }].map((t, i) => (
                 <span key={t.l} className={`items-baseline gap-0.5 ${t.l === "s" ? "hidden sm:flex" : "flex"}`}>
                   {i > 0 && <span className="text-white/20 text-xs">:</span>}
@@ -479,6 +490,50 @@ function MicroBatchUSP() {
             </Reveal>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ───────────────────────── MENTOR — the human behind the batch ───────────────────────── */
+function MentorSection() {
+  return (
+    <section className="py-12 md:py-20 bg-soft">
+      <div className="max-w-brand mx-auto px-6">
+        <Reveal>
+          <div className="relative overflow-hidden rounded-[26px] bg-ink2 p-6 md:p-10 grid md:grid-cols-[auto_1fr_auto] gap-6 md:gap-10 items-center card-lift-dark">
+            <Grain />
+            <Slashes side="right" tone="primary" opacity={0.1} height={460} />
+            <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 15% 50%, rgba(59,91,255,0.22), transparent 55%)" }} />
+            <div className="relative flex items-center gap-4 md:block">
+              <div className="w-[72px] h-[72px] md:w-[96px] md:h-[96px] rounded-full flex items-center justify-center text-white font-extrabold text-[26px] md:text-[34px] shrink-0"
+                style={{ background: "var(--grad-primary)", boxShadow: "0 0 0 4px rgba(255,255,255,0.08), 0 18px 40px rgba(59,91,255,0.4), inset 0 1px 0 rgba(255,255,255,0.3)" }}>AS</div>
+              <div className="md:hidden">
+                <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#FF9A6C]">Your mentor</div>
+                <div className="text-[18px] font-extrabold text-white leading-tight">Ashvani Srivastava</div>
+                <div className="text-[12px] text-white/50">Founder & CEO · 10+ years in EdTech</div>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="hidden md:block mb-3">
+                <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#FF9A6C] mb-1">Your mentor</div>
+                <div className="text-[24px] font-extrabold text-white leading-tight tracking-tight">Ashvani Srivastava <span className="text-white/40 font-medium text-[15px] ml-2">Founder & CEO · 10+ years in EdTech</span></div>
+              </div>
+              <p className="text-[15px] md:text-[18px] text-white/80 leading-relaxed">
+                <Icon.Quote size={22} className="inline-block text-primary/60 mr-2 -mt-1" />
+                With five students in a batch, I know every name, every gap and every offer letter. I personally review each student's roadmap before the batch starts — and I stay on your case until you're placed.
+              </p>
+            </div>
+            <div className="relative md:justify-self-end">
+              <a href="https://wa.me/919936609430?text=Hi%20Ashvani%2C%20I%27d%20like%20to%20know%20more%20about%20the%20next%20batch."
+                className="tap inline-flex w-full md:w-auto items-center justify-center gap-2 px-6 py-3.5 bg-[#16A34A] text-white font-extrabold rounded-full text-[14px]"
+                style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25), 0 12px 30px rgba(22,163,74,0.35)" }}>
+                <Icon.WhatsApp size={18} /> Message Ashvani
+              </a>
+              <p className="mt-2 text-center md:text-right text-[11px] text-white/40">Replies personally · usually within 2 hours</p>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
