@@ -179,24 +179,24 @@ function HeroSection() {
       <div className="relative max-w-brand mx-auto px-6 w-full py-12 md:py-20 lg:py-24 grid lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-16 items-center">
         {/* Left — copy */}
         <motion.div style={{ y, opacity }} className="text-center lg:text-left">
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE }}
+          <motion.div data-rise style={{ "--d": "0s", "--ry": "10px" } as React.CSSProperties}
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-[#FF9A6C] text-[11px] font-extrabold tracking-[0.16em] uppercase mb-6">
             <Icon.Bolt size={12} /> Live bootcamps · Max 5 students
           </motion.div>
 
-          <motion.h1 initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.08, ease: EASE }}
+          <motion.h1 data-rise style={{ "--d": "0.08s", "--ry": "18px" } as React.CSSProperties}
             className="text-[44px] sm:text-6xl lg:text-[76px] font-extrabold text-white leading-[1.02] tracking-[-0.03em] mb-1">
             Get Hired.
           </motion.h1>
-          <motion.h1 initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.14, ease: EASE }}
+          <motion.h1 data-rise style={{ "--d": "0.14s", "--ry": "18px" } as React.CSSProperties}
             className="text-[44px] sm:text-6xl lg:text-[76px] font-extrabold leading-[1.02] tracking-[-0.03em] mb-5">
             <span className="text-white/45 font-light">Not just </span>
             <span className="grad-text">Trained.</span>
           </motion.h1>
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+          <motion.div data-rise style={{ "--d": "0.3s", "--ry": "0px" } as React.CSSProperties}
             className="flex items-center justify-center lg:justify-start gap-2 mb-5 flex-nowrap">
-            <span className="text-white/40 text-[14px] font-medium whitespace-nowrap">Our students land at</span>
+            <span className="text-white/60 text-[14px] font-medium whitespace-nowrap">Our students land at</span>
             <div className="relative h-8 min-w-[130px] flex items-center justify-center lg:justify-start overflow-hidden">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span key={idx}
@@ -210,13 +210,13 @@ function HeroSection() {
             </div>
           </motion.div>
 
-          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.22, ease: EASE }}
+          <motion.p data-rise style={{ "--d": "0.22s", "--ry": "10px" } as React.CSSProperties}
             className="text-[14px] md:text-[16px] text-white/50 max-w-md mx-auto lg:mx-0 mb-6 leading-relaxed">
             Live, mentor-led IT career programs. Micro-batches of max 5. Placement support until your offer.
           </motion.p>
 
           {/* Duotone chips */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.34 }}
+          <motion.div data-rise style={{ "--d": "0.34s", "--ry": "0px" } as React.CSSProperties}
             className="flex flex-nowrap justify-center lg:justify-start gap-1.5 mb-7">
             {[{ I: Icon.Video, l: "Live classes" }, { I: Icon.Users, l: "1:1 mentor" }, { I: Icon.Briefcase, l: "Placement" }].map(({ I, l }) => (
               <span key={l} className="inline-flex items-center gap-1.5 pl-1 pr-2.5 py-1 rounded-full text-[11.5px] font-semibold text-white/65 bg-white/[0.05] border border-white/[0.09] whitespace-nowrap">
@@ -226,7 +226,7 @@ function HeroSection() {
           </motion.div>
 
           {/* CTAs */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3, ease: EASE }}
+          <motion.div data-rise style={{ "--d": "0.3s", "--ry": "10px" } as React.CSSProperties}
             className="flex gap-3 justify-center lg:justify-start mb-6">
             <Magnetic className="flex-1 sm:flex-none max-w-[200px]">
               <Link href="/courses" className="btn-grad tap block w-full sm:w-auto sm:min-w-[170px] px-4 sm:px-7 py-4 text-white font-extrabold rounded-full text-[14px] sm:text-[15px] text-center whitespace-nowrap">Explore courses</Link>
@@ -237,10 +237,10 @@ function HeroSection() {
           </motion.div>
 
           {/* Countdown + seats */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.44 }}
+          <motion.div data-rise style={{ "--d": "0.44s", "--ry": "0px" } as React.CSSProperties}
             className="flex items-center justify-center lg:justify-start gap-2 flex-wrap">
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08]">
-              <span className="text-[11px] text-white/40 font-semibold whitespace-nowrap">Next batch <span className="text-white/25">·</span> Mon 10 AM <span className="text-white/25">·</span></span>
+              <span className="text-[11px] text-white/60 font-semibold whitespace-nowrap">Next batch <span className="text-white/25">·</span> Mon 10 AM <span className="text-white/25">·</span></span>
               {[{ v: cd.d, l: "d" }, { v: cd.h, l: "h" }, { v: cd.m, l: "m" }, { v: cd.s, l: "s" }].map((t, i) => (
                 <span key={t.l} className={`items-baseline gap-0.5 ${t.l === "s" ? "hidden sm:flex" : "flex"}`}>
                   {i > 0 && <span className="text-white/20 text-xs">:</span>}
@@ -517,7 +517,7 @@ function MentorSection() {
             <div className="relative">
               <div className="hidden md:block mb-3">
                 <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#FF9A6C] mb-1">Your mentor</div>
-                <div className="text-[24px] font-extrabold text-white leading-tight tracking-tight">Ashvani Srivastava <span className="text-white/40 font-medium text-[15px] ml-2">Founder & CEO · 10+ years in EdTech</span></div>
+                <div className="text-[24px] font-extrabold text-white leading-tight tracking-tight">Ashvani Srivastava <span className="text-white/60 font-medium text-[15px] ml-2">Founder & CEO · 10+ years in EdTech</span></div>
               </div>
               <p className="text-[15px] md:text-[18px] text-white/80 leading-relaxed">
                 <Icon.Quote size={22} className="inline-block text-primary/60 mr-2 -mt-1" />
@@ -530,7 +530,7 @@ function MentorSection() {
                 style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25), 0 12px 30px rgba(22,163,74,0.35)" }}>
                 <Icon.WhatsApp size={18} /> Message Ashvani
               </a>
-              <p className="mt-2 text-center md:text-right text-[11px] text-white/40">Replies personally · usually within 2 hours</p>
+              <p className="mt-2 text-center md:text-right text-[11px] text-white/60">Replies personally · usually within 2 hours</p>
             </div>
           </div>
         </Reveal>
@@ -622,7 +622,7 @@ function CareerOutcomes() {
               style={{ background: r.bg, border: `${r.goal ? 1.5 : 1}px solid ${r.bd}`, boxShadow: r.goal ? "0 0 40px rgba(74,222,128,0.12), inset 0 1px 0 rgba(255,255,255,0.08)" : undefined }}>
               {r.goal && <span className="absolute -top-2.5 right-4 text-[10px] font-extrabold tracking-[0.15em] px-2.5 py-1 rounded-full text-[#062B12] bg-[#4ADE80]">GOAL</span>}
               <div>
-                <div className="text-[12px] text-white/40 mb-1">{r.role}</div>
+                <div className="text-[12px] text-white/60 mb-1">{r.role}</div>
                 <div className={`font-extrabold tracking-[-0.03em] leading-none ${r.goal ? "text-[30px] md:text-[44px]" : "text-[24px] md:text-[34px]"}`} style={{ color: r.c }}>{r.from} → {r.to}</div>
               </div>
               <r.I size={r.goal ? 26 : 22} className="shrink-0" style={{ color: r.c }} />

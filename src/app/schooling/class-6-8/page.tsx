@@ -19,7 +19,7 @@ export default function Class68Page() {
         <div className="absolute top-0 left-1/2 w-[600px] h-[400px] rounded-full opacity-20" style={{ background: "radial-gradient(circle, #3B5BFF, transparent 70%)", transform: "translate(-50%, -40%)" }} />
         <div className="max-w-brand mx-auto px-6 pt-32 pb-24 md:pt-40 md:pb-32 relative text-center">
           <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
-            <a href="/schooling" className="text-white/40 hover:text-white/70 text-sm transition-colors">Schooling Programs</a>
+            <a href="/schooling" className="text-white/60 hover:text-white/70 text-sm transition-colors">Schooling Programs</a>
             <span className="text-white/20">›</span>
             <span className="text-white/60 text-sm">Class 6–8</span>
           </div>

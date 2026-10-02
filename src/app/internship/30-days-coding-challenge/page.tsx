@@ -40,7 +40,7 @@ export default function ThirtyDaysPage() {
         <div className="absolute top-0 left-0 w-96 h-96 rounded-full opacity-20" style={{ background: "radial-gradient(circle, #FF7A3D, transparent 70%)", transform: "translate(-30%, -30%)" }} />
         <div className="max-w-brand mx-auto px-6 pt-32 pb-24 md:pt-40 md:pb-32 relative">
           <div className="flex flex-wrap items-center gap-3 mb-6">
-            <a href="/internship" className="text-white/40 hover:text-white/70 text-sm transition-colors">Internship</a>
+            <a href="/internship" className="text-white/60 hover:text-white/70 text-sm transition-colors">Internship</a>
             <span className="text-white/20">›</span>
             <span className="text-white/60 text-sm">30-Day Coding Challenge</span>
           </div>

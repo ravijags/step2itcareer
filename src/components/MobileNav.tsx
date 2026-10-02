@@ -34,13 +34,13 @@ const schoolingLinks = [
 ];
 
 const resourceLinks = [
-  { name: "Blogs", href: "#" },
-  { name: "Career", href: "#" },
+  { name: "Blogs", href: "/resources/blogs" },
+  { name: "Career", href: "/resources/career" },
   { name: "About Us", href: "/about" },
-  { name: "Pay After Placement", href: "#" },
-  { name: "Tutorials", href: "#" },
-  { name: "Tech Trends", href: "#" },
-  { name: "Success Stories", href: "#" },
+  { name: "Pay After Placement", href: "/resources/pay-after-placement" },
+  { name: "Tutorials", href: "/resources/tutorials" },
+  { name: "Tech Trends", href: "/resources/tech-trends" },
+  { name: "Success Stories", href: "/resources/success-stories" },
 ];
 
 type Section = "courses" | "internship" | "schooling" | "resources" | null;
@@ -157,10 +157,10 @@ export default function MobileNav() {
                 </svg>
                 WhatsApp Us
               </a>
-              <a href="#" onClick={close}
+              <button type="button" onClick={() => { close(); window.dispatchEvent(new CustomEvent("openLoginSheet")); }}
                 className="flex items-center justify-center w-full py-3.5 bg-primary text-white font-bold rounded-xl text-sm">
                 Login / Sign In
-              </a>
+              </button>
             </div>
           </motion.div>
         )}

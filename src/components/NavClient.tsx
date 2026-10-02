@@ -36,13 +36,13 @@ const schoolingLinks = [
 ];
 
 const resourceLinks = [
-  { name: "Blogs", href: "#" },
-  { name: "Career", href: "#" },
+  { name: "Blogs", href: "/resources/blogs" },
+  { name: "Career", href: "/resources/career" },
   { name: "About Us", href: "/about" },
-  { name: "Pay After Placement", href: "#" },
-  { name: "Tutorials", href: "#" },
-  { name: "Tech Trends", href: "#" },
-  { name: "Success Stories", href: "#" },
+  { name: "Pay After Placement", href: "/resources/pay-after-placement" },
+  { name: "Tutorials", href: "/resources/tutorials" },
+  { name: "Tech Trends", href: "/resources/tech-trends" },
+  { name: "Success Stories", href: "/resources/success-stories" },
 ];
 
 export const NAV_HEIGHT = 56;
@@ -105,12 +105,13 @@ export default function NavClient() {
             </Link>
           </div>
 
-          <a
-            href="#"
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent("openLoginSheet"))}
             className="btn-grad tap hidden md:inline-flex items-center px-5 py-2 text-[13px] font-bold rounded-full text-white"
           >
             Login / Sign In
-          </a>
+          </button>
 
           <MobileNav />
         </nav>

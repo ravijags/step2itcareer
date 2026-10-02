@@ -26,7 +26,7 @@ module.exports = {
         nav: "#DBDCE0",
       },
       fontFamily: {
-        sans: ["Plus Jakarta Sans", "sans-serif"],
+        sans: ["var(--font-jakarta)", "Plus Jakarta Sans", "sans-serif"],
       },
       borderRadius: {
         brand: "16px",
