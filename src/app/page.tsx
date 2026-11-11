@@ -59,7 +59,7 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0, margin: "0px 0px -40px 0px" }}
+      viewport={{ once: true, amount: 0, margin: "0px 0px 120px 0px" }}
       transition={{ duration: 0.4, delay, ease: EASE }}
       className={className}
     >
@@ -179,7 +179,7 @@ function HeroSection() {
           <motion.div data-rise style={{ "--d": "0.3s", "--ry": "0px" } as React.CSSProperties}
             className="flex items-center justify-center lg:justify-start gap-2 mb-4 md:mb-5 flex-nowrap">
             <span className="text-white/60 text-[14px] font-medium whitespace-nowrap">Train for roles like</span>
-            <div className="relative h-8 min-w-[150px] flex items-center justify-start overflow-hidden">
+            <div className="relative h-8 min-w-[200px] flex items-center justify-start overflow-hidden">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span key={role}
                   initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}
@@ -580,7 +580,7 @@ function PlacementPath() {
   const d = pts.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
 
   return (
-    <section className="py-16 md:py-24 bg-soft relative overflow-hidden">
+    <section className="pt-6 md:pt-8 pb-16 md:pb-24 bg-soft relative overflow-hidden">
       <Slashes side="right" tone="primary" opacity={0.05} height={700} dot={false} />
       <div className="relative max-w-brand mx-auto px-6">
         <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-6 lg:gap-16 items-center">
@@ -643,7 +643,7 @@ function CareerOutcomes() {
         <div className="flex flex-col md:grid md:grid-cols-3 gap-3 md:gap-6">
           {rows.map((r, i) => (
             <motion.div key={r.role}
-              initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }}
+              initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0, margin: "0px 0px 120px 0px" }}
               transition={{ duration: 0.4, delay: i * 0.06, ease: EASE }}
               whileHover={{ y: -6, boxShadow: `0 28px 60px -14px ${r.c}55, inset 0 1px 0 rgba(255,255,255,0.08)` }}
               className={`relative rounded-[18px] p-5 md:p-8 card-lift-dark flex items-center justify-between ${r.ml} ${r.goal ? "md:mt-0" : ""}`}
@@ -668,9 +668,10 @@ function PlacementCard({ p, className = "", style }: { p: typeof PLACEMENTS[numb
     <div className={`relative bg-white rounded-[20px] p-5 md:p-6 card-lift overflow-hidden ${className}`} style={style}>
       <div className="flex items-center gap-3 mb-3.5">
         <div className="w-11 h-11 rounded-full text-white font-extrabold text-[14px] flex items-center justify-center shrink-0" style={{ background: "var(--grad-primary)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3)" }}>{p.initials}</div>
-        <div className="min-w-0"><div className="font-extrabold text-ink text-[15px] leading-tight">{p.name}</div><div className="text-[12px] text-muted truncate">{p.location} · {p.tag}</div></div>
+        <div className="min-w-0"><div className="font-extrabold text-ink text-[15px] leading-tight">{p.name}</div><div className="text-[12px] text-muted">{p.location}</div></div>
         <Icon.Quote size={24} className="ml-auto text-primary/25 shrink-0" />
       </div>
+      <span className="self-start inline-block mb-2.5 text-[11px] font-bold text-primary bg-primary/[0.08] px-2.5 py-1 rounded-full whitespace-nowrap">{p.tag}</span>
       <p className="text-[13px] md:text-[14px] text-[#4B5563] leading-relaxed mb-4 flex-1" style={{ minHeight: 84 }}>{p.quote}</p>
       <div className="border-t border-line pt-3 flex items-center justify-between">
         <div><div className="text-[11px] text-muted">{p.track}</div><div className="text-[13px] font-extrabold" style={{ color: p.companyColor }}>→ {p.company}</div></div>
@@ -702,7 +703,7 @@ function RecentPlacements() {
 
         {/* Mobile deck */}
         <div className="md:hidden">
-          <div className="relative h-[290px] mx-3">
+          <div className="relative h-[322px] mx-3">
             <AnimatePresence initial={false}>
               {order.map((p, k) => (
                 <motion.div key={p.name}
@@ -715,7 +716,7 @@ function RecentPlacements() {
                   {k === 0 ? (
                     <PlacementCard p={p} style={{ boxShadow: "0 16px 40px rgba(14,21,38,0.14), inset 0 1px 0 #fff", border: "1px solid #E6E3F7" }} />
                   ) : (
-                    <div className="h-[262px] rounded-[20px] bg-white" style={{ border: "1px solid #E6E3F7", boxShadow: "inset 0 1px 0 #fff" }} aria-hidden />
+                    <div className="h-[294px] rounded-[20px] bg-white" style={{ border: "1px solid #E6E3F7", boxShadow: "inset 0 1px 0 #fff" }} aria-hidden />
                   )}
                 </motion.div>
               ))}

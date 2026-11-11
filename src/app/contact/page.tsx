@@ -46,7 +46,6 @@ export default function ContactPage() {
                     { label: "Admissions", email: "admissions@step2itcareer.com" },
                     { label: "Student Support", email: "support@step2itcareer.com" },
                     { label: "Career & Placement", email: "career@step2itcareer.com" },
-                    { label: "Corporate & Partnerships", email: "corporate@step2itcareer.com" },
                   ].map((e) => (
                     <div key={e.email} className="mb-2">
                       <span className="text-xs text-muted">{e.label}</span>
@@ -115,13 +114,6 @@ export default function ContactPage() {
                 <div>
                   <div className="font-extrabold text-ink text-lg">Admissions Enquiry</div>
                   <div className="text-muted text-sm">admissions@step2itcareer.com</div>
-                </div>
-              </a>
-              <a href="mailto:corporate@step2itcareer.com" className="flex items-center gap-4 p-6 bg-soft border border-line rounded-brand hover:border-primary transition-colors">
-                <SkillIcon emoji="🤝" size={44} className="w-fit shrink-0" />
-                <div>
-                  <div className="font-extrabold text-ink text-lg">Corporate & Partnerships</div>
-                  <div className="text-muted text-sm">corporate@step2itcareer.com</div>
                 </div>
               </a>
               <Link href="/courses" className="flex items-center gap-4 p-6 bg-soft border border-line rounded-brand hover:border-primary transition-colors">
