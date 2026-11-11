@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Grain, Slashes } from "@/components/Decor";
 import SkillIcon from "@/components/inner/SkillIcon";
 import type { Metadata } from "next";
@@ -123,13 +124,13 @@ export default function ContactPage() {
                   <div className="text-muted text-sm">corporate@step2itcareer.com</div>
                 </div>
               </a>
-              <a href="/courses" className="flex items-center gap-4 p-6 bg-soft border border-line rounded-brand hover:border-primary transition-colors">
+              <Link href="/courses" className="flex items-center gap-4 p-6 bg-soft border border-line rounded-brand hover:border-primary transition-colors">
                 <SkillIcon emoji="📚" size={44} className="w-fit shrink-0" />
                 <div>
                   <div className="font-extrabold text-ink text-lg">Browse Our Programs</div>
-                  <div className="text-muted text-sm">12 career-launching tech programs</div>
+                  <div className="text-muted text-sm">12 career programs + short courses, workshops &amp; internships</div>
                 </div>
-              </a>
+              </Link>
             </div>
 
             <div className="mt-8 p-6 bg-primary-tint rounded-brand border border-primary/20">

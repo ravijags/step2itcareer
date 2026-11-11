@@ -9,6 +9,9 @@ import { Icon, IconTile } from "@/components/Icons";
 import { Grain, Slashes, CornerSlash } from "@/components/Decor";
 import Magnetic from "@/components/Magnetic";
 import CourseArt from "@/components/CourseArt";
+import WorkshopButton from "@/components/inner/WorkshopButton";
+import SkillIcon from "@/components/inner/SkillIcon";
+import { workshops } from "@/lib/workshops";
 
 function openPopup() {
   window.dispatchEvent(new CustomEvent("openLeadPopup"));
@@ -45,6 +48,7 @@ export default function HomePage() {
       <AlumniMarquee />
       <StatsRow />
       <FeaturedCourses />
+      <InternshipsAndWorkshops />
       <MicroBatchUSP />
       <MentorSection />
       <PlacementPath />
@@ -240,7 +244,7 @@ function HeroSection() {
           <motion.div data-rise style={{ "--d": "0.44s", "--ry": "0px" } as React.CSSProperties}
             className="flex items-center justify-center lg:justify-start gap-2 flex-wrap">
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08]">
-              <span className="text-[11px] text-white/60 font-semibold whitespace-nowrap">Next batch <span className="text-white/25">·</span> Mon 10 AM <span className="text-white/25">·</span></span>
+              <span className="text-[11px] text-white/60 font-semibold whitespace-nowrap">Founding batch <span className="text-white/25">·</span> Mon 10 AM <span className="text-white/25">·</span></span>
               {[{ v: cd.d, l: "d" }, { v: cd.h, l: "h" }, { v: cd.m, l: "m" }, { v: cd.s, l: "s" }].map((t, i) => (
                 <span key={t.l} className={`items-baseline gap-0.5 ${t.l === "s" ? "hidden sm:flex" : "flex"}`}>
                   {i > 0 && <span className="text-white/20 text-xs">:</span>}
@@ -301,7 +305,7 @@ function SocialProofTicker() {
   const events = [
     { I: Icon.Confetti, c: "#FF9A6C", t: "Rahul from Delhi just enrolled in Generative AI" },
     { I: Icon.Check, c: "#4ADE80", t: "Priya from Noida placed at TCS — ₹14 LPA" },
-    { I: Icon.Flame, c: "#FF7A3D", t: "Batch 9 starts in 3 days — 2 seats left" },
+    { I: Icon.Flame, c: "#FF7A3D", t: "Founding batch starts Monday — 2 seats left" },
     { I: Icon.Confetti, c: "#FF9A6C", t: "Arjun from Bangalore placed at Infosys — ₹12 LPA" },
     { I: Icon.Check, c: "#4ADE80", t: "Sneha from Mumbai completed Cloud & DevOps" },
     { I: Icon.Sparkle, c: "#8BA4FF", t: "Vikram from Hyderabad enrolled in Data Science" },
@@ -388,7 +392,10 @@ function StatsRow() {
 
 /* ───────────────────────── COURSES ───────────────────────── */
 function FeaturedCourses() {
-  const featured = courses.filter(c => ["generative-ai-multi-agent", "data-science-ml-ai", "cpep-customized-professional-excellence"].includes(c.slug));
+  const featured = ["ai-engineer-agents-automation", "ai-powered-data-analyst", "java-full-stack-ai", "mern-full-stack-ai", "mobile-app-developer-ai", "data-scientist-ml-genai"]
+    .map((slug) => courses.find((c) => c.slug === slug)!).filter(Boolean);
+  const starters = ["ai-productivity", "ai-assisted-coding", "python-programming", "core-java", "flutter-first-app", "sql-excel"]
+    .map((slug) => courses.find((c) => c.slug === slug)!).filter(Boolean);
   const [active, setActive] = useState(0);
   const rowRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -409,9 +416,9 @@ function FeaturedCourses() {
     <section className="py-16 md:py-24 bg-soft overflow-hidden">
       <div className="max-w-brand mx-auto px-6">
         <Reveal className="text-center mb-10 md:mb-14">
-          <SectionLabel>Our programs</SectionLabel>
-          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">Career-launching tech programs</h2>
-          <p className="mt-3 text-muted text-[14px] md:text-[16px] max-w-xl mx-auto">12 industry-aligned programs with live mentorship, real projects, and placement support until your offer.</p>
+          <SectionLabel>AI-native programs</SectionLabel>
+          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">Programs built for the AI era</h2>
+          <p className="mt-3 text-muted text-[14px] md:text-[16px] max-w-xl mx-auto">AI is built into every course. Live mentors, max 5 per batch, real projects — and a certificate plus internship with every career program.</p>
         </Reveal>
       </div>
 
@@ -421,9 +428,9 @@ function FeaturedCourses() {
           <Link key={course.slug} href={`/courses/${course.slug}`}
             className="tap shrink-0 w-[82vw] max-w-[340px] bg-white rounded-[20px] overflow-hidden transition-all duration-300"
             style={{ boxShadow: active === i ? "0 0 0 1.5px rgba(59,91,255,0.55), 0 18px 44px rgba(59,91,255,0.22)" : "0 2px 12px rgba(14,21,38,0.06)", transform: active === i ? "scale(1)" : "scale(0.96)", opacity: active === i ? 1 : 0.75 }}>
-            <CourseArt slug={course.slug} category={course.category} title={course.title} priority={i === 0} />
+            <CourseArt slug={course.slug} category={course.category} title={course.title} priority={i === 0} tag={course.hot ? "Trending" : "Career"} />
             <div className="p-4 flex items-center justify-between card-lift">
-              <div><div className="text-[18px] font-extrabold text-ink tracking-tight">{course.feeDisplay}</div><div className="text-[12px] text-muted">{course.duration} · live</div></div>
+              <div><div className="text-[15px] font-extrabold text-ink tracking-tight">{course.duration} · live</div><div className="text-[12px] text-muted">Certificate + internship</div></div>
               <span className="btn-grad text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>
             </div>
           </Link>
@@ -437,14 +444,14 @@ function FeaturedCourses() {
 
       <div className="hidden md:grid max-w-brand mx-auto px-6 grid-cols-3 gap-6">
         {featured.map((course, i) => (
-          <Reveal key={course.slug} delay={i * 0.08}>
+          <Reveal key={course.slug} delay={(i % 3) * 0.08}>
             <MotionLink href={`/courses/${course.slug}`}
               whileHover={{ y: -8, boxShadow: "0 0 0 1.5px rgba(59,91,255,0.5), 0 28px 56px -12px rgba(59,91,255,0.28)" }}
               transition={{ duration: 0.28, ease: EASE }}
               className="group block bg-white rounded-[20px] overflow-hidden" style={{ boxShadow: "0 2px 12px rgba(14,21,38,0.06)" }}>
-              <div className="transition-transform duration-500 group-hover:scale-[1.03] origin-center"><CourseArt slug={course.slug} category={course.category} title={course.title} priority={i === 0} /></div>
+              <div className="transition-transform duration-500 group-hover:scale-[1.03] origin-center"><CourseArt slug={course.slug} category={course.category} title={course.title} priority={i === 0} tag={course.hot ? "Trending" : "Career"} /></div>
               <div className="p-5 flex items-center justify-between card-lift bg-white relative">
-                <div><div className="text-[20px] font-extrabold text-ink tracking-tight">{course.feeDisplay}</div><div className="text-[12px] text-muted">{course.duration} · live</div></div>
+                <div><div className="text-[16px] font-extrabold text-ink tracking-tight">{course.duration} · live</div><div className="text-[12px] text-muted">Certificate + internship</div></div>
                 <span className="btn-grad text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>
               </div>
             </MotionLink>
@@ -452,9 +459,100 @@ function FeaturedCourses() {
         ))}
       </div>
 
-      <Reveal className="text-center mt-10">
-        <Magnetic><Link href="/courses" className="btn-grad tap inline-flex items-center gap-2 px-8 py-4 text-white font-extrabold rounded-full text-[15px]">View all 12 courses <Icon.ArrowRight size={16} /></Link></Magnetic>
+      {/* Start small — short courses as the low-commitment front door */}
+      <Reveal className="max-w-brand mx-auto px-6 mt-12 md:mt-16">
+        <div className="relative overflow-hidden rounded-[22px] bg-white border border-[#E6E3F7] p-5 md:p-7" style={{ boxShadow: "0 18px 50px -24px rgba(59,91,255,0.25), inset 0 1px 0 #fff" }}>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2 mb-4">
+            <div>
+              <div className="text-[11px] font-extrabold uppercase tracking-[0.15em] text-accent">Not ready for a full program?</div>
+              <h3 className="mt-1 text-[20px] md:text-[24px] font-extrabold text-ink tracking-[-0.02em]">Start with a 4–6 week short course</h3>
+            </div>
+            <p className="text-[13px] text-muted md:text-right">Upgrade to the full program later — pay only the difference.</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {starters.map((c) => (
+              <Link key={c.slug} href={`/courses/${c.slug}`} className="tap inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-soft border border-[#E6E3F7] text-[13px] font-bold text-ink hover:border-primary hover:text-primary transition-colors">
+                <span className="whitespace-nowrap">{c.title.split(":")[0]}</span> <span className="text-muted font-semibold whitespace-nowrap">· {c.duration}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
       </Reveal>
+
+      <Reveal className="text-center mt-10">
+        <Magnetic><Link href="/courses" className="btn-grad tap inline-flex items-center gap-2 px-8 py-4 text-white font-extrabold rounded-full text-[15px]">Explore all {courses.length} courses <Icon.ArrowRight size={16} /></Link></Magnetic>
+      </Reveal>
+    </section>
+  );
+}
+
+/* ───────────────────────── INTERNSHIPS + WORKSHOPS ───────────────────────── */
+function InternshipsAndWorkshops() {
+  const internships = [
+    { weeks: "4 weeks", title: "Starter Internship", desc: "One real project, mentor reviews and a certificate — perfect for a semester requirement.", I: Icon.Seedling },
+    { weeks: "6 weeks", title: "Project Internship", desc: "Build and deploy a portfolio project with a team, Git workflow and weekly reviews.", I: Icon.Rocket, hot: true },
+    { weeks: "8 weeks", title: "Industry Internship", desc: "A capstone-grade project, presentation and a letter of recommendation.", I: Icon.Trophy },
+  ];
+  const freeWs = workshops.filter((w) => w.kind === "free");
+  return (
+    <section className="relative py-16 md:py-24 bg-ink2 overflow-hidden">
+      <Grain />
+      <Slashes side="left" tone="primary" opacity={0.08} height={760} />
+      <div className="relative max-w-brand mx-auto px-6">
+        {/* Internships */}
+        <Reveal className="text-center mb-10 md:mb-12">
+          <SectionLabel dark>Internships + certificate</SectionLabel>
+          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-white tracking-[-0.03em] leading-[1.08]">Get the internship <span className="grad-text">recruiters ask for</span></h2>
+          <p className="mt-3 text-white/60 text-[14px] md:text-[16px] max-w-xl mx-auto">Nearly 6 in 10 fresher job postings now want internship experience. Do yours on a real project, with a mentor, in any track.</p>
+        </Reveal>
+        <div className="grid md:grid-cols-3 gap-4 md:gap-5">
+          {internships.map((it, i) => (
+            <Reveal key={it.title} delay={i * 0.08}>
+              <div className="relative h-full overflow-hidden rounded-[20px] p-5 md:p-6 card-lift-dark" style={{ background: "rgba(255,255,255,0.04)", border: it.hot ? "1px solid rgba(139,164,255,0.45)" : "1px solid rgba(255,255,255,0.09)" }}>
+                {it.hot && <span className="absolute top-4 right-4 text-[10px] font-extrabold uppercase tracking-wide px-2.5 py-1 rounded-full text-white btn-grad">Most chosen</span>}
+                <IconTile tone="primary" size={44} dark><it.I size={21} /></IconTile>
+                <div className="mt-4 text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#8BA4FF]">{it.weeks}</div>
+                <div className="mt-1 text-[19px] font-extrabold text-white tracking-[-0.01em]">{it.title}</div>
+                <p className="mt-2 text-[13.5px] text-white/60 leading-relaxed">{it.desc}</p>
+                <div className="mt-4 flex flex-wrap gap-1.5">
+                  {["Real project", "Mentor", "Certificate"].map((b) => (
+                    <span key={b} className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-white/[0.06] border border-white/10 text-white/75">{b}</span>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal className="mt-7 flex flex-col sm:flex-row gap-3 justify-center">
+          <Link href="/internship" className="btn-grad tap inline-flex items-center justify-center gap-2 px-7 py-3.5 text-white font-extrabold rounded-full text-[14px]">Explore internships <Icon.ArrowRight size={15} /></Link>
+          <a href="https://wa.me/919936609430?text=Hi!%20I%27m%20interested%20in%20an%20internship%20with%20certificate." target="_blank" rel="noopener noreferrer" className="tap inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#16A34A] text-white font-bold rounded-full text-[14px]"><Icon.WhatsApp size={17} /> Ask on WhatsApp</a>
+        </Reveal>
+
+        {/* Workshops */}
+        <div className="mt-16 md:mt-20">
+          <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-6">
+            <div>
+              <SectionLabel dark>Free workshops</SectionLabel>
+              <h3 className="mt-3 text-[24px] md:text-[32px] font-extrabold text-white tracking-[-0.03em] leading-[1.1]">Try it live this week — free</h3>
+            </div>
+            <Link href="/workshops" className="text-[13px] font-bold text-[#8BA4FF] hover:text-white inline-flex items-center gap-1.5">All workshops, incl. weekend certificates <Icon.ArrowRight size={14} /></Link>
+          </Reveal>
+          <div className="snap-row flex md:grid md:grid-cols-3 gap-4 overflow-x-auto scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0 pb-1">
+            {freeWs.map((w) => (
+              <div key={w.slug} className="shrink-0 w-[80vw] max-w-[320px] md:w-auto md:max-w-none flex flex-col rounded-[20px] p-5 bg-white">
+                <div className="flex items-center justify-between mb-3">
+                  <SkillIcon emoji={w.icon} size={40} />
+                  <span className="text-[10.5px] font-extrabold uppercase tracking-wide px-2.5 py-1 rounded-full bg-[#16A34A]/10 text-[#16A34A]">Free · {w.duration}</span>
+                </div>
+                <div className="text-[17px] font-extrabold text-ink leading-snug">{w.title}</div>
+                <div className="mt-1.5 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-muted"><Icon.Calendar size={14} className="text-primary" />{w.schedule} · {w.mode}</div>
+                <p className="mt-2 text-[13px] text-muted leading-relaxed flex-1">{w.blurb}</p>
+                <WorkshopButton title={w.title} kind="free" className="btn-grad tap mt-4 w-full py-3 rounded-full text-white font-extrabold text-[14px]">Reserve free seat</WorkshopButton>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
@@ -718,7 +816,9 @@ function FAQSection() {
   const faqs = [
     { q: "Are the classes live or recorded?", a: "100% live. Every session is taught in real time by your mentor. Recordings are shared within 24 hours if you miss a class — but attendance is expected. This is not a pre-recorded course." },
     { q: "What if I don't get placed after completing the course?", a: "We keep supporting you until you get placed. No time limit. Future batches free, mock interview sessions, resume reviews — all included until you land an offer." },
-    { q: "Can I pay in EMI or after getting placed?", a: "Yes on both. 0% EMI options are available, and eligible candidates can choose Pay After Placement where you pay only after your first salary." },
+    { q: "What's the difference between short courses, advanced courses and career programs?", a: "A short course (4–6 weeks) teaches one skill. An advanced course (6–8 weeks) takes one skill deeper. A career program (3–6 months) combines them with real projects, an internship and interview prep. They stack — start small and upgrade later by paying only the difference." },
+    { q: "Why isn't the fee on the website?", a: "Because it depends on your course, level and the founding-batch offer running when you join. Tap \"Get fee on WhatsApp\" on any course and we'll share the exact fee, EMI options and next batch date in minutes." },
+    { q: "Do I get a certificate and an internship?", a: "Every course comes with a certificate. Every career program also includes an internship with a real project — the kind of experience most fresher job postings now ask for." },
     { q: "How many hours per week does the course require?", a: "Roughly 15–20 hours — three live sessions of 1.5 hours each, plus assignments, projects and self-study. It's intensive by design." },
     { q: "I have no prior coding experience. Can I still join?", a: "Yes. Most programs start from fundamentals. Many of our placed students had zero coding background when they started — commitment is the only requirement." },
     { q: "What makes this different from Udemy or YouTube?", a: "Live mentorship, accountability and placement support. With max 5 students per batch, your mentor knows your name, your gaps, and follows up when you're stuck." },
@@ -775,9 +875,9 @@ function FinalCTA() {
       <div className="relative max-w-brand mx-auto px-6 text-center">
         <Reveal>
           <h2 className="text-[30px] md:text-[48px] font-extrabold text-white tracking-[-0.03em] leading-[1.05] mb-4">Ready to take<br className="md:hidden" /> the next step?</h2>
-          <p className="text-white/70 text-[14px] md:text-[16px] mb-8">Free 1:1 counseling · EMI and scholarships · Pay after placement · Lifetime placement support</p>
+          <p className="text-white/70 text-[14px] md:text-[16px] mb-8">Free 1:1 counseling · Certificate + internship · EMI available · Placement support until hired</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Magnetic className="w-full sm:w-auto"><button onClick={openPopup} className="tap w-full sm:w-auto px-8 py-4 bg-white text-primary font-extrabold rounded-full text-[15px]" style={{ boxShadow: "0 14px 36px rgba(0,0,0,0.2)" }}>Book free counseling</button></Magnetic>
+            <Magnetic className="w-full sm:w-auto"><button onClick={openPopup} className="tap w-full sm:w-auto px-8 py-4 bg-white text-primary font-extrabold rounded-full text-[15px]" style={{ boxShadow: "0 14px 36px rgba(0,0,0,0.2)" }}>Free counseling</button></Magnetic>
             <Magnetic className="w-full sm:w-auto"><a href="https://wa.me/919936609430" className="tap w-full sm:w-auto px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full text-[15px] inline-flex items-center justify-center gap-2" style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2), 0 12px 30px rgba(0,0,0,0.18)" }}><Icon.WhatsApp size={18} /> WhatsApp now</a></Magnetic>
           </div>
         </Reveal>

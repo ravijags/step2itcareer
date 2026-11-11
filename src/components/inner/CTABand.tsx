@@ -2,7 +2,7 @@ import { Grain, Slashes } from "@/components/Decor";
 import { Icon } from "@/components/Icons";
 import CounselButton from "@/components/inner/CounselButton";
 
-export default function CTABand({ title, sub, primary = "Book free counseling" }: { title: string; sub?: string; primary?: string }) {
+export default function CTABand({ title, sub, primary = "Free counseling" }: { title: string; sub?: string; primary?: string }) {
   return (
     <section className="relative z-10 cut-top overlap-up pt-24 md:pt-32 pb-20 md:pb-24 overflow-hidden" style={{ background: "var(--grad-primary)" }}>
       <Grain />

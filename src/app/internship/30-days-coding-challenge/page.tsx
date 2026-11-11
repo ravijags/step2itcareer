@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Grain, Slashes } from "@/components/Decor";
 import { Icon } from "@/components/Icons";
 import SkillIcon from "@/components/inner/SkillIcon";
@@ -5,7 +6,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "30-Day Coding Challenge — Step2ITCareer-AI",
-  description: "Master Java or Python with 2,000+ coding problems in 30 days. Live mentorship, daily tasks, placement prep. ₹10,000.",
+  description: "Master Java or Python with 2,000+ coding problems in 30 days. Live mentorship, daily tasks, placement prep.",
 };
 
 const curriculum = [
@@ -40,12 +41,12 @@ export default function ThirtyDaysPage() {
         <div className="absolute top-0 left-0 w-96 h-96 rounded-full opacity-20" style={{ background: "radial-gradient(circle, #FF7A3D, transparent 70%)", transform: "translate(-30%, -30%)" }} />
         <div className="max-w-brand mx-auto px-6 pt-32 pb-24 md:pt-40 md:pb-32 relative">
           <div className="flex flex-wrap items-center gap-3 mb-6">
-            <a href="/internship" className="text-white/60 hover:text-white/70 text-sm transition-colors">Internship</a>
+            <Link href="/internship" className="text-white/60 hover:text-white/70 text-sm transition-colors">Internship</Link>
             <span className="text-white/20">›</span>
             <span className="text-white/60 text-sm">30-Day Coding Challenge</span>
           </div>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/15 border border-accent/30 text-accent text-xs font-bold rounded-full uppercase tracking-widest mb-6">
-            30 Days · ₹10,000 · Starts Any Monday
+            30 Days · Starts Any Monday
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 max-w-3xl">
             30-Day Coding<br />
@@ -109,8 +110,8 @@ export default function ThirtyDaysPage() {
             {/* Right: Enrollment Card */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-[18px] border border-[#E6E3F7] card-lift tap p-6 shadow-card sticky top-24">
-                <div className="text-3xl font-extrabold text-ink mb-1">₹10,000</div>
-                <div className="text-sm text-muted mb-5">One-time · All inclusive</div>
+                <div className="text-2xl font-extrabold text-ink mb-1">Founding batch offer</div>
+                <div className="text-sm text-muted mb-5">Fee, EMI and next batch date — shared on WhatsApp in minutes.</div>
                 <div className="space-y-3 mb-6">
                   {[
                     ["Duration", "30 Days"],

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: { type: "website", siteName: "Step2ITCareer-AI", title: "Step2ITCareer-AI — Get Hired. Not just Trained.", description: "Live, mentor-led IT bootcamps in Noida. Max 5 students per batch." },
   twitter: { card: "summary_large_image" },
   title: "Step2ITCareer-AI — Get Job-Ready. Get Hired.",
-  description: "Live, mentor-led IT career transition programs in New Delhi. Learn in micro-batches of max 5 students and secure your future.",
+  description: "AI-native IT courses, internships and workshops in Noida — live mentors, max 5 learners per batch, certificate with every course.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -73,7 +73,7 @@ function Footer() {
           <div>
             <h4 className="text-sm font-bold mb-4 text-white/80 uppercase tracking-wider">Quick Links</h4>
             <ul className="space-y-2">
-              {[["Home", "/"], ["All Courses", "/courses"], ["Internship", "/internship"], ["Schooling Program", "/schooling"], ["About Us", "/about"], ["Contact Us", "/contact"]].map(([name, href]) => (
+              {[["Home", "/"], ["All Courses", "/courses"], ["Internship", "/internship"], ["Workshops", "/workshops"], ["Schooling Program", "/schooling"], ["About Us", "/about"], ["Contact Us", "/contact"]].map(([name, href]) => (
                 <li key={name}><Link href={href} className="text-sm text-white/60 hover:text-white transition-colors">{name}</Link></li>
               ))}
             </ul>

@@ -5,34 +5,25 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
+import { careerPrograms } from "@/lib/courses";
 import MobileNav from "@/components/MobileNav";
 import ScrollProgress from "@/components/ScrollProgress";
 
-/* Nav items — exactly per requirements doc section 2. Do not add or rename. */
+/* Nav items — requirements doc section 2, plus Workshops (approved Nov 2026). */
 const courseLinks = [
-  { name: "Generative AI & Multi-Agent Systems", href: "/courses/generative-ai-multi-agent" },
-  { name: "Data Science, ML & AI Engineering", href: "/courses/data-science-ml-ai" },
-  { name: "Data Analytics & Business Intelligence", href: "/courses/data-analytics-bi" },
-  { name: "Business Analyst & Product Management", href: "/courses/business-analyst-product-management" },
-  { name: "Full Stack Software Engineering", href: "/courses/full-stack-software-engineering" },
-  { name: "Cloud, DevOps & Platform Engineering", href: "/courses/cloud-devops-platform-engineering" },
-  { name: "Cybersecurity & Cloud Security", href: "/courses/cybersecurity-cloud-security" },
-  { name: "Software Testing & QA Automation", href: "/courses/software-testing-qa-automation" },
-  { name: "CPEP™ — Customized Excellence Program", href: "/courses/cpep-customized-professional-excellence" },
-  { name: "AI Automation & No-Code Solutions", href: "/courses/ai-automation-no-code" },
-  { name: "Digital Marketing & Growth Analytics", href: "/courses/digital-marketing-growth-analytics" },
-  { name: "System Design & Software Architecture", href: "/courses/system-design-software-architecture" },
+  ...careerPrograms.map((c) => ({ name: c.title, href: `/courses/${c.slug}` })),
+  { name: "All short & advanced courses →", href: "/courses" },
 ];
 
 const internshipLinks = [
-  { name: "30-Days Coding Challenge — ₹10,000", href: "/internship/30-days-coding-challenge" },
-  { name: "Summer/Winter Training — ₹6,000", href: "/internship/summer-winter-training" },
+  { name: "30-Days Coding Challenge", href: "/internship/30-days-coding-challenge" },
+  { name: "Summer/Winter Training Internship", href: "/internship/summer-winter-training" },
 ];
 
 const schoolingLinks = [
-  { name: "Class 6–8 Coding Program — ₹5,000", href: "/schooling/class-6-8" },
-  { name: "Class 8–10 Coding Program — ₹10,000", href: "/schooling/class-8-10" },
-  { name: "Class 10–12 Coding Program — ₹10,000", href: "/schooling/class-10-12" },
+  { name: "Class 6–8 Coding Program", href: "/schooling/class-6-8" },
+  { name: "Class 8–10 Coding Program", href: "/schooling/class-8-10" },
+  { name: "Class 10–12 Coding Program", href: "/schooling/class-10-12" },
 ];
 
 const resourceLinks = [
@@ -89,7 +80,7 @@ export default function NavClient() {
 
           {/* Desktop links — pill container */}
           <div
-            className="hidden md:flex items-center gap-0.5 rounded-full px-1.5 py-1"
+            className="hidden lg:flex items-center gap-0.5 rounded-full px-1.5 py-1"
             style={{
               background: frosted ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.05)",
               border: "1px solid rgba(255,255,255,0.09)",
@@ -98,6 +89,9 @@ export default function NavClient() {
           >
             <NavDropdown label="Courses" items={courseLinks} />
             <NavDropdown label="Internship" items={internshipLinks} />
+            <Link href="/workshops" className="nav-link px-3.5 py-2 text-[13px] font-semibold rounded-full">
+              Workshops
+            </Link>
             <NavDropdown label="Schooling Program" items={schoolingLinks} />
             <NavDropdown label="Resources" items={resourceLinks} />
             <Link href="/contact" className="nav-link px-4 py-2 text-[13px] font-semibold rounded-full">
@@ -108,7 +102,7 @@ export default function NavClient() {
           <button
             type="button"
             onClick={() => window.dispatchEvent(new CustomEvent("openLoginSheet"))}
-            className="btn-grad tap hidden md:inline-flex items-center px-5 py-2 text-[13px] font-bold rounded-full text-white"
+            className="btn-grad tap hidden lg:inline-flex items-center px-5 py-2 text-[13px] font-bold rounded-full text-white"
           >
             Login / Sign In
           </button>
@@ -136,7 +130,7 @@ function NavDropdown({ label, items }: { label: string; items: { name: string; h
       <div
         className="absolute top-full left-0 mt-2 w-72 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 overflow-hidden"
         style={{
-          background: "rgba(12,21,40,0.96)",
+          background: "rgba(12,21,40,0.99)",
           backdropFilter: "blur(16px)",
           WebkitBackdropFilter: "blur(16px)",
           border: "1px solid rgba(255,255,255,0.08)",

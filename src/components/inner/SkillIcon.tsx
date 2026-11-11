@@ -16,6 +16,7 @@ const MAP: Record<string, IconKey> = {
   "👁️": "Eye", "🎮": "Gamepad", "🧩": "Puzzle", "🌱": "Seedling", "👨‍👩‍👧": "Family", "⭐": "Star",
   "📚": "Book", "💻": "Code", "🎬": "Video", "📅": "Calendar", "✅": "Check2", "🏅": "Medal",
   "🌟": "Star", "📞": "Phone", "🖥️": "Code", "🧑‍💻": "Code", "📝": "Clipboard", "🔥": "Flame",
+  "☕": "Code", "🍎": "Mobile", "🐼": "ChartBar",
 };
 
 export function iconFor(emoji: string): IconKey {

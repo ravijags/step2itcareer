@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Grain, Slashes } from "@/components/Decor";
 import { Icon } from "@/components/Icons";
 import SkillIcon from "@/components/inner/SkillIcon";
@@ -5,7 +6,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Class 10–12 Coding Program — Step2ITCareer-AI",
-  description: "Bridge school to tech career. Python, Java, SQL, GitHub, AI tools and real projects for Class 10, 11 & 12 students. ₹10,000.",
+  description: "Bridge school to tech career. Python, Java, SQL, GitHub, AI tools and real projects for Class 10, 11 & 12 students.",
 };
 
 export default function Class1012Page() {
@@ -19,12 +20,12 @@ export default function Class1012Page() {
         <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full opacity-15" style={{ background: "radial-gradient(circle, #FF7A3D, transparent 70%)", transform: "translate(-30%, 30%)" }} />
         <div className="max-w-brand mx-auto px-6 pt-32 pb-24 md:pt-40 md:pb-32 relative text-center">
           <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
-            <a href="/schooling" className="text-white/60 hover:text-white/70 text-sm transition-colors">Schooling Programs</a>
+            <Link href="/schooling" className="text-white/60 hover:text-white/70 text-sm transition-colors">Schooling Programs</Link>
             <span className="text-white/20">›</span>
             <span className="text-white/60 text-sm">Class 10–12</span>
           </div>
           <div className="inline-flex items-center gap-2 px-5 py-2 text-xs font-bold rounded-full uppercase tracking-widest mb-6" style={{ background: "rgba(255,122,61,0.15)", border: "1px solid rgba(255,122,61,0.3)", color: "#FF9966" }}>
-            Class 10, 11 & 12 · ₹10,000 · Pre-College Tech Prep
+            Class 10, 11 & 12 · Pre-College Tech Prep
           </div>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6">
             From Student to<br />
@@ -49,7 +50,7 @@ export default function Class1012Page() {
       {/* Stats */}
       <div className="overlap-up" style={{ background: "var(--grad-accent)" }}>
         <div className="max-w-brand mx-auto px-6 pt-[calc(var(--cut)+20px)] md:pt-[calc(var(--cut)+28px)] pb-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[{ value: "₹10,000", label: "Program Fee" }, { value: "GitHub", label: "Portfolio Built" }, { value: "AI Tools", label: "Industry Exposure" }, { value: "1:1", label: "Mentorship" }].map((s) => (
+          {[{ value: "Certificate", label: "On Completion" }, { value: "GitHub", label: "Portfolio Built" }, { value: "AI Tools", label: "Industry Exposure" }, { value: "1:1", label: "Mentorship" }].map((s) => (
             <div key={s.label} className="text-center">
               <div className="text-xl md:text-2xl font-extrabold text-white">{s.value}</div>
               <div className="text-xs text-white/60 font-semibold">{s.label}</div>
@@ -86,8 +87,8 @@ export default function Class1012Page() {
 
             <div>
               <div className="bg-white rounded-[18px] border border-[#E6E3F7] card-lift tap p-6 shadow-card sticky top-24">
-                <div className="text-3xl font-extrabold text-ink mb-1">₹10,000</div>
-                <div className="text-sm text-muted mb-5">One-time · All inclusive</div>
+                <div className="text-2xl font-extrabold text-ink mb-1">Founding batch offer</div>
+                <div className="text-sm text-muted mb-5">Fee, EMI and next batch date — shared on WhatsApp in minutes.</div>
                 <div className="space-y-3 mb-6">
                   {[["Class", "10th, 11th & 12th"], ["Mentorship", "1:1 Online"], ["Batch Size", "Max 5 Students"], ["Portfolio", "GitHub profile built"], ["AI Tools", "Included"], ["Certificate", "Yes"]].map(([k, v]) => (
                     <div key={k} className="flex justify-between items-center py-2.5 border-b border-line last:border-0">

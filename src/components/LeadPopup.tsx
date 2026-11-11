@@ -1,19 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence, type PanInfo } from "framer-motion";
-import { courses } from "@/lib/courses";
+import { courses, getCourseBySlug } from "@/lib/courses";
 import { Icon } from "@/components/Icons";
 import { Grain, Slashes } from "@/components/Decor";
 
-export default function LeadPopup({ submitted, onSubmit, onClose }: {
+export type LeadPreset = { program?: string; heading?: string; sub?: string; cta?: string };
+
+export default function LeadPopup({ submitted, onSubmit, onClose, preset }: {
+  preset?: LeadPreset;
   submitted: boolean;
   onSubmit: () => void;
   onClose: () => void;
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [form, setForm] = useState({ name: "", phone: "", email: "", program: "" });
+  const [form, setForm] = useState({ name: "", phone: "", email: "", background: "", program: preset?.program ?? "" });
+  const presetIsCustom = !!preset?.program && !courses.some((c) => c.title === preset.program);
+
+  // Pre-select the course when the popup opens on a course page.
+  useEffect(() => {
+    const m = window.location.pathname.match(/^\/courses\/([^/]+)/);
+    const c = m ? getCourseBySlug(m[1]) : undefined;
+    if (c) setForm((f) => (f.program ? f : { ...f, program: c.title }));
+    else if (window.location.pathname.startsWith("/internship")) setForm((f) => (f.program ? f : { ...f, program: "Internship" }));
+    else if (window.location.pathname.startsWith("/workshops")) setForm((f) => (f.program ? f : { ...f, program: "Workshop" }));
+  }, []);
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm(f => ({ ...f, [k]: e.target.value }));
@@ -23,7 +36,7 @@ export default function LeadPopup({ submitted, onSubmit, onClose }: {
     if (!form.name.trim() || !form.phone.trim()) { setError("Name and WhatsApp number are required."); return; }
     setLoading(true); setError("");
     try {
-      const res = await fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+      const res = await fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, source: window.location.pathname }) });
       if (res.ok) onSubmit(); else setError("Something went wrong. WhatsApp us directly.");
     } catch { setError("Something went wrong. WhatsApp us directly."); }
     finally { setLoading(false); }
@@ -63,8 +76,8 @@ export default function LeadPopup({ submitted, onSubmit, onClose }: {
               <span className="relative inline-block w-2 h-2 rounded-full bg-[#4ADE80] pulse-ring text-[#4ADE80]" />
               3 counselors online
             </div>
-            <h3 className="relative text-[22px] font-extrabold text-white tracking-tight leading-tight">Get job-ready. Get hired.</h3>
-            <p className="relative text-[13px] text-white/50 mt-1">We call back within 2 hours · Free · No obligation</p>
+            <h3 className="relative text-[22px] font-extrabold text-white tracking-tight leading-tight">{preset?.heading ?? "Get job-ready. Get hired."}</h3>
+            <p className="relative text-[13px] text-white/60 mt-1">{preset?.sub ?? "We call back within 2 hours · Free · No obligation"}</p>
           </div>
 
           <div className="overflow-y-auto">
@@ -76,7 +89,7 @@ export default function LeadPopup({ submitted, onSubmit, onClose }: {
                   </svg>
                 </div>
                 <h4 className="text-[22px] font-extrabold text-ink tracking-tight mb-2">You're on the list</h4>
-                <p className="text-[14px] text-muted mb-7">Ashvani's team will call you back within a few hours.</p>
+                <p className="text-[14px] text-muted mb-7">{preset?.program?.startsWith("Workshop") ? "We'll WhatsApp you the joining link and reminder before it starts." : "Ashvani's team will call you back within a few hours."}</p>
                 <a href="https://wa.me/919936609430" className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#16A34A] text-white font-bold rounded-full text-[14px] tap">
                   <Icon.WhatsApp size={18} /> WhatsApp us directly
                 </a>
@@ -96,13 +109,38 @@ export default function LeadPopup({ submitted, onSubmit, onClose }: {
                   <label htmlFor="lp-email">Email (optional)</label>
                 </div>
                 <div className="fl">
+                  <select id="lp-background" value={form.background} onChange={set("background")} className={form.background ? "has-value" : ""}>
+                    <option value=""></option>
+                    <option value="College student">College student</option>
+                    <option value="Fresher (graduated)">Fresher (graduated)</option>
+                    <option value="Working professional">Working professional</option>
+                    <option value="School student">School student</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <label htmlFor="lp-background">I am a… (optional)</label>
+                  <Icon.ChevronDown size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+                </div>
+                <div className="fl">
                   <select id="lp-program" value={form.program} onChange={set("program")} className={form.program ? "has-value" : ""}>
                     <option value=""></option>
-                    {courses.map(c => <option key={c.slug} value={c.title}>{c.title}</option>)}
-                    <option value="Internship">Internship</option>
-                    <option value="Schooling Program">Schooling program</option>
+                    {presetIsCustom && <option value={preset!.program}>{preset!.program}</option>}
+                    <option value="Not sure — help me choose">Not sure — help me choose</option>
+                    <optgroup label="Career programs">
+                      {courses.filter((c) => c.level === "career").map((c) => <option key={c.slug} value={c.title}>{c.title}</option>)}
+                    </optgroup>
+                    <optgroup label="Short courses">
+                      {courses.filter((c) => c.level === "short").map((c) => <option key={c.slug} value={c.title}>{c.title}</option>)}
+                    </optgroup>
+                    <optgroup label="Advanced courses">
+                      {courses.filter((c) => c.level === "advanced").map((c) => <option key={c.slug} value={c.title}>{c.title}</option>)}
+                    </optgroup>
+                    <optgroup label="More">
+                      <option value="Internship">Internship + certificate</option>
+                      <option value="Workshop">Workshop</option>
+                      <option value="Schooling Program">Schooling program (Class 6–12)</option>
+                    </optgroup>
                   </select>
-                  <label htmlFor="lp-program">Interested program (optional)</label>
+                  <label htmlFor="lp-program">Interested in (optional)</label>
                   <Icon.ChevronDown size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
                 </div>
 
@@ -110,7 +148,7 @@ export default function LeadPopup({ submitted, onSubmit, onClose }: {
 
                 <button type="submit" disabled={loading}
                   className="btn-grad tap mt-1 w-full py-4 rounded-full text-white font-extrabold text-[15px] flex items-center justify-center gap-2 disabled:opacity-70">
-                  {loading ? "Sending…" : <>Request free callback <Icon.ArrowRight size={16} /></>}
+                  {loading ? "Sending…" : <>{preset?.cta ?? "Request free callback"} <Icon.ArrowRight size={16} /></>}
                 </button>
                 <p className="text-center text-[13px] text-muted">
                   or <a href="https://wa.me/919936609430" className="text-[#16A34A] font-bold">WhatsApp us directly</a>

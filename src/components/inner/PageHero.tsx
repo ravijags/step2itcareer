@@ -22,7 +22,7 @@ export default function PageHero({ eyebrow, title, description, chips, children,
           </div>
         )}
         <h1 className="text-[34px] sm:text-5xl md:text-[60px] font-extrabold text-white leading-[1.05] tracking-[-0.03em] max-w-3xl">{title}</h1>
-        {description && <p className="mt-5 text-[15px] md:text-[17px] text-white/50 max-w-2xl leading-relaxed">{description}</p>}
+        {description && <p className="mt-5 text-[15px] md:text-[17px] text-white/60 max-w-2xl leading-relaxed">{description}</p>}
         {children}
       </div>
     </section>

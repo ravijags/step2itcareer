@@ -1,15 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import LeadPopup from "./LeadPopup";
+import LeadPopup, { type LeadPreset } from "./LeadPopup";
 
 export default function PopupController() {
   const [open, setOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [preset, setPreset] = useState<LeadPreset | undefined>();
 
   // Listen for global trigger — works on every page including homepage
   useEffect(() => {
-    const handler = () => setOpen(true);
+    // Callers may pass { detail: { program, heading, sub, cta } } to tailor the sheet (e.g. a workshop signup).
+    const handler = (e: Event) => { setPreset((e as CustomEvent<LeadPreset>).detail ?? undefined); setOpen(true); };
     window.addEventListener("openLeadPopup", handler);
     return () => window.removeEventListener("openLeadPopup", handler);
   }, []);
@@ -18,7 +20,7 @@ export default function PopupController() {
   useEffect(() => {
     const KEY = "s2it-popup-shown";
     if (sessionStorage.getItem(KEY)) return;
-    const t = setTimeout(() => { sessionStorage.setItem(KEY, "1"); setOpen(true); }, 9000);
+    const t = setTimeout(() => { sessionStorage.setItem(KEY, "1"); setPreset(undefined); setOpen(true); }, 9000);
     return () => clearTimeout(t);
   }, []);
 
@@ -33,6 +35,7 @@ export default function PopupController() {
 
   return (
     <LeadPopup
+      preset={preset}
       submitted={submitted}
       onSubmit={() => setSubmitted(true)}
       onClose={() => { setOpen(false); setSubmitted(false); }}

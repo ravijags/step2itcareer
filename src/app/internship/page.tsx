@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Grain, Slashes } from "@/components/Decor";
 import SkillIcon from "@/components/inner/SkillIcon";
 import type { Metadata } from "next";
@@ -37,7 +38,7 @@ export default function InternshipPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
             {/* Card 1 */}
-            <a href="/internship/30-days-coding-challenge"
+            <Link href="/internship/30-days-coding-challenge"
               className="bg-white rounded-2xl border border-line shadow-card hover:-translate-y-1 hover:shadow-deep transition-all duration-300 overflow-hidden group flex flex-col">
               <div className="h-3 w-full" style={{ background: "linear-gradient(90deg, #FF7A3D, #FFB347)" }} />
               <div className="p-7 flex flex-col flex-1">
@@ -54,7 +55,7 @@ export default function InternshipPage() {
                   Master Java or Python with 2,000+ coding problems. Daily tasks, live doubt sessions, coding round prep — get interview-ready in 30 days.
                 </p>
                 <div className="grid grid-cols-2 gap-3 mb-6">
-                  {[["Duration", "30 Days"], ["Fee", "₹10,000"], ["Language", "Java / Python"], ["Batch", "Max 5 Students"]].map(([k, v]) => (
+                  {[["Duration", "30 Days"], ["Certificate", "Included"], ["Language", "Java / Python"], ["Batch", "Max 5 Students"]].map(([k, v]) => (
                     <div key={k} className="bg-soft rounded-xl p-3 border border-line">
                       <div className="text-[10px] text-muted font-semibold mb-0.5">{k}</div>
                       <div className="text-sm font-extrabold text-ink">{v}</div>
@@ -62,16 +63,16 @@ export default function InternshipPage() {
                   ))}
                 </div>
                 <div className="mt-auto flex items-center justify-between pt-4 border-t border-line">
-                  <div className="text-2xl font-extrabold text-ink">₹10,000</div>
+                  <div className="text-[13px] font-bold text-muted">Certificate included</div>
                   <span className="inline-flex items-center gap-1.5 px-5 py-2.5 text-white text-sm font-bold rounded-full group-hover:opacity-90 transition-opacity" style={{ background: "#FF7A3D" }}>
                     View Program →
                   </span>
                 </div>
               </div>
-            </a>
+            </Link>
 
             {/* Card 2 */}
-            <a href="/internship/summer-winter-training"
+            <Link href="/internship/summer-winter-training"
               className="bg-white rounded-2xl border border-line shadow-card hover:-translate-y-1 hover:shadow-deep transition-all duration-300 overflow-hidden group flex flex-col">
               <div className="h-3 w-full" style={{ background: "linear-gradient(90deg, #3B5BFF, #7B8FFF)" }} />
               <div className="p-7 flex flex-col flex-1">
@@ -88,7 +89,7 @@ export default function InternshipPage() {
                   Build industry-ready skills during your college break. Live projects, 1:1 mentorship, and a completion certificate across 14+ tech tracks.
                 </p>
                 <div className="grid grid-cols-2 gap-3 mb-6">
-                  {[["Duration", "4–8 Weeks"], ["Fee", "₹6,000"], ["Tracks", "14+ Available"], ["Batch", "Max 5 Students"]].map(([k, v]) => (
+                  {[["Duration", "4–8 Weeks"], ["Certificate", "Included"], ["Tracks", "14+ Available"], ["Batch", "Max 5 Students"]].map(([k, v]) => (
                     <div key={k} className="bg-soft rounded-xl p-3 border border-line">
                       <div className="text-[10px] text-muted font-semibold mb-0.5">{k}</div>
                       <div className="text-sm font-extrabold text-ink">{v}</div>
@@ -96,13 +97,13 @@ export default function InternshipPage() {
                   ))}
                 </div>
                 <div className="mt-auto flex items-center justify-between pt-4 border-t border-line">
-                  <div className="text-2xl font-extrabold text-ink">₹6,000</div>
+                  <div className="text-[13px] font-bold text-muted">Certificate included</div>
                   <span className="inline-flex items-center gap-1.5 px-5 py-2.5 text-white text-sm font-bold rounded-full group-hover:opacity-90 transition-opacity" style={{ background: "var(--grad-primary)" }}>
                     View Program →
                   </span>
                 </div>
               </div>
-            </a>
+            </Link>
 
           </div>
         </div>

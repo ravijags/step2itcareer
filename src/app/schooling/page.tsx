@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 const programs = [
   {
     class: "Class 6–8",
-    fee: "₹5,000",
     href: "/schooling/class-6-8",
     color: "#3B5BFF",
     bg: "#EEF2FF",
@@ -21,7 +20,6 @@ const programs = [
   },
   {
     class: "Class 8–10",
-    fee: "₹10,000",
     href: "/schooling/class-8-10",
     color: "#7C3AED",
     bg: "#F5F3FF",
@@ -32,7 +30,6 @@ const programs = [
   },
   {
     class: "Class 10–12",
-    fee: "₹10,000",
     href: "/schooling/class-10-12",
     color: "#FF7A3D",
     bg: "#FFF3EC",
@@ -95,7 +92,7 @@ export default function SchoolingPage() {
                     ))}
                   </ul>
                   <div className="mt-auto flex items-center justify-between pt-4 border-t border-line">
-                    <div className="text-2xl font-extrabold text-ink">{prog.fee}</div>
+                    <div className="text-[13px] font-bold text-muted">Certificate included</div>
                     <span className="inline-flex items-center gap-1.5 px-5 py-2.5 text-white text-sm font-bold rounded-full group-hover:opacity-90 transition-opacity" style={{ background: prog.color }}>
                       View Program →
                     </span>

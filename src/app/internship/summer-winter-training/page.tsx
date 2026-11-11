@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Grain, Slashes } from "@/components/Decor";
 import { Icon } from "@/components/Icons";
 import SkillIcon from "@/components/inner/SkillIcon";
@@ -5,7 +6,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Summer & Winter Training Internship — Step2ITCareer-AI",
-  description: "Build industry-ready skills with live projects, expert mentorship and placement support. 4–8 week programs in 14+ tech tracks. ₹6,000.",
+  description: "Build industry-ready skills with live projects, expert mentorship and placement support. 4–8 week programs in 14+ tech tracks.",
 };
 
 const tracks = [
@@ -43,12 +44,12 @@ export default function SummerWinterPage() {
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-15" style={{ background: "radial-gradient(circle, #3B5BFF, transparent 70%)", transform: "translate(30%, -30%)" }} />
         <div className="max-w-brand mx-auto px-6 pt-32 pb-24 md:pt-40 md:pb-32 relative">
           <div className="flex flex-wrap items-center gap-3 mb-6">
-            <a href="/internship" className="text-white/60 hover:text-white/70 text-sm transition-colors">Internship</a>
+            <Link href="/internship" className="text-white/60 hover:text-white/70 text-sm transition-colors">Internship</Link>
             <span className="text-white/20">›</span>
             <span className="text-white/60 text-sm">Summer & Winter Training</span>
           </div>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/30 text-[#FF9A6C] text-[11px] font-extrabold rounded-full uppercase tracking-[0.16em] mb-6">
-            4–8 Weeks · ₹6,000 · 14+ Tech Tracks
+            4–8 Weeks · 14+ Tech Tracks
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 max-w-3xl">
             Summer & Winter<br />
@@ -76,7 +77,7 @@ export default function SummerWinterPage() {
           {[
             { value: "4–8", label: "Weeks" },
             { value: "14+", label: "Tech Tracks" },
-            { value: "₹6,000", label: "Program Fee" },
+            { value: "Certificate", label: "On Completion" },
             { value: "1:1", label: "Mentorship" },
           ].map((s) => (
             <div key={s.label} className="text-center">
@@ -123,8 +124,8 @@ export default function SummerWinterPage() {
             {/* Enrollment Card */}
             <div>
               <div className="bg-white rounded-[18px] border border-[#E6E3F7] card-lift tap p-6 shadow-card sticky top-24">
-                <div className="text-3xl font-extrabold text-ink mb-1">₹6,000</div>
-                <div className="text-sm text-muted mb-5">One-time · All inclusive</div>
+                <div className="text-2xl font-extrabold text-ink mb-1">Founding batch offer</div>
+                <div className="text-sm text-muted mb-5">Fee, EMI and next batch date — shared on WhatsApp in minutes.</div>
                 <div className="space-y-3 mb-6">
                   {[
                     ["Duration", "4–8 Weeks"],

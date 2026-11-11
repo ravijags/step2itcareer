@@ -6,31 +6,22 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "@/components/Logo";
+import { careerPrograms } from "@/lib/courses";
 
 const courseLinks = [
-  { name: "Generative AI & Multi-Agent Systems", href: "/courses/generative-ai-multi-agent" },
-  { name: "Data Science, ML & AI Engineering", href: "/courses/data-science-ml-ai" },
-  { name: "Data Analytics & Business Intelligence", href: "/courses/data-analytics-bi" },
-  { name: "Business Analyst & Product Management", href: "/courses/business-analyst-product-management" },
-  { name: "Full Stack Software Engineering", href: "/courses/full-stack-software-engineering" },
-  { name: "Cloud, DevOps & Platform Engineering", href: "/courses/cloud-devops-platform-engineering" },
-  { name: "Cybersecurity & Cloud Security", href: "/courses/cybersecurity-cloud-security" },
-  { name: "Software Testing & QA Automation", href: "/courses/software-testing-qa-automation" },
-  { name: "CPEP™ — Customized Excellence Program", href: "/courses/cpep-customized-professional-excellence" },
-  { name: "AI Automation & No-Code Solutions", href: "/courses/ai-automation-no-code" },
-  { name: "Digital Marketing & Growth Analytics", href: "/courses/digital-marketing-growth-analytics" },
-  { name: "System Design & Software Architecture", href: "/courses/system-design-software-architecture" },
+  ...careerPrograms.map((c) => ({ name: c.title, href: `/courses/${c.slug}` })),
+  { name: "All short & advanced courses →", href: "/courses" },
 ];
 
 const internshipLinks = [
-  { name: "30-Days Coding Challenge — ₹10,000", href: "/internship/30-days-coding-challenge" },
-  { name: "Summer/Winter Training — ₹6,000", href: "/internship/summer-winter-training" },
+  { name: "30-Days Coding Challenge", href: "/internship/30-days-coding-challenge" },
+  { name: "Summer/Winter Training Internship", href: "/internship/summer-winter-training" },
 ];
 
 const schoolingLinks = [
-  { name: "Class 6–8 Coding Program — ₹5,000", href: "/schooling/class-6-8" },
-  { name: "Class 8–10 Coding Program — ₹10,000", href: "/schooling/class-8-10" },
-  { name: "Class 10–12 Coding Program — ₹10,000", href: "/schooling/class-10-12" },
+  { name: "Class 6–8 Coding Program", href: "/schooling/class-6-8" },
+  { name: "Class 8–10 Coding Program", href: "/schooling/class-8-10" },
+  { name: "Class 10–12 Coding Program", href: "/schooling/class-10-12" },
 ];
 
 const resourceLinks = [
@@ -72,7 +63,7 @@ export default function MobileNav() {
       {/* ── Animated hamburger → X button ── */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="md:hidden p-2 rounded-lg text-white relative w-10 h-10 flex items-center justify-center"
+        className="lg:hidden p-2 rounded-lg text-white relative w-10 h-10 flex items-center justify-center"
         aria-label={open ? "Close menu" : "Open menu"}
       >
         <span aria-hidden className="relative block w-[22px] h-[16px]">
@@ -98,7 +89,7 @@ export default function MobileNav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-[9997] md:hidden"
+            className="fixed inset-0 z-[9997] lg:hidden"
             style={{ background: "rgba(14,21,38,0.65)", backdropFilter: "blur(4px)" }}
             onClick={close}
             aria-hidden
@@ -115,7 +106,7 @@ export default function MobileNav() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed top-0 right-0 h-full w-[88%] max-w-[360px] bg-white z-[9998] shadow-2xl flex flex-col md:hidden"
+            className="fixed top-0 right-0 h-full w-[88%] max-w-[360px] bg-white z-[9998] shadow-2xl flex flex-col lg:hidden"
             role="dialog"
             aria-modal="true"
             aria-label="Navigation menu"
@@ -141,6 +132,9 @@ export default function MobileNav() {
             <div className="flex-1 overflow-y-auto overscroll-contain">
               <NavAccordion label="Courses" section="courses" expanded={expanded} onToggle={toggle} items={courseLinks} onClose={close} />
               <NavAccordion label="Internship" section="internship" expanded={expanded} onToggle={toggle} items={internshipLinks} onClose={close} />
+              <Link href="/workshops" onClick={close} className="flex items-center justify-between px-5 py-4 text-[14px] font-bold text-ink hover:bg-soft border-b border-line transition-colors">
+                Workshops <span className="text-[10px] font-extrabold uppercase tracking-wide px-2 py-0.5 rounded-full bg-accent/10 text-accent">Free + paid</span>
+              </Link>
               <NavAccordion label="Schooling Program" section="schooling" expanded={expanded} onToggle={toggle} items={schoolingLinks} onClose={close} />
               <NavAccordion label="Resources" section="resources" expanded={expanded} onToggle={toggle} items={resourceLinks} onClose={close} />
               <Link href="/contact" onClick={close} className="flex items-center justify-between px-5 py-4 text-[14px] font-bold text-ink hover:bg-soft border-b border-line transition-colors">
