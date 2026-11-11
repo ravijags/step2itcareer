@@ -10,6 +10,7 @@ import Reveal from "@/components/inner/Reveal";
 import CounselButton from "@/components/inner/CounselButton";
 import CurriculumPath from "@/components/inner/CurriculumPath";
 import CTABand from "@/components/inner/CTABand";
+import FeeBar from "@/components/inner/FeeBar";
 
 export async function generateStaticParams() {
   return courses.map((c) => ({ slug: c.slug }));
@@ -48,7 +49,8 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
         <Slashes side="right" tone="primary" opacity={0.1} height={720} />
         <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(59,91,255,0.18) 1px, transparent 1px)", backgroundSize: "36px 36px", opacity: 0.35 }} />
         <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse at 20% 20%, ${course.categoryColor}33, transparent 55%)` }} />
-        <div className="relative max-w-brand mx-auto px-6">
+        <div className="relative max-w-brand mx-auto px-6 lg:grid lg:grid-cols-[1fr_380px] lg:gap-14 lg:items-center">
+          <div>
           <Link href="/courses" className="inline-flex items-center gap-2 text-white/50 hover:text-white text-[13px] font-semibold mb-7 transition-colors">
             <Icon.ArrowRight size={14} className="rotate-180" /> All courses
           </Link>
@@ -66,6 +68,20 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
           <div className="lg:hidden mt-8 flex flex-col sm:flex-row gap-3">
             <a href={fee} target="_blank" rel="noopener noreferrer" className="tap flex-1 py-3.5 bg-[#16A34A] text-white font-extrabold rounded-full flex items-center justify-center gap-2 text-[14px]"><Icon.WhatsApp size={17} /> Get fee on WhatsApp</a>
             <CounselButton className="btn-ghost-dark tap flex-1 py-3.5 rounded-full text-white font-bold text-[14px]">Free counseling</CounselButton>
+          </div>
+          <div id="hero-actions-end" />
+          </div>
+
+          {/* Desktop: the course photo fills the right side instead of empty space */}
+          <div className="hidden lg:block">
+            <div className="rounded-[22px] overflow-hidden" style={{ boxShadow: `0 30px 70px -20px ${course.categoryColor}77, 0 0 0 1px rgba(255,255,255,0.08)` }}>
+              <CourseArt slug={course.slug} title={course.roles.slice(0, 2).join(" · ")} tag={LEVELS[course.level].short} height="h-[250px]" priority />
+              <div className="bg-[#0C1328] px-5 py-4 grid grid-cols-3 gap-3 text-center">
+                {[[course.duration, "Duration"], ["Max 5", "Per batch"], [isCareer ? "Yes" : "Cert.", isCareer ? "Internship" : "On completion"]].map(([v, l]) => (
+                  <div key={l}><div className="text-[15px] font-extrabold text-white">{v}</div><div className="text-[11px] text-white/45">{l}</div></div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -116,7 +132,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
             <Reveal>
               <SectionLabel>Curriculum</SectionLabel>
               <h2 className="mt-3 mb-2 text-[24px] md:text-[32px] font-extrabold text-ink tracking-[-0.03em]">How the program unfolds</h2>
-              <p className="text-muted text-[14px] mb-8">Scroll — each phase lights up as you reach it.</p>
+              <p className="text-muted text-[14px] mb-8">{course.curriculum.length} phases, each ending in something you&apos;ve built.</p>
               <CurriculumPath items={course.curriculum} />
             </Reveal>
 
@@ -146,7 +162,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
                       <div className="w-20 shrink-0 rounded-[12px] overflow-hidden"><CourseArt slug={c.slug} title="" badge={false} height="h-[56px]" /></div>
                       <div className="min-w-0 flex-1">
                         <div className="text-[10.5px] font-extrabold uppercase tracking-wide text-primary">{LEVELS[c.level].label} · {c.duration}</div>
-                        <div className="text-[14px] font-extrabold text-ink leading-snug truncate">{c.title}</div>
+                        <div className="text-[14px] font-extrabold text-ink leading-snug line-clamp-2">{c.title}</div>
                       </div>
                       <Icon.ArrowRight size={16} className="text-primary shrink-0 transition-transform group-hover:translate-x-1" />
                     </Link>
@@ -188,8 +204,8 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
                 <span className="relative inline-block w-2 h-2 rounded-full bg-[#FF7A3D] pulse-ring text-[#FF7A3D]" />
                 Only 5 seats per batch
               </div>
-              <div className="text-[24px] font-extrabold tracking-[-0.02em] leading-tight text-ink mb-1">Founding batch offer</div>
-              <div className="text-[13px] text-muted mb-6">Fee, EMI and the next batch date — shared personally on WhatsApp in minutes.</div>
+              <div className="text-[24px] font-extrabold tracking-[-0.02em] leading-tight text-ink mb-1">Join the next batch</div>
+              <div className="text-[13px] text-muted mb-6">Fee, EMI and the start date — shared personally on WhatsApp in minutes.</div>
               <div className="mb-6">
                 {facts.map(([label, value]) => (
                   <div key={label} className="flex justify-between items-center py-3 border-b border-[#EEEBF8] text-[14px]">
@@ -208,7 +224,8 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
         </div>
       </div>
 
-      <CTABand title={isCareer ? "Ready to start this program?" : "Ready to start this course?"} sub="Free 1:1 counseling with a mentor — we'll map the fastest route to your first offer." />
+      <CTABand title={isCareer ? "Ready when you are." : "Ready to start?"} sub="Free 1:1 counseling with a mentor — we'll map the fastest route to your first offer." />
+      <FeeBar title={course.title} href={fee} />
     </div>
   );
 }

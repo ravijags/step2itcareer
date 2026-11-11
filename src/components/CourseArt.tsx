@@ -42,7 +42,7 @@ const PHOTOS: Record<string, string> = {
   "cybersecurity-ai-security": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=900&q=80&auto=format",
   "ethical-hacking-basics": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=900&q=80&auto=format",
   "business-analyst-project-coordinator-ai": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=900&q=80&auto=format",
-  "digital-marketing-ai": "https://images.unsplash.com/photo-1432888622747-4eb9a8f2c293?w=900&q=80&auto=format",
+  "digital-marketing-ai": "https://images.unsplash.com/photo-1557838923-2985c318be48?w=900&q=80&auto=format",
 };
 const FALLBACK = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900&q=80&auto=format";
 const BLUR = "data:image/svg+xml;base64," + Buffer.from(
@@ -65,7 +65,7 @@ export default function CourseArt({ slug, title, height = "h-[150px] md:h-[170px
       {badge && (
         <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
           <span className="text-[10px] font-extrabold uppercase tracking-wide px-2.5 py-1 rounded-full text-white" style={{ background: "var(--grad-primary)" }}>{tag}</span>
-          <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full text-[#4ADE80] border border-[#4ADE80]/35 bg-[#4ADE80]/25 backdrop-blur-sm"><span className="w-1.5 h-1.5 rounded-full bg-[#4ADE80]" />Live</span>
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full text-[#6EF0A0] border border-[#4ADE80]/40 backdrop-blur-sm" style={{ background: "rgba(7,11,24,0.72)" }}><span className="w-1.5 h-1.5 rounded-full bg-[#4ADE80]" />Live</span>
         </div>
       )}
       <div className="absolute bottom-0 left-0 right-0 p-4 pt-12" style={{ background: "linear-gradient(to top, rgba(10,20,40,0.96), rgba(10,20,40,0.6) 55%, transparent)" }}>

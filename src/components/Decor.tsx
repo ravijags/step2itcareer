@@ -26,13 +26,9 @@ export function Slashes({
   );
 }
 
-/* Tiny corner slash for cards */
-export function CornerSlash({ tone = "primary" }: { tone?: "primary" | "accent" }) {
-  return (
-    <div aria-hidden style={{
-      position: "absolute", right: -6, top: -10, width: 8, height: 46,
-      background: tone === "accent" ? "#FF7A3D" : "#3B5BFF", opacity: 0.09,
-      transform: "rotate(22deg)", borderRadius: 4, pointerEvents: "none",
-    }} />
-  );
+/* Tiny corner slash for cards — retired in v4.1: at card size it read as a stray mark, not decor.
+   Kept as a no-op so existing imports keep compiling. */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function CornerSlash(_props: { tone?: "primary" | "accent" }) {
+  return null;
 }

@@ -63,7 +63,7 @@ const t = (track: Track) => ({ track, category: TRACKS[track].label, categoryCol
 const career: Course[] = [
   {
     slug: "ai-engineer-agents-automation", title: "AI Engineer: Agents & Automation", level: "career", ...t("ai"), duration: "5 Months", hot: true,
-    description: "Build AI agents, chatbots and automations that do real work — from your first prompt to a deployed multi-agent app. The fastest-growing tech role of 2026, taught from scratch.",
+    description: "Build AI agents, chatbots and automations that do real work — from your first prompt to a deployed multi-agent app. One of the fastest-growing roles in tech, taught from scratch.",
     audience: ["Students and freshers who want the hottest role in tech", "Developers and testers moving into AI", "Non-CS learners — Python is taught from zero"],
     aiAngle: "This whole program is AI: you build with LLM APIs, agent frameworks and automation tools the way AI teams work today.",
     skills: [
@@ -85,7 +85,7 @@ const career: Course[] = [
   },
   {
     slug: "ai-powered-data-analyst", title: "AI-Powered Data Analyst", level: "career", ...t("data"), duration: "4 Months", hot: true,
-    description: "Turn messy data into decisions with Excel, SQL, Power BI and Python — and let AI do the heavy lifting. The #1 entry route into AI-era jobs for freshers.",
+    description: "Turn messy data into decisions with Excel, SQL, Power BI and Python — and let AI do the heavy lifting. One of the most popular first steps into AI-era jobs for freshers.",
     audience: ["Any graduate — B.Tech, BCA, B.Com, BBA, B.Sc", "Freshers who want a non-coding-heavy tech role", "Anyone who loves numbers and finding patterns"],
     aiAngle: "Use AI to write SQL, clean data, explain charts and draft reports — then verify it like a professional.",
     skills: [

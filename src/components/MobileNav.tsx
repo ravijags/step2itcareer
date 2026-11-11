@@ -6,33 +6,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "@/components/Logo";
-import { careerPrograms } from "@/lib/courses";
-
-const courseLinks = [
-  ...careerPrograms.map((c) => ({ name: c.title, href: `/courses/${c.slug}` })),
-  { name: "All short & advanced courses →", href: "/courses" },
-];
-
-const internshipLinks = [
-  { name: "30-Days Coding Challenge", href: "/internship/30-days-coding-challenge" },
-  { name: "Summer/Winter Training Internship", href: "/internship/summer-winter-training" },
-];
-
-const schoolingLinks = [
-  { name: "Class 6–8 Coding Program", href: "/schooling/class-6-8" },
-  { name: "Class 8–10 Coding Program", href: "/schooling/class-8-10" },
-  { name: "Class 10–12 Coding Program", href: "/schooling/class-10-12" },
-];
-
-const resourceLinks = [
-  { name: "Blogs", href: "/resources/blogs" },
-  { name: "Career", href: "/resources/career" },
-  { name: "About Us", href: "/about" },
-  { name: "Pay After Placement", href: "/resources/pay-after-placement" },
-  { name: "Tutorials", href: "/resources/tutorials" },
-  { name: "Tech Trends", href: "/resources/tech-trends" },
-  { name: "Success Stories", href: "/resources/success-stories" },
-];
+import { courseLinks, internshipLinks, schoolingLinks, resourceLinks } from "@/lib/nav";
 
 type Section = "courses" | "internship" | "schooling" | "resources" | null;
 

@@ -35,20 +35,27 @@ function WorkshopCard({ w }: { w: Workshop }) {
         <span className="inline-flex items-center gap-1.5"><Icon.Bolt size={14} className="text-primary" />{w.duration}</span>
         <span className="inline-flex items-center gap-1.5"><Icon.Video size={14} className="text-primary" />{w.mode}</span>
       </div>
-      <ul className="space-y-1.5 mb-5 flex-1">
+      <ul className="space-y-1.5 mb-5">
         {w.outcomes.map((o) => (
           <li key={o} className="flex gap-2 text-[13px] text-ink"><Icon.Check size={15} className="text-[#16A34A] shrink-0 mt-0.5" />{o}</li>
         ))}
       </ul>
-      <WorkshopButton title={w.title} kind={w.kind}
-        className={`tap w-full py-3.5 rounded-full font-extrabold text-[14px] text-white ${free ? "btn-grad" : "btn-grad-accent"}`}>
-        {free ? "Reserve free seat" : "Register now"}
-      </WorkshopButton>
-      {next && (
-        <Link href={`/courses/${next.slug}`} className="mt-3 text-center text-[12px] font-bold text-primary hover:underline">
-          Loved it? Continue with {next.title} →
-        </Link>
-      )}
+      {/* Button block pinned to the bottom so every card's button lines up, with or without the follow-on link */}
+      <div className="mt-auto">
+        <WorkshopButton title={w.title} kind={w.kind}
+          className={`tap w-full py-3.5 rounded-full font-extrabold text-[14px] text-white ${free ? "btn-grad" : "btn-grad-accent"}`}>
+          {free ? "Reserve free seat" : "Register now"}
+        </WorkshopButton>
+        <div className="mt-3 min-h-[34px] text-center text-[12px] leading-snug">
+          {next ? (
+            <Link href={`/courses/${next.slug}`} className="font-bold text-primary hover:underline">
+              Loved it? Continue with {next.title}&nbsp;→
+            </Link>
+          ) : (
+            <span className="text-muted">Live, hands-on · no experience needed</span>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

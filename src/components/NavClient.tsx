@@ -5,36 +5,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
-import { careerPrograms } from "@/lib/courses";
+import { coursesByLevel, LEVELS, type Level } from "@/lib/courses";
+import { internshipLinks, schoolingLinks, resourceLinks, type NavItem } from "@/lib/nav";
 import MobileNav from "@/components/MobileNav";
 import ScrollProgress from "@/components/ScrollProgress";
-
-/* Nav items — requirements doc section 2, plus Workshops (approved Nov 2026). */
-const courseLinks = [
-  ...careerPrograms.map((c) => ({ name: c.title, href: `/courses/${c.slug}` })),
-  { name: "All short & advanced courses →", href: "/courses" },
-];
-
-const internshipLinks = [
-  { name: "30-Days Coding Challenge", href: "/internship/30-days-coding-challenge" },
-  { name: "Summer/Winter Training Internship", href: "/internship/summer-winter-training" },
-];
-
-const schoolingLinks = [
-  { name: "Class 6–8 Coding Program", href: "/schooling/class-6-8" },
-  { name: "Class 8–10 Coding Program", href: "/schooling/class-8-10" },
-  { name: "Class 10–12 Coding Program", href: "/schooling/class-10-12" },
-];
-
-const resourceLinks = [
-  { name: "Blogs", href: "/resources/blogs" },
-  { name: "Career", href: "/resources/career" },
-  { name: "About Us", href: "/about" },
-  { name: "Pay After Placement", href: "/resources/pay-after-placement" },
-  { name: "Tutorials", href: "/resources/tutorials" },
-  { name: "Tech Trends", href: "/resources/tech-trends" },
-  { name: "Success Stories", href: "/resources/success-stories" },
-];
 
 export const NAV_HEIGHT = 56;
 
@@ -48,6 +22,11 @@ export default function NavClient() {
   const pathname = usePathname() ?? "/";
   const lightTop = hasLightTop(pathname);
   const [scrolled, setScrolled] = useState(false);
+  // A menu stays open only on the page it was opened on — any navigation closes it,
+  // even when the cursor is still resting where the panel was.
+  const [menuState, setMenuState] = useState<{ id: string | null; path: string }>({ id: null, path: pathname });
+  const open = menuState.path === pathname ? menuState.id : null;
+  const setOpen = (id: string | null) => setMenuState({ id, path: pathname });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -56,7 +35,14 @@ export default function NavClient() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setMenuState((m) => ({ ...m, id: null })); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   const frosted = scrolled || lightTop;
+  const menu = (id: string) => ({ id, open: open === id, setOpen });
 
   return (
     <>
@@ -64,16 +50,17 @@ export default function NavClient() {
         className="fixed top-0 left-0 right-0 z-40"
         style={{
           height: NAV_HEIGHT,
-          background: frosted ? "rgba(14,20,44,0.78)" : "transparent",
+          // Near-solid ink when scrolled: the old 78% glass turned muddy grey over white sections.
+          background: frosted ? "rgba(10,15,34,0.94)" : "transparent",
           backdropFilter: frosted ? "blur(16px) saturate(140%)" : "none",
           WebkitBackdropFilter: frosted ? "blur(16px) saturate(140%)" : "none",
           borderBottom: frosted ? "1px solid rgba(139,164,255,0.22)" : "1px solid transparent",
-          transition: "background 300ms ease, backdrop-filter 300ms ease, border-color 300ms ease",
+          transition: "background 250ms ease, border-color 250ms ease",
         }}
       >
         <ScrollProgress />
 
-        <nav className="max-w-brand mx-auto px-6 h-full flex items-center justify-between">
+        <nav className="relative max-w-brand mx-auto px-6 h-full flex items-center justify-between" onMouseLeave={() => setOpen(null)}>
           <Link href="/" className="flex items-center" aria-label="Step2ITCareer-AI home">
             <Logo size="md" theme="dark" />
           </Link>
@@ -81,20 +68,16 @@ export default function NavClient() {
           {/* Desktop links — pill container */}
           <div
             className="hidden lg:flex items-center gap-0.5 rounded-full px-1.5 py-1"
-            style={{
-              background: frosted ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.09)",
-              transition: "background 300ms ease",
-            }}
+            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)" }}
           >
-            <NavDropdown label="Courses" items={courseLinks} />
-            <NavDropdown label="Internship" items={internshipLinks} />
-            <Link href="/workshops" className="nav-link px-3.5 py-2 text-[13px] font-semibold rounded-full">
+            <CoursesMega {...menu("courses")} />
+            <NavDropdown label="Internship" items={internshipLinks} {...menu("internship")} />
+            <Link href="/workshops" onMouseEnter={() => setOpen(null)} className="nav-link px-3.5 py-2 text-[13px] font-semibold rounded-full">
               Workshops
             </Link>
-            <NavDropdown label="Schooling Program" items={schoolingLinks} />
-            <NavDropdown label="Resources" items={resourceLinks} />
-            <Link href="/contact" className="nav-link px-4 py-2 text-[13px] font-semibold rounded-full">
+            <NavDropdown label="Schooling Program" items={schoolingLinks} {...menu("schooling")} />
+            <NavDropdown label="Resources" items={resourceLinks} {...menu("resources")} />
+            <Link href="/contact" onMouseEnter={() => setOpen(null)} className="nav-link px-4 py-2 text-[13px] font-semibold rounded-full">
               Contact Us
             </Link>
           </div>
@@ -111,37 +94,88 @@ export default function NavClient() {
         </nav>
       </header>
 
-      {/* Spacer: only on light-top pages so content isn't hidden under the fixed nav.
-          Dark-hero pages want the nav to overlay the hero, so no spacer there. */}
+      {/* Spacer: only on light-top pages so content isn't hidden under the fixed nav. */}
       {lightTop && <div style={{ height: NAV_HEIGHT }} aria-hidden />}
     </>
   );
 }
 
-function NavDropdown({ label, items }: { label: string; items: { name: string; href: string }[] }) {
+type MenuProps = { id: string; open: boolean; setOpen: (v: string | null) => void };
+
+const PANEL_STYLE: React.CSSProperties = {
+  background: "#0C1328",
+  border: "1px solid rgba(255,255,255,0.09)",
+  boxShadow: "0 24px 60px rgba(0,0,0,0.55)",
+};
+
+function Trigger({ label, id, open, setOpen }: MenuProps & { label: string }) {
   return (
-    <div className="relative group">
-      <button className="nav-link flex items-center gap-1 px-4 py-2 text-[13px] font-semibold rounded-full">
-        {label}
-        <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="2.2" className="mt-0.5 opacity-60">
-          <path d="M2 4l3.5 3.5L9 4" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
-      <div
-        className="absolute top-full left-0 mt-2 w-72 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 overflow-hidden"
-        style={{
-          background: "rgba(12,21,40,0.99)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
-          border: "1px solid rgba(255,255,255,0.08)",
-          boxShadow: "0 16px 48px rgba(0,0,0,0.5)",
-        }}
-      >
-        {items.map((item) => (
-          <Link key={item.name} href={item.href} className="nav-link block px-4 py-3 text-[12.5px] font-semibold" style={{ borderRadius: 0 }}>
-            {item.name}
-          </Link>
-        ))}
+    <button
+      type="button"
+      onMouseEnter={() => setOpen(id)}
+      onClick={() => setOpen(open ? null : id)}
+      aria-expanded={open}
+      className="nav-link flex items-center gap-1 px-4 py-2 text-[13px] font-semibold rounded-full"
+      style={open ? { color: "#fff", background: "rgba(255,255,255,0.07)" } : undefined}
+    >
+      {label}
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="2.2"
+        className="mt-0.5 opacity-60 transition-transform duration-150" style={{ transform: open ? "rotate(180deg)" : "none" }}>
+        <path d="M2 4l3.5 3.5L9 4" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </button>
+  );
+}
+
+function NavDropdown({ label, items, ...m }: MenuProps & { label: string; items: NavItem[] }) {
+  return (
+    <div className="relative">
+      <Trigger label={label} {...m} />
+      {/* pt-2 instead of a margin keeps the hover area continuous between button and panel */}
+      <div className="dd-panel absolute top-full left-0 pt-2 z-50" data-open={m.open}>
+        <div className="w-72 rounded-xl overflow-hidden py-1.5" style={PANEL_STYLE}>
+          {items.map((item) => (
+            <Link key={item.href} href={item.href} onClick={() => m.setOpen(null)} className="nav-link block px-4 py-2.5" style={{ borderRadius: 0 }}>
+              <span className="block text-[13px] font-semibold">{item.name}</span>
+              {item.note && <span className="block text-[11.5px] text-white/40 mt-0.5">{item.note}</span>}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* Courses: one three-column panel (Career / Advanced / Short) instead of a 12-item list that ran off-screen. */
+function CoursesMega(m: MenuProps) {
+  const cols: Level[] = ["career", "advanced", "short"];
+  return (
+    <div>
+      <Trigger label="Courses" {...m} />
+      <div className="dd-panel absolute top-full left-6 right-6 pt-2 z-50" data-open={m.open}>
+        <div className="rounded-2xl overflow-hidden" style={PANEL_STYLE}>
+          <div className="grid grid-cols-3 gap-2 p-5 max-h-[calc(100svh-120px)] overflow-y-auto">
+            {cols.map((lvl) => (
+              <div key={lvl} className="min-w-0">
+                <div className="px-2.5 mb-2">
+                  <div className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8BA4FF]">{LEVELS[lvl].label}s</div>
+                  <div className="text-[11.5px] text-white/40 mt-0.5">{LEVELS[lvl].blurb}</div>
+                </div>
+                {coursesByLevel(lvl).map((c) => (
+                  <Link key={c.slug} href={`/courses/${c.slug}`} onClick={() => m.setOpen(null)}
+                    className="nav-link flex items-center gap-2 px-2.5 py-[7px] rounded-lg text-[12.5px] font-semibold">
+                    <span className="truncate">{c.title}</span>
+                    {c.hot && <span className="shrink-0 text-[9px] font-extrabold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-accent/15 text-[#FF9A6C]">Hot</span>}
+                  </Link>
+                ))}
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center justify-between px-6 py-3 border-t border-white/[0.07] bg-white/[0.02]">
+            <span className="text-[12px] text-white/50">Courses stack — start small, upgrade later and pay only the difference.</span>
+            <Link href="/courses" onClick={() => m.setOpen(null)} className="text-[12.5px] font-extrabold text-[#8BA4FF] hover:text-white">See all 39 courses →</Link>
+          </div>
+        </div>
       </div>
     </div>
   );

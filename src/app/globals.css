@@ -150,7 +150,7 @@ a {
 .fl { position: relative; }
 .fl input, .fl select {
   width: 100%; height: 54px; padding: 22px 14px 8px; border-radius: 14px;
-  border: 1.5px solid #E6E3F7; background: #F7F6FF; font: inherit; font-size: 15px; color: #0E1526;
+  border: 1.5px solid #E6E3F7; background: #F7F6FF; font: inherit; font-size: 16px; color: #0E1526;
   transition: border-color 160ms, box-shadow 160ms, background 160ms; -webkit-appearance: none; appearance: none;
 }
 .fl label {
@@ -179,7 +179,42 @@ a {
 .hero-h { min-height: calc(100svh - 158px); }
 @media (min-width: 768px) { .hero-h { min-height: 100svh; } }
 
+/* ═══ MOTION SYSTEM (v4.1) — three speeds, one curve ═══
+   quick 150ms · normal 250ms · slow 400ms, all on --ease-out. */
+:root { --t-quick: 150ms; --t-normal: 250ms; --t-slow: 400ms; }
+
+/* Cards lift the same way everywhere */
+.lift { transition: transform var(--t-normal) var(--ease-out), box-shadow var(--t-normal) var(--ease-out); }
+@media (hover: hover) { .lift:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -14px rgba(59,91,255,0.28); } }
+
+/* Desktop dropdown panels: solid, quick in, quicker out */
+.dd-panel { opacity: 0; visibility: hidden; transform: translateY(6px);
+  transition: opacity 100ms ease, transform 100ms ease, visibility 0s linear 100ms; }
+.dd-panel[data-open="true"] { opacity: 1; visibility: visible; transform: none;
+  transition: opacity var(--t-quick) var(--ease-out), transform var(--t-quick) var(--ease-out), visibility 0s; }
+
+/* Hero program stories (mobile) — progress bars */
+@keyframes storyFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.story-fill { transform-origin: left; animation: storyFill var(--story-ms, 4500ms) linear forwards; }
+.story-fill[data-paused="true"] { animation-play-state: paused; }
+
+/* Swipe rows: edge-to-edge on phones with snap */
+.swipe-row { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; margin-inline: -24px; padding-inline: 24px; scroll-padding-inline: 24px; }
+.swipe-row::-webkit-scrollbar { display: none; }
+.swipe-row > * { scroll-snap-align: start; flex-shrink: 0; }
+@media (min-width: 768px) { .swipe-row { display: grid; overflow: visible; margin-inline: 0; padding-inline: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lift:hover { transform: none; }
+  .story-fill { animation: none; transform: scaleX(1); }
+  .dd-panel, .dd-panel[data-open="true"] { transition: none; transform: none; }
+}
+
 /* First-paint hero entrance: pure CSS so SSR text is visible before hydration */
 @keyframes rise { from { opacity: 0; transform: translateY(var(--ry, 12px)); } to { opacity: 1; transform: none; } }
 [data-rise] { opacity: 0; animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s) forwards; }
 @media (prefers-reduced-motion: reduce) { [data-rise] { opacity: 1; animation: none; } }
+
+/* Logo strip: uniform muted wordmarks, brand colour on hover */
+.alumni-logo:hover { color: var(--brand); }

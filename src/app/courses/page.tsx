@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { courses, LEVELS, TRACKS, type Level, type Track } from "@/lib/courses";
 import { Grain, Slashes } from "@/components/Decor";
@@ -12,13 +12,41 @@ import CTABand from "@/components/inner/CTABand";
 const MotionLink = motion.create(Link);
 const LEVEL_TABS: Level[] = ["career", "short", "advanced"];
 
+/* "I'm a…" — one tap puts the most relevant courses first. It sorts, it doesn't decide. */
+type Who = "student" | "fresher" | "working" | "switching";
+const WHO: Record<Who, { label: string; you: string; level: Level; line: string; first?: string[] }> = {
+  student: { label: "Student", you: "a student",  level: "short", line: "Start small: 4–6 week courses that fit around college." },
+  fresher: { label: "Fresher", you: "a fresher",  level: "career", line: "Get job-ready: career programs with an internship and certificate." },
+  working: { label: "Working pro", you: "a working professional",  level: "advanced", line: "Upskill on weekends: advanced and AI courses that go deeper in one skill." },
+  switching: { label: "Switching to IT", you: "switching to IT",  level: "career", line: "No CS background needed: these tracks start from zero.",
+    first: ["ai-powered-data-analyst", "qa-ai-testing-engineer", "business-analyst-project-coordinator-ai", "digital-marketing-ai", "ai-engineer-agents-automation"] },
+};
+
 export default function CoursesPage() {
   const [level, setLevel] = useState<Level>("career");
   const [track, setTrack] = useState<Track | "all">("all");
+  const [who, setWho] = useState<Who | null>(null);
+
+  // Read ?for= without useSearchParams so the page stays statically rendered.
+  useEffect(() => {
+    const f = new URLSearchParams(window.location.search).get("for") as Who | null;
+    if (f && f in WHO) { setWho(f); setLevel(WHO[f].level); }
+  }, []);
+  const pickWho = (w: Who) => {
+    const next = who === w ? null : w;
+    setWho(next); setTrack("all");
+    if (next) setLevel(WHO[next].level);
+    const url = next ? `/courses?for=${next}` : "/courses";
+    window.history.replaceState(null, "", url);
+  };
 
   const inLevel = courses.filter((c) => c.level === level);
   const tracksHere = (Object.keys(TRACKS) as Track[]).filter((t) => inLevel.some((c) => c.track === t));
-  const filtered = track === "all" ? inLevel : inLevel.filter((c) => c.track === track);
+  const byTrack = track === "all" ? inLevel : inLevel.filter((c) => c.track === track);
+  const first = who && WHO[who].level === level ? WHO[who].first ?? [] : [];
+  const filtered = first.length
+    ? [...byTrack].sort((a, b) => (first.indexOf(a.slug) + 1 || 99) - (first.indexOf(b.slug) + 1 || 99))
+    : byTrack;
 
   const pickLevel = (l: Level) => { setLevel(l); setTrack("all"); };
 
@@ -36,6 +64,15 @@ export default function CoursesPage() {
             Start small. <span className="grad-text">Go all the way.</span>
           </h1>
           <p className="text-white/60 text-[15px] md:text-[17px] max-w-xl mx-auto">Short courses, advanced courses and full career programs — they stack, so you only ever pay the difference to upgrade.</p>
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-1.5">
+            <span className="w-full sm:w-auto text-[12px] text-white/50 font-semibold whitespace-nowrap mr-0.5">I&apos;m a…</span>
+            {(Object.keys(WHO) as Who[]).map((w) => (
+              <button key={w} onClick={() => pickWho(w)}
+                className={`tap shrink-0 text-[12.5px] font-bold px-3.5 py-1.5 rounded-full border transition-colors ${who === w ? "bg-white text-ink border-white" : "text-white/80 bg-white/[0.06] border-white/[0.14] hover:bg-white/[0.12]"}`}>
+                {WHO[w].label}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -69,7 +106,14 @@ export default function CoursesPage() {
 
       {/* Grid */}
       <div className="max-w-brand mx-auto px-6 py-8 md:py-14">
-        <p className="text-[13px] text-muted mb-5"><span className="font-extrabold text-ink">{LEVELS[level].label}s</span> · {LEVELS[level].blurb}</p>
+        {who && WHO[who].level === level ? (
+          <div className="mb-5 flex items-center justify-between gap-3 rounded-[14px] px-4 py-3 bg-white border border-[#E6E3F7]">
+            <p className="text-[13.5px] text-ink"><span className="font-extrabold">If you&apos;re {WHO[who].you}:</span> {WHO[who].line}</p>
+            <button onClick={() => pickWho(who)} className="shrink-0 text-[12px] font-bold text-primary">Clear</button>
+          </div>
+        ) : (
+          <p className="text-[13px] text-muted mb-5"><span className="font-extrabold text-ink">{LEVELS[level].label}s</span> · {LEVELS[level].blurb}</p>
+        )}
         <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           <AnimatePresence mode="popLayout">
             {filtered.map((course, i) => (
@@ -100,7 +144,7 @@ export default function CoursesPage() {
         </motion.div>
       </div>
 
-      <CTABand title="Not sure where to start?" sub="Book a free 1:1 counseling session — we'll pick the right course and level for you." />
+      <CTABand title="Still deciding? Let's just talk." sub="A free 15-minute call with a mentor — we'll help you pick a course and level. No pressure." />
     </div>
   );
 }

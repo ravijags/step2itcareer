@@ -88,8 +88,8 @@ export default function LeadPopup({ submitted, onSubmit, onClose, preset }: {
                     <motion.path d="M5 12l4.5 4.5L19 7" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }} />
                   </svg>
                 </div>
-                <h4 className="text-[22px] font-extrabold text-ink tracking-tight mb-2">You're on the list</h4>
-                <p className="text-[14px] text-muted mb-7">{preset?.program?.startsWith("Workshop") ? "We'll WhatsApp you the joining link and reminder before it starts." : "Ashvani's team will call you back within a few hours."}</p>
+                <h4 className="text-[22px] font-extrabold text-ink tracking-tight mb-2">Done! You&apos;re on the list.</h4>
+                <p className="text-[14px] text-muted mb-7">{preset?.program?.startsWith("Workshop") ? "We'll WhatsApp you the joining link and reminder before it starts." : "Ashvani will WhatsApp you within 2 hours. Meanwhile, why not try Saturday's free AI Agent workshop?"}</p>
                 <a href="https://wa.me/919936609430" className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#16A34A] text-white font-bold rounded-full text-[14px] tap">
                   <Icon.WhatsApp size={18} /> WhatsApp us directly
                 </a>
@@ -148,7 +148,7 @@ export default function LeadPopup({ submitted, onSubmit, onClose, preset }: {
 
                 <button type="submit" disabled={loading}
                   className="btn-grad tap mt-1 w-full py-4 rounded-full text-white font-extrabold text-[15px] flex items-center justify-center gap-2 disabled:opacity-70">
-                  {loading ? "Sending…" : <>{preset?.cta ?? "Request free callback"} <Icon.ArrowRight size={16} /></>}
+                  {loading ? "Sending…" : <>{preset?.cta ?? "Book my free call"} <Icon.ArrowRight size={16} /></>}
                 </button>
                 <p className="text-center text-[13px] text-muted">
                   or <a href="https://wa.me/919936609430" className="text-[#16A34A] font-bold">WhatsApp us directly</a>

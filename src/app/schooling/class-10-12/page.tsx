@@ -87,7 +87,7 @@ export default function Class1012Page() {
 
             <div>
               <div className="bg-white rounded-[18px] border border-[#E6E3F7] card-lift tap p-6 shadow-card sticky top-24">
-                <div className="text-2xl font-extrabold text-ink mb-1">Founding batch offer</div>
+                <div className="text-2xl font-extrabold text-ink mb-1">Join the next batch</div>
                 <div className="text-sm text-muted mb-5">Fee, EMI and next batch date — shared on WhatsApp in minutes.</div>
                 <div className="space-y-3 mb-6">
                   {[["Class", "10th, 11th & 12th"], ["Mentorship", "1:1 Online"], ["Batch Size", "Max 5 Students"], ["Portfolio", "GitHub profile built"], ["AI Tools", "Included"], ["Certificate", "Yes"]].map(([k, v]) => (

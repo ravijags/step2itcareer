@@ -1,148 +1,108 @@
 import Link from "next/link";
-import { Grain, Slashes } from "@/components/Decor";
-import SkillIcon from "@/components/inner/SkillIcon";
 import type { Metadata } from "next";
+import { INTERNSHIPS, PROGRAMS } from "@/lib/internships";
+import { TRACKS } from "@/lib/courses";
+import { Icon } from "@/components/Icons";
+import PageHero from "@/components/inner/PageHero";
+import SkillIcon from "@/components/inner/SkillIcon";
+import SectionLabel from "@/components/inner/SectionLabel";
+import Reveal from "@/components/inner/Reveal";
+import CounselButton from "@/components/inner/CounselButton";
+import CTABand from "@/components/inner/CTABand";
 
 export const metadata: Metadata = {
-  title: "Internship Programs — Step2ITCareer-AI",
-  description: "30-Day Coding Challenge and Summer/Winter Training Internship programs. Live mentorship, real projects, placement support.",
+  title: "Internships with certificate — Step2ITCareer-AI",
+  description: "4, 6 or 8-week internships on a real project with a mentor, plus the 30-Day Coding Challenge and Summer/Winter Training. Max 5 learners per batch.",
 };
+
+const WA = "https://wa.me/919936609430?text=" + encodeURIComponent("Hi! I'm interested in an internship with certificate. Please share details.");
 
 export default function InternshipPage() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero */}
-      <div className="relative z-10 cut-bottom bg-ink2 overflow-hidden">
-        <Grain />
-        <Slashes side="left" tone="primary" opacity={0.09} height={700} />
-        <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle, #3B5BFF 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
-        <div className="max-w-brand mx-auto px-6 pt-32 pb-24 md:pt-40 md:pb-32 text-center relative">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/30 text-[#FF9A6C] text-[11px] font-extrabold rounded-full uppercase tracking-[0.16em] mb-6">
-            Internship Programs
-          </div>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-            Build Real Skills.<br />
-            <span style={{ background: "linear-gradient(90deg, #3B5BFF, #7B8FFF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              Get Real Experience.
-            </span>
-          </h1>
-          <p className="text-white/60 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-            Intensive programs designed to give students, freshers, and career-switchers hands-on experience with live projects, expert mentorship, and placement support.
-          </p>
+    <div className="min-h-screen bg-soft">
+      <PageHero
+        eyebrow={<><Icon.Medal size={12} /> Internships + certificate</>}
+        title={<>&ldquo;No experience&rdquo;? <span className="grad-text">Let&apos;s fix that.</span></>}
+        description="Most fresher job posts now ask for real project experience. Do yours with a mentor, in any track — 4, 6 or 8 weeks."
+      >
+        <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <a href={WA} target="_blank" rel="noopener noreferrer" className="tap inline-flex items-center justify-center gap-2 px-7 py-4 bg-[#16A34A] text-white font-extrabold rounded-full text-[15px]"><Icon.WhatsApp size={18} /> Ask on WhatsApp</a>
+          <CounselButton className="btn-ghost-dark tap px-7 py-4 rounded-full text-white font-bold text-[15px]">Free counseling</CounselButton>
         </div>
-      </div>
+      </PageHero>
 
-      {/* Program Cards */}
-      <section className="overlap-up pt-24 md:pt-32 pb-16 md:pb-20 bg-soft">
+      {/* The three internships */}
+      <section className="overlap-up pt-24 md:pt-32 pb-14 md:pb-20">
         <div className="max-w-brand mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-            {/* Card 1 */}
-            <Link href="/internship/30-days-coding-challenge"
-              className="bg-white rounded-2xl border border-line shadow-card hover:-translate-y-1 hover:shadow-deep transition-all duration-300 overflow-hidden group flex flex-col">
-              <div className="h-3 w-full" style={{ background: "linear-gradient(90deg, #FF7A3D, #FFB347)" }} />
-              <div className="p-7 flex flex-col flex-1">
-                <div className="flex items-start justify-between mb-5">
-                  <div>
-                    <span className="inline-block px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider rounded-full mb-3" style={{ background: "#FFF3EC", color: "#FF7A3D" }}>
-                      Program 1 · Coding Intensive
-                    </span>
-                    <h2 className="text-xl md:text-2xl font-extrabold text-ink leading-snug">30-Day Coding Challenge</h2>
-                  </div>
-                  <div className="text-3xl shrink-0"></div>
+          <Reveal className="text-center mb-10">
+            <SectionLabel>Pick your length</SectionLabel>
+            <h2 className="mt-4 text-[28px] md:text-[40px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">Same mentor. Real project. <span className="grad-text">Your pace.</span></h2>
+          </Reveal>
+          <div className="swipe-row md:grid-cols-3 md:gap-6">
+            {INTERNSHIPS.map((it, i) => (
+              <Reveal key={it.title} delay={i * 0.06} className="w-[80vw] max-w-[320px] md:w-auto md:max-w-none">
+                <div className="relative h-full flex flex-col bg-white rounded-[20px] p-6 border card-lift lift" style={{ borderColor: it.hot ? "rgba(59,91,255,0.45)" : "#E6E3F7" }}>
+                  {it.hot && <span className="absolute top-5 right-5 text-[10px] font-extrabold uppercase tracking-wide px-2.5 py-1 rounded-full text-white btn-grad">Most chosen</span>}
+                  <SkillIcon emoji={it.icon} size={44} />
+                  <div className="mt-4 text-[12px] font-extrabold uppercase tracking-[0.14em] text-primary">{it.weeks}</div>
+                  <div className="mt-1 text-[20px] font-extrabold text-ink tracking-[-0.01em]">{it.title}</div>
+                  <p className="mt-2 text-[14px] text-muted leading-relaxed">{it.desc}</p>
+                  <ul className="mt-4 mb-5 space-y-2">
+                    {it.gets.map((g) => <li key={g} className="flex gap-2 text-[13.5px] font-semibold text-ink"><Icon.Check size={16} className="text-primary shrink-0 mt-0.5" />{g}</li>)}
+                  </ul>
+                  <a href={`https://wa.me/919936609430?text=${encodeURIComponent(`Hi! Please share the fee and next batch for the ${it.title} (${it.weeks}).`)}`} target="_blank" rel="noopener noreferrer"
+                    className="tap mt-auto w-full py-3.5 rounded-full bg-[#16A34A] text-white font-extrabold text-[14px] inline-flex items-center justify-center gap-2"><Icon.WhatsApp size={16} /> Get fee on WhatsApp</a>
                 </div>
-                <p className="text-muted text-sm leading-relaxed mb-6">
-                  Master Java or Python with 2,000+ coding problems. Daily tasks, live doubt sessions, coding round prep — get interview-ready in 30 days.
-                </p>
-                <div className="grid grid-cols-2 gap-3 mb-6">
-                  {[["Duration", "30 Days"], ["Certificate", "Included"], ["Language", "Java / Python"], ["Batch", "Max 5 Students"]].map(([k, v]) => (
-                    <div key={k} className="bg-soft rounded-xl p-3 border border-line">
-                      <div className="text-[10px] text-muted font-semibold mb-0.5">{k}</div>
-                      <div className="text-sm font-extrabold text-ink">{v}</div>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-auto flex items-center justify-between pt-4 border-t border-line">
-                  <div className="text-[13px] font-bold text-muted">Certificate included</div>
-                  <span className="inline-flex items-center gap-1.5 px-5 py-2.5 text-white text-sm font-bold rounded-full group-hover:opacity-90 transition-opacity" style={{ background: "#FF7A3D" }}>
-                    View Program →
-                  </span>
-                </div>
-              </div>
-            </Link>
-
-            {/* Card 2 */}
-            <Link href="/internship/summer-winter-training"
-              className="bg-white rounded-2xl border border-line shadow-card hover:-translate-y-1 hover:shadow-deep transition-all duration-300 overflow-hidden group flex flex-col">
-              <div className="h-3 w-full" style={{ background: "linear-gradient(90deg, #3B5BFF, #7B8FFF)" }} />
-              <div className="p-7 flex flex-col flex-1">
-                <div className="flex items-start justify-between mb-5">
-                  <div>
-                    <span className="inline-block px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider rounded-full mb-3" style={{ background: "#EEF2FF", color: "#3B5BFF" }}>
-                      Program 2 · Training Internship
-                    </span>
-                    <h2 className="text-xl md:text-2xl font-extrabold text-ink leading-snug">Summer & Winter Training</h2>
-                  </div>
-                  <div className="text-3xl shrink-0"></div>
-                </div>
-                <p className="text-muted text-sm leading-relaxed mb-6">
-                  Build industry-ready skills during your college break. Live projects, 1:1 mentorship, and a completion certificate across 14+ tech tracks.
-                </p>
-                <div className="grid grid-cols-2 gap-3 mb-6">
-                  {[["Duration", "4–8 Weeks"], ["Certificate", "Included"], ["Tracks", "14+ Available"], ["Batch", "Max 5 Students"]].map(([k, v]) => (
-                    <div key={k} className="bg-soft rounded-xl p-3 border border-line">
-                      <div className="text-[10px] text-muted font-semibold mb-0.5">{k}</div>
-                      <div className="text-sm font-extrabold text-ink">{v}</div>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-auto flex items-center justify-between pt-4 border-t border-line">
-                  <div className="text-[13px] font-bold text-muted">Certificate included</div>
-                  <span className="inline-flex items-center gap-1.5 px-5 py-2.5 text-white text-sm font-bold rounded-full group-hover:opacity-90 transition-opacity" style={{ background: "var(--grad-primary)" }}>
-                    View Program →
-                  </span>
-                </div>
-              </div>
-            </Link>
-
+              </Reveal>
+            ))}
           </div>
+
+          <Reveal className="mt-10">
+            <div className="rounded-[20px] bg-white border border-[#E6E3F7] p-5 md:p-7">
+              <div className="text-[11px] font-extrabold uppercase tracking-[0.15em] text-accent">Any track</div>
+              <h3 className="mt-1 text-[19px] md:text-[22px] font-extrabold text-ink tracking-[-0.02em]">Do your internship in the field you want to work in</h3>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {Object.values(TRACKS).map((t) => (
+                  <span key={t.label} className="px-3.5 py-2 rounded-full text-[13px] font-bold" style={{ background: `${t.color}14`, color: t.color }}>{t.label}</span>
+                ))}
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* Why Us */}
-      <section className="py-14 bg-white">
+      {/* Two specialised programs */}
+      <section className="pb-16 md:pb-24">
         <div className="max-w-brand mx-auto px-6">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-ink">What Makes Us Different</h2>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { icon: "👥", title: "Max 5 Students", desc: "Every student gets personal attention" },
-              { icon: "🏗️", title: "Real Projects", desc: "Not dummy assignments — actual live work" },
-              { icon: "👨‍🏫", title: "Dedicated Mentor", desc: "Same mentor throughout your program" },
-              { icon: "🎖️", title: "Certificate + Portfolio", desc: "Proof of skills that employers respect" },
-            ].map((item) => (
-              <div key={item.title} className="text-center p-5 bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap">
-                <SkillIcon emoji={item.icon} size={40} className="w-fit mx-auto mb-3" />
-                <h3 className="font-extrabold text-ink text-sm mb-1">{item.title}</h3>
-                <p className="text-xs text-muted">{item.desc}</p>
-              </div>
+          <Reveal className="text-center mb-10">
+            <SectionLabel>Two more ways in</SectionLabel>
+            <h2 className="mt-4 text-[28px] md:text-[40px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">Short on time? Try these.</h2>
+          </Reveal>
+          <div className="grid md:grid-cols-2 gap-5 md:gap-6">
+            {PROGRAMS.map((p, i) => (
+              <Reveal key={p.slug} delay={i * 0.06} className="h-full">
+                <Link href={`/internship/${p.slug}`} className="group relative h-full flex flex-col overflow-hidden rounded-[22px] bg-ink2 p-6 md:p-8 text-white card-lift-dark lift">
+                  <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 90% 0%, rgba(59,91,255,0.3), transparent 60%)" }} />
+                  <div className="relative">
+                    <span className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#FF9A6C]">{p.eyebrow}</span>
+                    <h3 className="mt-2 text-[24px] md:text-[28px] font-extrabold tracking-[-0.02em]">{p.title}</h3>
+                    <p className="mt-1 text-[15px] font-bold text-white/80">{p.line}</p>
+                    <p className="mt-3 text-[14px] text-white/55 leading-relaxed">{p.description}</p>
+                  </div>
+                  <div className="relative mt-6 flex flex-wrap gap-2">
+                    {p.facts.slice(0, 3).map(([k, v]) => <span key={k} className="text-[12px] font-bold px-3 py-1.5 rounded-full bg-white/[0.07] border border-white/10 text-white/80">{v}</span>)}
+                  </div>
+                  <span className="relative mt-6 pt-5 border-t border-white/10 inline-flex items-center gap-2 text-[14px] font-extrabold text-[#8BA4FF] group-hover:text-white transition-colors">
+                    See the program <Icon.ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="relative z-10 cut-top overlap-up pt-24 md:pt-32 pb-16 md:pb-20 px-6 text-center overflow-hidden" style={{ background: "var(--grad-primary)" }}>
-        <Grain />
-        <Slashes side="right" tone="white" opacity={0.09} height={560} />
-        <h2 className="text-2xl font-extrabold text-white mb-4">Not sure which program fits you?</h2>
-        <p className="text-white/70 mb-6">Talk to our mentor for free — no pressure, just clarity.</p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="https://wa.me/919936609430" className="w-full sm:w-auto px-8 py-4 tap bg-white text-primary font-bold rounded-full hover:bg-soft transition-colors">WhatsApp Us</a>
-          <a href="tel:+919936609430" className="w-full sm:w-auto px-8 py-4 tap bg-[#16A34A] text-white font-bold rounded-full hover:bg-green-700 transition-colors">Call Us</a>
-        </div>
-      </section>
+      <CTABand title="Not sure which one fits?" sub="A free 15-minute call with a mentor — no pressure, just clarity." />
     </div>
   );
 }

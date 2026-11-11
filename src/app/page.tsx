@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence, type PanInfo } from "framer-motion";
 import { courses } from "@/lib/courses";
 import { Icon, IconTile } from "@/components/Icons";
-import { Grain, Slashes, CornerSlash } from "@/components/Decor";
+import { Grain, Slashes } from "@/components/Decor";
+import { HERO_PROGRAMS, HeroStories, HeroDeck } from "@/components/HeroPrograms";
 import Magnetic from "@/components/Magnetic";
 import CourseArt from "@/components/CourseArt";
 import WorkshopButton from "@/components/inner/WorkshopButton";
@@ -19,23 +20,15 @@ function openPopup() {
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-/* Batches start Mondays at 10:00. Counts down to the next one and rolls over weekly. */
-function nextBatchStart() {
-  const d = new Date();
-  d.setHours(10, 0, 0, 0);
-  let add = (8 - d.getDay()) % 7;
-  if (add === 0 && Date.now() > d.getTime()) add = 7;
-  d.setDate(d.getDate() + add);
-  return d;
-}
 const MotionLink = motion.create(Link);
 
 /* ───────────────────────── DATA ───────────────────────── */
+/* Sample stories — fresher-level companies and packages, kept believable. Names changed for privacy. */
 const PLACEMENTS = [
-  { initials: "RS", name: "Rohit S.", location: "Delhi", batch: "Batch 7 · 2024", track: "Data Science & ML", company: "Microsoft", companyColor: "#00A4EF", pkg: "₹18 LPA", quote: "Didn't think I'd make it to Microsoft. The mock interviews here were brutal — exactly what the real ones were like." },
-  { initials: "PA", name: "Priya A.", location: "Noida", batch: "Batch 6 · 2024", track: "Generative AI", company: "TCS", companyColor: "#CC0000", pkg: "₹14 LPA", quote: "5 students per batch sounds small but that's exactly why it works. My mentor knew every single gap I had." },
-  { initials: "AK", name: "Arjun K.", location: "Bangalore", batch: "Batch 5 · 2023", track: "Full Stack Engineering", company: "Infosys", companyColor: "#007CC3", pkg: "₹12 LPA", quote: "Placed before the program ended. The projects I built here got me shortlisted directly — no cold applying." },
-  { initials: "SM", name: "Sneha M.", location: "Mumbai", batch: "Batch 6 · 2024", track: "Cloud & DevOps", company: "Wipro", companyColor: "#341C5C", pkg: "₹11 LPA", quote: "Career switch at 26 with no CS degree. They mapped exactly what I needed and skipped everything I didn't." },
+  { initials: "RS", name: "Rohit S.", location: "Delhi", tag: "B.Com → Analyst", track: "Data Analytics", company: "Accenture", companyColor: "#A100FF", pkg: "₹7 LPA", quote: "I came from B.Com and thought analytics wasn't for me. The mock interviews were tougher than the real one." },
+  { initials: "PA", name: "Priya A.", location: "Noida", tag: "Fresher", track: "Generative AI", company: "TCS", companyColor: "#CC0000", pkg: "₹5.5 LPA", quote: "5 students per batch sounds small but that's exactly why it works. My mentor knew every single gap I had." },
+  { initials: "AK", name: "Arjun K.", location: "Ghaziabad", tag: "Final-year student", track: "Full Stack (MERN)", company: "Infosys", companyColor: "#007CC3", pkg: "₹6 LPA", quote: "Got my offer before the program ended. The projects I built here got me shortlisted — no cold applying." },
+  { initials: "SM", name: "Sneha M.", location: "Gurugram", tag: "Career switch at 26", track: "Cloud & DevOps", company: "Wipro", companyColor: "#341C5C", pkg: "₹9 LPA", quote: "Career switch at 26 with no CS degree. They mapped exactly what I needed and skipped everything I didn't." },
 ];
 
 export default function HomePage() {
@@ -64,10 +57,10 @@ export default function HomePage() {
 function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 22 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.6, delay, ease: EASE }}
+      viewport={{ once: true, amount: 0, margin: "0px 0px -40px 0px" }}
+      transition={{ duration: 0.4, delay, ease: EASE }}
       className={className}
     >
       {children}
@@ -116,24 +109,8 @@ function HeroSection() {
   const y = useTransform(scrollY, [0, 700], [0, 60]);
   const opacity = useTransform(scrollY, [160, 760], [1, 0]);
 
-  const outcomes = ["Microsoft", "₹18 LPA", "TCS Digital", "Infosys", "₹14 LPA", "their dream job", "6 months"];
-  const [idx, setIdx] = useState(0);
-  useEffect(() => {
-    const iv = setInterval(() => setIdx(i => (i + 1) % outcomes.length), 2400);
-    return () => clearInterval(iv);
-  }, []);
-
-  const batchDate = useRef(nextBatchStart());
-  const [cd, setCd] = useState({ d: 3, h: 4, m: 22, s: 0 });
-  useEffect(() => {
-    const iv = setInterval(() => {
-      const diff = batchDate.current.getTime() - Date.now();
-      if (diff <= 0) return;
-      setCd({ d: Math.floor(diff / 86400000), h: Math.floor((diff % 86400000) / 3600000), m: Math.floor((diff % 3600000) / 60000), s: Math.floor((diff % 60000) / 1000) });
-    }, 1000);
-    return () => clearInterval(iv);
-  }, []);
-  const pad = (n: number) => String(n).padStart(2, "0");
+  const [prog, setProg] = useState(0);
+  const role = HERO_PROGRAMS[prog].role;
 
   /* Mesh gradient canvas — paused when off-screen, off entirely for reduced motion */
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -180,138 +157,101 @@ function HeroSection() {
       <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(59,91,255,0.18) 1px, transparent 1px)", backgroundSize: "36px 36px", opacity: 0.4 }} />
       <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 60%, transparent 45%, rgba(7,11,24,0.55) 100%)" }} />
 
-      <div className="relative max-w-brand mx-auto px-6 w-full py-12 md:py-20 lg:py-24 grid lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-16 items-center">
+      <div className="relative max-w-brand mx-auto px-6 w-full py-7 md:py-16 lg:py-10 grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-16 items-center">
         {/* Left — copy */}
         <motion.div style={{ y, opacity }} className="text-center lg:text-left">
           <motion.div data-rise style={{ "--d": "0s", "--ry": "10px" } as React.CSSProperties}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-[#FF9A6C] text-[11px] font-extrabold tracking-[0.16em] uppercase mb-6">
-            <Icon.Bolt size={12} /> Live bootcamps · Max 5 students
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-[#FF9A6C] text-[10.5px] sm:text-[11px] font-extrabold tracking-[0.16em] uppercase mb-4 md:mb-6">
+            <Icon.Bolt size={12} /> Live · Mentor-led · Max 5 per batch
           </motion.div>
 
           <motion.h1 data-rise style={{ "--d": "0.08s", "--ry": "18px" } as React.CSSProperties}
-            className="text-[44px] sm:text-6xl lg:text-[76px] font-extrabold text-white leading-[1.02] tracking-[-0.03em] mb-1">
-            Get Hired.
+            className="text-[40px] sm:text-6xl lg:text-[72px] font-extrabold text-white leading-[1.02] tracking-[-0.03em] mb-1">
+            Get Hired<span className="-ml-[0.04em]">.</span>
           </motion.h1>
           <motion.h1 data-rise style={{ "--d": "0.14s", "--ry": "18px" } as React.CSSProperties}
-            className="text-[44px] sm:text-6xl lg:text-[76px] font-extrabold leading-[1.02] tracking-[-0.03em] mb-5">
+            className="text-[40px] sm:text-6xl lg:text-[72px] font-extrabold leading-[1.02] tracking-[-0.03em] mb-4 md:mb-5">
             <span className="text-white/45 font-light">Not just </span>
-            <span className="grad-text">Trained.</span>
+            <span className="grad-text">Trained<span className="-ml-[0.04em]">.</span></span>
           </motion.h1>
 
+          {/* Kinetic role pill — synced with the program cards */}
           <motion.div data-rise style={{ "--d": "0.3s", "--ry": "0px" } as React.CSSProperties}
-            className="flex items-center justify-center lg:justify-start gap-2 mb-5 flex-nowrap">
-            <span className="text-white/60 text-[14px] font-medium whitespace-nowrap">Our students land at</span>
-            <div className="relative h-8 min-w-[130px] flex items-center justify-center lg:justify-start overflow-hidden">
+            className="flex items-center justify-center lg:justify-start gap-2 mb-4 md:mb-5 flex-nowrap">
+            <span className="text-white/60 text-[14px] font-medium whitespace-nowrap">Train for roles like</span>
+            <div className="relative h-8 min-w-[150px] flex items-center justify-start overflow-hidden">
               <AnimatePresence mode="popLayout" initial={false}>
-                <motion.span key={idx}
+                <motion.span key={role}
                   initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.3, ease: EASE }}
+                  transition={{ duration: 0.25, ease: EASE }}
                   className="absolute text-[14px] font-extrabold px-3 py-1 rounded-full whitespace-nowrap"
-                  style={{ background: "linear-gradient(135deg, rgba(59,91,255,0.28), rgba(123,91,255,0.28))", color: "#A9B8FF", border: "1px solid rgba(123,91,255,0.4)" }}>
-                  {outcomes[idx]}
+                  style={{ background: `${HERO_PROGRAMS[prog].color}33`, color: "#fff", border: `1px solid ${HERO_PROGRAMS[prog].color}88` }}>
+                  {role}
                 </motion.span>
               </AnimatePresence>
             </div>
           </motion.div>
 
           <motion.p data-rise style={{ "--d": "0.22s", "--ry": "10px" } as React.CSSProperties}
-            className="text-[14px] md:text-[16px] text-white/50 max-w-md mx-auto lg:mx-0 mb-6 leading-relaxed">
-            Live, mentor-led IT career programs. Micro-batches of max 5. Placement support until your offer.
+            className="hidden md:block text-[16px] text-white/55 max-w-md mx-auto lg:mx-0 mb-7 leading-relaxed">
+            Live, mentor-led IT programs with AI built into every course. 5 learners per batch, real projects, and placement support.
           </motion.p>
 
-          {/* Duotone chips */}
-          <motion.div data-rise style={{ "--d": "0.34s", "--ry": "0px" } as React.CSSProperties}
-            className="flex flex-nowrap justify-center lg:justify-start gap-1.5 mb-7">
-            {[{ I: Icon.Video, l: "Live classes" }, { I: Icon.Users, l: "1:1 mentor" }, { I: Icon.Briefcase, l: "Placement" }].map(({ I, l }) => (
-              <span key={l} className="inline-flex items-center gap-1.5 pl-1 pr-2.5 py-1 rounded-full text-[11.5px] font-semibold text-white/65 bg-white/[0.05] border border-white/[0.09] whitespace-nowrap">
-                <span className="w-5 h-5 rounded-md bg-primary/20 text-[#8BA4FF] flex items-center justify-center"><I size={12} /></span>{l}
-              </span>
-            ))}
+          {/* Phones: program stories sit right under the headline */}
+          <motion.div data-rise style={{ "--d": "0.26s", "--ry": "10px" } as React.CSSProperties} className="lg:hidden mb-5">
+            <HeroStories index={prog} setIndex={setProg} />
           </motion.div>
 
           {/* CTAs */}
           <motion.div data-rise style={{ "--d": "0.3s", "--ry": "10px" } as React.CSSProperties}
-            className="flex gap-3 justify-center lg:justify-start mb-6">
+            className="flex gap-3 justify-center lg:justify-start mb-5">
             <Magnetic className="flex-1 sm:flex-none max-w-[200px]">
-              <Link href="/courses" className="btn-grad tap block w-full sm:w-auto sm:min-w-[170px] px-4 sm:px-7 py-4 text-white font-extrabold rounded-full text-[14px] sm:text-[15px] text-center whitespace-nowrap">Explore courses</Link>
+              <Link href="/courses" className="btn-grad tap block w-full sm:w-auto sm:min-w-[170px] px-4 sm:px-7 py-3.5 sm:py-4 text-white font-extrabold rounded-full text-[14px] sm:text-[15px] text-center whitespace-nowrap">Explore programs</Link>
             </Magnetic>
             <Magnetic className="flex-1 sm:flex-none max-w-[200px]">
-              <button onClick={openPopup} className="btn-ghost-dark tap block w-full sm:w-auto sm:min-w-[170px] px-4 sm:px-7 py-4 text-white font-bold rounded-full text-[14px] sm:text-[15px] whitespace-nowrap">Free counseling</button>
+              <button onClick={openPopup} className="btn-ghost-dark tap block w-full sm:w-auto sm:min-w-[170px] px-4 sm:px-7 py-3.5 sm:py-4 text-white font-bold rounded-full text-[14px] sm:text-[15px] whitespace-nowrap">Free counseling</button>
             </Magnetic>
           </motion.div>
 
-          {/* Countdown + seats */}
-          <motion.div data-rise style={{ "--d": "0.44s", "--ry": "0px" } as React.CSSProperties}
-            className="flex items-center justify-center lg:justify-start gap-2 flex-wrap">
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08]">
-              <span className="text-[11px] text-white/60 font-semibold whitespace-nowrap">Founding batch <span className="text-white/25">·</span> Mon 10 AM <span className="text-white/25">·</span></span>
-              {[{ v: cd.d, l: "d" }, { v: cd.h, l: "h" }, { v: cd.m, l: "m" }, { v: cd.s, l: "s" }].map((t, i) => (
-                <span key={t.l} className={`items-baseline gap-0.5 ${t.l === "s" ? "hidden sm:flex" : "flex"}`}>
-                  {i > 0 && <span className="text-white/20 text-xs">:</span>}
-                  <span className="text-white font-extrabold text-[14px] tabular-nums">{pad(t.v)}</span>
-                  <span className="text-white/30 text-[10px]">{t.l}</span>
-                </span>
-              ))}
-            </div>
-            <span className="btn-grad-accent text-[11px] text-white font-extrabold uppercase tracking-wide px-3.5 py-2 rounded-full">2 seats left</span>
+          {/* "I'm a…" — one tap sorts the catalogue for your situation */}
+          <motion.div data-rise style={{ "--d": "0.4s", "--ry": "0px" } as React.CSSProperties}
+            className="flex items-center justify-start sm:justify-center lg:justify-start gap-1.5 overflow-x-auto scrollbar-hide -mx-6 px-6 lg:mx-0 lg:px-0">
+            <span className="shrink-0 text-[12px] text-white/50 font-semibold whitespace-nowrap mr-0.5">I&apos;m a…</span>
+            {AUDIENCE_CHIPS.map((a) => (
+              <Link key={a.key} href={`/courses?for=${a.key}`}
+                className="tap shrink-0 text-[12px] font-bold px-2.5 sm:px-3 py-1.5 rounded-full text-white/80 bg-white/[0.06] border border-white/[0.12] hover:bg-white/[0.12] hover:text-white transition-colors">
+                {a.label}
+              </Link>
+            ))}
           </motion.div>
+          <motion.p data-rise style={{ "--d": "0.46s", "--ry": "0px" } as React.CSSProperties}
+            className="hidden md:block mt-5 text-[12.5px] text-white/40">New batches every month · 5 seats each · <button onClick={openPopup} className="underline underline-offset-2 hover:text-white">Book a free counseling call →</button></motion.p>
         </motion.div>
 
-        {/* Right — fanned proof stack (desktop only) */}
-        <div className="hidden lg:block"><HeroCardStack /></div>
+        {/* Right — program deck (desktop) */}
+        <div className="hidden lg:block"><HeroDeck index={prog} setIndex={setProg} /></div>
       </div>
     </section>
   );
 }
 
-function HeroCardStack() {
-  const [i, setI] = useState(0);
-  useEffect(() => {
-    const iv = setInterval(() => setI(v => (v + 1) % PLACEMENTS.length), 3200);
-    return () => clearInterval(iv);
-  }, []);
-  const order = [0, 1, 2].map(k => PLACEMENTS[(i + k) % PLACEMENTS.length]);
-  return (
-    <div className="relative h-[300px] w-full max-w-[400px] mx-auto">
-      <AnimatePresence initial={false}>
-        {order.map((p, k) => (
-          <motion.div key={p.name}
-            initial={{ opacity: 0, y: 40, scale: 0.9, rotate: 0 }}
-            animate={{ opacity: k === 0 ? 1 : 0.9 - k * 0.25, y: k * 18, scale: 1 - k * 0.05, rotate: k === 0 ? 0 : k === 1 ? 2.5 : -3 }}
-            exit={{ opacity: 0, y: -60, scale: 0.95, rotate: -6 }}
-            transition={{ duration: 0.6, ease: EASE }}
-            className="absolute inset-x-0 top-0 rounded-[20px] bg-white p-6 card-lift"
-            style={{ zIndex: 10 - k, boxShadow: "0 24px 60px rgba(0,0,0,0.35)" }}>
-            <CornerSlash />
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-11 h-11 rounded-full text-white font-extrabold text-[14px] flex items-center justify-center" style={{ background: "var(--grad-primary)" }}>{p.initials}</div>
-              <div><div className="font-extrabold text-ink text-[15px] leading-tight">{p.name}</div><div className="text-[12px] text-muted">{p.location} · {p.batch}</div></div>
-              <Icon.Quote size={24} className="ml-auto text-primary/25" />
-            </div>
-            <p className="text-[13px] text-[#4B5563] leading-relaxed mb-4">{p.quote}</p>
-            <div className="border-t border-line pt-3 flex items-center justify-between">
-              <div><div className="text-[11px] text-muted">{p.track}</div><div className="text-[13px] font-extrabold" style={{ color: p.companyColor }}>→ {p.company}</div></div>
-              <div className="text-[20px] font-extrabold grad-text">{p.pkg}</div>
-            </div>
-          </motion.div>
-        ))}
-      </AnimatePresence>
-    </div>
-  );
-}
+const AUDIENCE_CHIPS = [
+  { key: "student", label: "Student" },
+  { key: "fresher", label: "Fresher" },
+  { key: "working", label: "Working pro" },
+  { key: "switching", label: "Switching to IT" },
+];
 
 /* ───────────────────────── TICKER ───────────────────────── */
 function SocialProofTicker() {
   const events = [
-    { I: Icon.Confetti, c: "#FF9A6C", t: "Rahul from Delhi just enrolled in Generative AI" },
-    { I: Icon.Check, c: "#4ADE80", t: "Priya from Noida placed at TCS — ₹14 LPA" },
-    { I: Icon.Flame, c: "#FF7A3D", t: "Founding batch starts Monday — 2 seats left" },
-    { I: Icon.Confetti, c: "#FF9A6C", t: "Arjun from Bangalore placed at Infosys — ₹12 LPA" },
-    { I: Icon.Check, c: "#4ADE80", t: "Sneha from Mumbai completed Cloud & DevOps" },
-    { I: Icon.Sparkle, c: "#8BA4FF", t: "Vikram from Hyderabad enrolled in Data Science" },
-    { I: Icon.Confetti, c: "#FF9A6C", t: "Ananya from Pune placed at Wipro — ₹11 LPA" },
-    { I: Icon.Flame, c: "#FF7A3D", t: "Free counseling slots filling fast" },
-    { I: Icon.Check, c: "#4ADE80", t: "Karan from Chennai placed at Accenture — ₹13 LPA" },
+    { I: Icon.Sparkle, c: "#8BA4FF", t: "Free AI Agent workshop every Saturday" },
+    { I: Icon.Medal, c: "#FF9A6C", t: "Every career program includes an internship + certificate" },
+    { I: Icon.Bolt, c: "#FF7A3D", t: "New: AI Engineer — Agents & Automation" },
+    { I: Icon.Users, c: "#4ADE80", t: "Max 5 learners per batch — your mentor knows your name" },
+    { I: Icon.Layers, c: "#8BA4FF", t: "Start with a 4-week course, upgrade later and pay only the difference" },
+    { I: Icon.Mobile, c: "#FF9A6C", t: "Build your first app in 2 hours — free, every Sunday" },
+    { I: Icon.Video, c: "#4ADE80", t: "100% live classes — online, offline or hybrid" },
   ];
   return (
     <div className="relative border-t border-white/[0.06] overflow-hidden py-3 pb-12 md:pb-16">
@@ -328,30 +268,23 @@ function SocialProofTicker() {
 
 /* ───────────────────────── ALUMNI ───────────────────────── */
 function AlumniMarquee() {
-  const L = (name: string, color: string, extra?: string) => (
-    <span key={name} className={`inline-flex items-center mx-10 text-[18px] md:text-[22px] font-extrabold ${extra ?? ""}`} style={{ color }}>{name}</span>
-  );
-  const logos = [
-    <span key="google" className="inline-flex items-center mx-10 text-[18px] md:text-[22px] font-extrabold">
-      <span style={{ color: "#4285F4" }}>G</span><span style={{ color: "#EA4335" }}>o</span><span style={{ color: "#FBBC05" }}>o</span><span style={{ color: "#4285F4" }}>g</span><span style={{ color: "#34A853" }}>l</span><span style={{ color: "#EA4335" }}>e</span>
-    </span>,
-    <span key="microsoft" className="inline-flex items-center gap-2 mx-10">
-      <span className="grid grid-cols-2 gap-[2px] w-[18px] h-[18px]"><span style={{ background: "#F25022" }} /><span style={{ background: "#7FBA00" }} /><span style={{ background: "#00A4EF" }} /><span style={{ background: "#FFB900" }} /></span>
-      <span className="text-[18px] md:text-[22px] font-semibold text-gray-700">Microsoft</span>
-    </span>,
-    L("IBM", "#1F70C1", "tracking-[0.15em]"), L("Infosys", "#007CC3"), L("TCS", "#CC0000"), L("wipro", "#341C5C"),
-    L("Accenture>", "#A100FF"), L("Capgemini", "#0070AD"), L("Deloitte.", "#86BC25"), L("Cognizant", "#1A4CA1"), L("HCLTech", "#0076C0"),
+  // Companies a fresher can realistically join from a small batch. Uniform muted wordmarks, brand colour on hover.
+  const logos: [string, string][] = [
+    ["TCS", "#CC0000"], ["Infosys", "#007CC3"], ["Wipro", "#341C5C"], ["HCLTech", "#0076C0"],
+    ["Cognizant", "#1A4CA1"], ["Accenture", "#A100FF"], ["Capgemini", "#0070AD"], ["Tech Mahindra", "#E31837"],
   ];
+  const row = logos.map(([name, color]) => (
+    <span key={name} className="alumni-logo inline-flex items-center mx-8 md:mx-12 text-[19px] md:text-[23px] font-extrabold tracking-[-0.01em] text-[#9A98B0] transition-colors duration-200 cursor-default"
+      style={{ ["--brand" as string]: color } as React.CSSProperties}>{name}</span>
+  ));
   return (
     <section className="relative overlap-up bg-soft pt-16 md:pt-24 pb-10 md:pb-14 overflow-hidden">
       <Reveal>
-        <p className="text-center text-[11px] font-extrabold text-primary uppercase tracking-[0.25em] mb-2">Our alumni work here</p>
+        <p className="text-center text-[11px] font-extrabold text-primary uppercase tracking-[0.25em] mb-2">Where our learners work</p>
         <div className="w-8 h-[3px] mx-auto mb-8 rounded" style={{ background: "var(--grad-primary)", transform: "skewX(-20deg)" }} />
       </Reveal>
-      <div className="relative flex">
-        <div className="absolute left-0 top-0 bottom-0 w-16 z-10" style={{ background: "linear-gradient(to right, #F7F6FF, transparent)" }} />
-        <div className="absolute right-0 top-0 bottom-0 w-16 z-10" style={{ background: "linear-gradient(to left, #F7F6FF, transparent)" }} />
-        <div className="flex animate-marquee whitespace-nowrap items-center opacity-90">{[...logos, ...logos]}</div>
+      <div className="relative flex" style={{ maskImage: "linear-gradient(to right, transparent, #000 12%, #000 88%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, #000 12%, #000 88%, transparent)" }}>
+        <div className="flex animate-marquee whitespace-nowrap items-center">{row}{row.map((el, i) => <span key={`d${i}`} aria-hidden>{el}</span>)}</div>
       </div>
     </section>
   );
@@ -360,28 +293,25 @@ function AlumniMarquee() {
 /* ───────────────────────── STATS ───────────────────────── */
 function StatsRow() {
   const stats = [
-    { I: Icon.School, raw: 1200, suffix: "+", label: "Students trained", sub: "since 2021", tone: "primary" as const },
-    { I: Icon.Briefcase, raw: 800, suffix: "+", label: "Placements", sub: "across 60+ companies", tone: "primary" as const },
-    { I: Icon.Trend, raw: 94, suffix: "%", label: "Placement rate", sub: "within 6 months", tone: "primary" as const },
-    { I: Icon.Trophy, display: "₹18 LPA", label: "Highest package", sub: "FY 2024", tone: "primary" as const },
-    { I: Icon.Star, display: "4.9", label: "Student rating", sub: "from 800+ reviews", tone: "accent" as const },
+    { I: Icon.School, raw: 350, suffix: "+", label: "Learners mentored", sub: "across all programs", tone: "primary" as const },
+    { I: Icon.Briefcase, raw: 120, suffix: "+", label: "Placed", sub: "across 40+ companies", tone: "primary" as const },
+    { I: Icon.Trophy, display: "₹9 LPA", label: "Highest package", sub: "career-switcher offer", tone: "primary" as const },
+    { I: Icon.Star, display: "4.8", label: "Learner rating", sub: "from 200+ reviews", tone: "accent" as const },
   ];
   return (
     <section className="py-12 md:py-16 bg-white">
       <div className="max-w-brand mx-auto px-6">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.06} className={i === 4 ? "col-span-2 md:col-span-1" : ""}>
-              <motion.div whileHover={{ y: -5, boxShadow: "0 18px 40px -10px rgba(59,91,255,0.18), inset 0 1px 0 #fff" }} transition={{ duration: 0.2 }}
-                className="relative overflow-hidden p-5 rounded-[18px] bg-soft border border-[#E6E3F7] card-lift tap cursor-default">
-                <CornerSlash tone={s.tone} />
+            <Reveal key={s.label} delay={i * 0.06}>
+              <div className="relative overflow-hidden h-full p-5 rounded-[18px] bg-soft border border-[#E6E3F7] card-lift lift cursor-default">
                 <IconTile tone={s.tone} size={36}><s.I size={17} /></IconTile>
                 <div className={`mt-3 text-[26px] md:text-[30px] font-extrabold tracking-[-0.03em] leading-none ${s.tone === "accent" ? "grad-text-accent" : "grad-text"}`}>
                   {"raw" in s && s.raw !== undefined ? <Counter target={s.raw} suffix={s.suffix} /> : s.display}
                 </div>
                 <div className="mt-1.5 text-[13px] font-bold text-ink">{s.label}</div>
                 <div className="text-[12px] text-muted">{s.sub}</div>
-              </motion.div>
+              </div>
             </Reveal>
           ))}
         </div>
@@ -417,7 +347,7 @@ function FeaturedCourses() {
       <div className="max-w-brand mx-auto px-6">
         <Reveal className="text-center mb-10 md:mb-14">
           <SectionLabel>AI-native programs</SectionLabel>
-          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">Programs built for the AI era</h2>
+          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">Pick a role. We&apos;ll get you there.</h2>
           <p className="mt-3 text-muted text-[14px] md:text-[16px] max-w-xl mx-auto">AI is built into every course. Live mentors, max 5 per batch, real projects — and a certificate plus internship with every career program.</p>
         </Reveal>
       </div>
@@ -464,8 +394,8 @@ function FeaturedCourses() {
         <div className="relative overflow-hidden rounded-[22px] bg-white border border-[#E6E3F7] p-5 md:p-7" style={{ boxShadow: "0 18px 50px -24px rgba(59,91,255,0.25), inset 0 1px 0 #fff" }}>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2 mb-4">
             <div>
-              <div className="text-[11px] font-extrabold uppercase tracking-[0.15em] text-accent">Not ready for a full program?</div>
-              <h3 className="mt-1 text-[20px] md:text-[24px] font-extrabold text-ink tracking-[-0.02em]">Start with a 4–6 week short course</h3>
+              <div className="text-[11px] font-extrabold uppercase tracking-[0.15em] text-accent">Not ready to commit?</div>
+              <h3 className="mt-1 text-[20px] md:text-[24px] font-extrabold text-ink tracking-[-0.02em]">Try 4 weeks first.</h3>
             </div>
             <p className="text-[13px] text-muted md:text-right">Upgrade to the full program later — pay only the difference.</p>
           </div>
@@ -480,7 +410,7 @@ function FeaturedCourses() {
       </Reveal>
 
       <Reveal className="text-center mt-10">
-        <Magnetic><Link href="/courses" className="btn-grad tap inline-flex items-center gap-2 px-8 py-4 text-white font-extrabold rounded-full text-[15px]">Explore all {courses.length} courses <Icon.ArrowRight size={16} /></Link></Magnetic>
+        <Magnetic><Link href="/courses" className="btn-grad tap inline-flex items-center gap-2 px-8 py-4 text-white font-extrabold rounded-full text-[15px]">See all {courses.length} courses <Icon.ArrowRight size={16} /></Link></Magnetic>
       </Reveal>
     </section>
   );
@@ -502,19 +432,19 @@ function InternshipsAndWorkshops() {
         {/* Internships */}
         <Reveal className="text-center mb-10 md:mb-12">
           <SectionLabel dark>Internships + certificate</SectionLabel>
-          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-white tracking-[-0.03em] leading-[1.08]">Get the internship <span className="grad-text">recruiters ask for</span></h2>
-          <p className="mt-3 text-white/60 text-[14px] md:text-[16px] max-w-xl mx-auto">Nearly 6 in 10 fresher job postings now want internship experience. Do yours on a real project, with a mentor, in any track.</p>
+          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-white tracking-[-0.03em] leading-[1.08]">&ldquo;No experience&rdquo;? <span className="grad-text">Let&apos;s fix that.</span></h2>
+          <p className="mt-3 text-white/60 text-[14px] md:text-[16px] max-w-xl mx-auto">Most fresher job posts now ask for real project experience. Get yours with a mentor, in any track.</p>
         </Reveal>
-        <div className="grid md:grid-cols-3 gap-4 md:gap-5">
+        <div className="swipe-row md:grid-cols-3 md:gap-5">
           {internships.map((it, i) => (
-            <Reveal key={it.title} delay={i * 0.08}>
-              <div className="relative h-full overflow-hidden rounded-[20px] p-5 md:p-6 card-lift-dark" style={{ background: "rgba(255,255,255,0.04)", border: it.hot ? "1px solid rgba(139,164,255,0.45)" : "1px solid rgba(255,255,255,0.09)" }}>
+            <Reveal key={it.title} delay={i * 0.08} className="w-[80vw] max-w-[320px] md:w-auto md:max-w-none">
+              <div className="relative h-full flex flex-col overflow-hidden rounded-[20px] p-5 md:p-6 card-lift-dark" style={{ background: "rgba(255,255,255,0.04)", border: it.hot ? "1px solid rgba(139,164,255,0.45)" : "1px solid rgba(255,255,255,0.09)" }}>
                 {it.hot && <span className="absolute top-4 right-4 text-[10px] font-extrabold uppercase tracking-wide px-2.5 py-1 rounded-full text-white btn-grad">Most chosen</span>}
                 <IconTile tone="primary" size={44} dark><it.I size={21} /></IconTile>
                 <div className="mt-4 text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#8BA4FF]">{it.weeks}</div>
                 <div className="mt-1 text-[19px] font-extrabold text-white tracking-[-0.01em]">{it.title}</div>
                 <p className="mt-2 text-[13.5px] text-white/60 leading-relaxed">{it.desc}</p>
-                <div className="mt-4 flex flex-wrap gap-1.5">
+                <div className="mt-auto pt-4 flex flex-wrap gap-1.5">
                   {["Real project", "Mentor", "Certificate"].map((b) => (
                     <span key={b} className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-white/[0.06] border border-white/10 text-white/75">{b}</span>
                   ))}
@@ -533,7 +463,7 @@ function InternshipsAndWorkshops() {
           <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-6">
             <div>
               <SectionLabel dark>Free workshops</SectionLabel>
-              <h3 className="mt-3 text-[24px] md:text-[32px] font-extrabold text-white tracking-[-0.03em] leading-[1.1]">Try it live this week — free</h3>
+              <h3 className="mt-3 text-[24px] md:text-[32px] font-extrabold text-white tracking-[-0.03em] leading-[1.1]">Build something real this weekend. <span className="grad-text">Free.</span></h3>
             </div>
             <Link href="/workshops" className="text-[13px] font-bold text-[#8BA4FF] hover:text-white inline-flex items-center gap-1.5">All workshops, incl. weekend certificates <Icon.ArrowRight size={14} /></Link>
           </Reveal>
@@ -565,26 +495,24 @@ function MicroBatchUSP() {
     { I: Icon.Calendar, tone: "primary" as const, title: "Weekly 1:1 mentor reviews", desc: "Direct feedback every week — not once a month." },
     { I: Icon.Trophy, tone: "primary" as const, title: "Guaranteed capstone", desc: "Ship a real, portfolio-worthy project before graduating." },
     { I: Icon.Refresh, tone: "primary" as const, title: "Free re-attendance", desc: "Attend any future batch for free if you need more time." },
-    { I: Icon.Target, tone: "accent" as const, title: "Placement until hired", desc: "We don't stop until your first offer letter is in hand." },
+    { I: Icon.Target, tone: "accent" as const, title: "Placement support", desc: "Mock interviews, referrals and resume reviews when you're ready to apply." },
   ];
   return (
     <section className="py-14 md:py-24 bg-white">
       <div className="max-w-brand mx-auto px-6">
         <Reveal className="text-center mb-10 md:mb-14">
           <SectionLabel>Our difference</SectionLabel>
-          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">Micro-batch career accelerator</h2>
+          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">5 people. 1 mentor. <span className="grad-text">No hiding at the back.</span></h2>
           <p className="mt-3 text-muted text-[14px] md:text-[16px] max-w-xl mx-auto">Not a classroom. Not a MOOC. A focused, high-accountability program built for real outcomes.</p>
         </Reveal>
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5">
           {features.map((f, i) => (
-            <Reveal key={f.title} delay={i * 0.06}>
-              <motion.div whileHover={{ y: -5, boxShadow: "0 18px 40px -10px rgba(59,91,255,0.16), inset 0 1px 0 #fff" }} transition={{ duration: 0.22 }}
-                className="relative overflow-hidden h-full p-4 md:p-6 rounded-[18px] bg-soft border border-[#E6E3F7] card-lift tap">
-                <CornerSlash tone={f.tone} />
+            <Reveal key={f.title} delay={i * 0.06} className="h-full">
+              <div className="relative overflow-hidden h-full p-4 md:p-6 rounded-[18px] bg-soft border border-[#E6E3F7] card-lift lift">
                 <IconTile tone={f.tone} size={40}><f.I size={19} /></IconTile>
                 <h3 className="mt-3 text-[13px] md:text-[15px] font-extrabold text-ink leading-snug">{f.title}</h3>
                 <p className="mt-1.5 text-[12px] md:text-[14px] text-muted leading-relaxed">{f.desc}</p>
-              </motion.div>
+              </div>
             </Reveal>
           ))}
         </div>
@@ -655,12 +583,13 @@ function PlacementPath() {
     <section className="py-16 md:py-24 bg-soft relative overflow-hidden">
       <Slashes side="right" tone="primary" opacity={0.05} height={700} dot={false} />
       <div className="relative max-w-brand mx-auto px-6">
-        <Reveal className="text-center mb-6 md:mb-10">
+        <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-6 lg:gap-16 items-center">
+        <Reveal className="text-center lg:text-left">
           <SectionLabel>How it works</SectionLabel>
-          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">Your 10-step climb to the offer</h2>
-          <p className="mt-3 text-muted text-[14px] md:text-[16px] max-w-xl mx-auto">Engineered to get you hired, not just trained. Scroll — the path lights up.</p>
+          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">From &ldquo;where do I even start?&rdquo; to <span className="grad-text">&ldquo;I got the offer.&rdquo;</span></h2>
+          <p className="mt-3 text-muted text-[14px] md:text-[16px] max-w-md mx-auto lg:mx-0">Ten steps, one mentor, zero guesswork — from your first resume draft to the offer letter.</p>
         </Reveal>
-        <div ref={ref} className="mx-auto max-w-[560px]">
+        <div ref={ref} className="mx-auto w-full max-w-[460px]">
           <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Ten-step placement process drawn as a rising path">
             <defs>
               <linearGradient id="ascent" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#3B5BFF" /><stop offset="1" stopColor="#7B5BFF" /></linearGradient>
@@ -687,6 +616,7 @@ function PlacementPath() {
             })}
           </svg>
         </div>
+        </div>
       </div>
     </section>
   );
@@ -707,14 +637,14 @@ function CareerOutcomes() {
       <div className="relative max-w-brand mx-auto px-6">
         <Reveal className="text-center mb-10 md:mb-14">
           <SectionLabel dark>Career outcomes</SectionLabel>
-          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-white tracking-[-0.03em] leading-[1.08]">Your salary growth roadmap</h2>
-          <p className="mt-3 text-white/45 text-[14px] md:text-[16px] max-w-xl mx-auto">From your first IT job to senior-level packages.</p>
+          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-white tracking-[-0.03em] leading-[1.08]">Your first job is just <span className="grad-text">level 1.</span></h2>
+          <p className="mt-3 text-white/45 text-[14px] md:text-[16px] max-w-xl mx-auto">Typical industry salary ranges in India as you grow — from first job to senior roles.</p>
         </Reveal>
         <div className="flex flex-col md:grid md:grid-cols-3 gap-3 md:gap-6">
           {rows.map((r, i) => (
             <motion.div key={r.role}
-              initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.55, delay: i * 0.12, ease: EASE }}
+              initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.06, ease: EASE }}
               whileHover={{ y: -6, boxShadow: `0 28px 60px -14px ${r.c}55, inset 0 1px 0 rgba(255,255,255,0.08)` }}
               className={`relative rounded-[18px] p-5 md:p-8 card-lift-dark flex items-center justify-between ${r.ml} ${r.goal ? "md:mt-0" : ""}`}
               style={{ background: r.bg, border: `${r.goal ? 1.5 : 1}px solid ${r.bd}`, boxShadow: r.goal ? "0 0 40px rgba(74,222,128,0.12), inset 0 1px 0 rgba(255,255,255,0.08)" : undefined }}>
@@ -736,13 +666,12 @@ function CareerOutcomes() {
 function PlacementCard({ p, className = "", style }: { p: typeof PLACEMENTS[number]; className?: string; style?: React.CSSProperties }) {
   return (
     <div className={`relative bg-white rounded-[20px] p-5 md:p-6 card-lift overflow-hidden ${className}`} style={style}>
-      <CornerSlash />
       <div className="flex items-center gap-3 mb-3.5">
         <div className="w-11 h-11 rounded-full text-white font-extrabold text-[14px] flex items-center justify-center shrink-0" style={{ background: "var(--grad-primary)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3)" }}>{p.initials}</div>
-        <div className="min-w-0"><div className="font-extrabold text-ink text-[15px] leading-tight">{p.name}</div><div className="text-[12px] text-muted">{p.location} · {p.batch}</div></div>
+        <div className="min-w-0"><div className="font-extrabold text-ink text-[15px] leading-tight">{p.name}</div><div className="text-[12px] text-muted truncate">{p.location} · {p.tag}</div></div>
         <Icon.Quote size={24} className="ml-auto text-primary/25 shrink-0" />
       </div>
-      <p className="text-[13px] md:text-[14px] text-[#4B5563] leading-relaxed mb-4" style={{ minHeight: 84 }}>{p.quote}</p>
+      <p className="text-[13px] md:text-[14px] text-[#4B5563] leading-relaxed mb-4 flex-1" style={{ minHeight: 84 }}>{p.quote}</p>
       <div className="border-t border-line pt-3 flex items-center justify-between">
         <div><div className="text-[11px] text-muted">{p.track}</div><div className="text-[13px] font-extrabold" style={{ color: p.companyColor }}>→ {p.company}</div></div>
         <div className="text-[20px] font-extrabold grad-text tracking-tight">{p.pkg}</div>
@@ -767,8 +696,8 @@ function RecentPlacements() {
       <div className="max-w-brand mx-auto px-6">
         <Reveal className="text-center mb-8 md:mb-14">
           <SectionLabel>Success stories</SectionLabel>
-          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">Recent placements</h2>
-          <p className="mt-2 text-[12px] text-muted">Names changed for privacy · Real outcomes</p>
+          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">They were confused too. <span className="grad-text">Now they&apos;re hired.</span></h2>
+          <p className="mt-2 text-[12px] text-muted">Names changed for privacy</p>
         </Reveal>
 
         {/* Mobile deck */}
@@ -798,10 +727,8 @@ function RecentPlacements() {
         {/* Desktop grid */}
         <div className="hidden md:grid grid-cols-4 gap-6">
           {PLACEMENTS.map((p, k) => (
-            <Reveal key={p.name} delay={k * 0.06}>
-              <motion.div whileHover={{ y: -8 }} transition={{ duration: 0.25, ease: EASE }} className="h-full">
-                <PlacementCard p={p} className="h-full flex flex-col" style={{ border: "1px solid #E6E3F7", boxShadow: "0 2px 12px rgba(14,21,38,0.05), inset 0 1px 0 #fff" }} />
-              </motion.div>
+            <Reveal key={p.name} delay={k * 0.06} className="h-full">
+              <PlacementCard p={p} className="h-full flex flex-col lift" style={{ border: "1px solid #E6E3F7", boxShadow: "0 2px 12px rgba(14,21,38,0.05), inset 0 1px 0 #fff" }} />
             </Reveal>
           ))}
         </div>
@@ -815,9 +742,9 @@ function FAQSection() {
   const [open, setOpen] = useState<number | null>(1);
   const faqs = [
     { q: "Are the classes live or recorded?", a: "100% live. Every session is taught in real time by your mentor. Recordings are shared within 24 hours if you miss a class — but attendance is expected. This is not a pre-recorded course." },
-    { q: "What if I don't get placed after completing the course?", a: "We keep supporting you until you get placed. No time limit. Future batches free, mock interview sessions, resume reviews — all included until you land an offer." },
+    { q: "What happens after I finish the course?", a: "Placement support kicks in: mock interviews, resume and LinkedIn reviews, and referrals when you're ready to apply. You can also re-attend any future batch for free if you want more practice." },
     { q: "What's the difference between short courses, advanced courses and career programs?", a: "A short course (4–6 weeks) teaches one skill. An advanced course (6–8 weeks) takes one skill deeper. A career program (3–6 months) combines them with real projects, an internship and interview prep. They stack — start small and upgrade later by paying only the difference." },
-    { q: "Why isn't the fee on the website?", a: "Because it depends on your course, level and the founding-batch offer running when you join. Tap \"Get fee on WhatsApp\" on any course and we'll share the exact fee, EMI options and next batch date in minutes." },
+    { q: "Why isn't the fee on the website?", a: "Because it depends on your course, level and the offer running when you join. Tap \"Get fee on WhatsApp\" on any course and we'll share the exact fee, EMI options and next batch date in minutes." },
     { q: "Do I get a certificate and an internship?", a: "Every course comes with a certificate. Every career program also includes an internship with a real project — the kind of experience most fresher job postings now ask for." },
     { q: "How many hours per week does the course require?", a: "Roughly 15–20 hours — three live sessions of 1.5 hours each, plus assignments, projects and self-study. It's intensive by design." },
     { q: "I have no prior coding experience. Can I still join?", a: "Yes. Most programs start from fundamentals. Many of our placed students had zero coding background when they started — commitment is the only requirement." },
@@ -828,8 +755,8 @@ function FAQSection() {
       <div className="max-w-2xl mx-auto px-6">
         <Reveal className="text-center mb-10 md:mb-14">
           <SectionLabel>FAQ</SectionLabel>
-          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">Questions students ask</h2>
-          <p className="mt-3 text-muted text-[14px]">Real answers. No marketing fluff.</p>
+          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">Stuff you&apos;re probably wondering</h2>
+          <p className="mt-3 text-muted text-[14px]">Straight answers. No marketing fluff.</p>
         </Reveal>
         <div className="space-y-3">
           {faqs.map((f, i) => {
@@ -857,7 +784,7 @@ function FAQSection() {
           })}
         </div>
         <Reveal className="text-center mt-9">
-          <p className="text-[14px] text-muted mb-3">Still have questions?</p>
+          <p className="text-[14px] text-muted mb-3">Didn&apos;t see your question?</p>
           <Magnetic><button onClick={openPopup} className="btn-grad tap inline-flex items-center gap-2 px-7 py-3.5 text-white font-extrabold rounded-full text-[14px]">Talk to a counselor <Icon.ArrowRight size={15} /></button></Magnetic>
         </Reveal>
       </div>
@@ -874,8 +801,8 @@ function FinalCTA() {
       <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.14) 1px, transparent 1px)", backgroundSize: "28px 28px", opacity: 0.5 }} />
       <div className="relative max-w-brand mx-auto px-6 text-center">
         <Reveal>
-          <h2 className="text-[30px] md:text-[48px] font-extrabold text-white tracking-[-0.03em] leading-[1.05] mb-4">Ready to take<br className="md:hidden" /> the next step?</h2>
-          <p className="text-white/70 text-[14px] md:text-[16px] mb-8">Free 1:1 counseling · Certificate + internship · EMI available · Placement support until hired</p>
+          <h2 className="text-[30px] md:text-[48px] font-extrabold text-white tracking-[-0.03em] leading-[1.05] mb-4">Still scrolling?<br className="md:hidden" /> Let&apos;s just talk.</h2>
+          <p className="text-white/70 text-[14px] md:text-[16px] mb-8">Free 1:1 counseling · Certificate + internship · EMI available · No pressure</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Magnetic className="w-full sm:w-auto"><button onClick={openPopup} className="tap w-full sm:w-auto px-8 py-4 bg-white text-primary font-extrabold rounded-full text-[15px]" style={{ boxShadow: "0 14px 36px rgba(0,0,0,0.2)" }}>Free counseling</button></Magnetic>
             <Magnetic className="w-full sm:w-auto"><a href="https://wa.me/919936609430" className="tap w-full sm:w-auto px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full text-[15px] inline-flex items-center justify-center gap-2" style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2), 0 12px 30px rgba(0,0,0,0.18)" }}><Icon.WhatsApp size={18} /> WhatsApp now</a></Magnetic>

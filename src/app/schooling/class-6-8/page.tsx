@@ -87,7 +87,7 @@ export default function Class68Page() {
 
             <div>
               <div className="bg-white rounded-[18px] border border-[#E6E3F7] card-lift tap p-6 shadow-card sticky top-24">
-                <div className="text-2xl font-extrabold text-ink mb-1">Founding batch offer</div>
+                <div className="text-2xl font-extrabold text-ink mb-1">Join the next batch</div>
                 <div className="text-sm text-muted mb-5">Fee, EMI and next batch date — shared on WhatsApp in minutes.</div>
                 <div className="space-y-3 mb-6">
                   {[["Class", "6th, 7th & 8th"], ["Batch Size", "Max 5 Students"], ["Mode", "Live Interactive"], ["Schedule", "Flexible weekends"], ["Certificate", "Yes"], ["Parent Updates", "Weekly"]].map(([k, v]) => (

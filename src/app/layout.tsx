@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={jakarta.variable}>
+    <html lang="en" className={jakarta.variable} data-scroll-behavior="smooth">
       <body>
         <Loader />
         <NavClient />
@@ -82,7 +82,7 @@ function Footer() {
           <div>
             <h4 className="text-sm font-bold mb-4 text-white/80 uppercase tracking-wider">Resources</h4>
             <ul className="space-y-2">
-              {["Blogs", "Career", "About Us", "Pay After Placement", "Tutorials", "Tech Trends", "Success Stories"].map((item) => (
+              {["Blogs", "Career", "About Us", "Tutorials", "Tech Trends", "Success Stories"].map((item) => (
                 <li key={item}><Link href={resourceHref(item)} className="text-sm text-white/60 hover:text-white transition-colors">{item}</Link></li>
               ))}
             </ul>
@@ -108,7 +108,7 @@ function Footer() {
 
         <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-xs text-white/60">© {new Date().getFullYear()} Step2ITCareer-AI. All rights reserved.</p>
-          <p className="text-xs text-white/60">Built with love for ambitious learners</p>
+          <p className="text-xs text-white/60 md:pr-20">Built with love for ambitious learners</p>
         </div>
       </div>
     </footer>
