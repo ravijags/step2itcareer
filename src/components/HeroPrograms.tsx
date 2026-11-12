@@ -29,14 +29,14 @@ export const HERO_PROGRAMS: HeroProgram[] = [
     hook: "Ship complete web apps, front to back",
     build: ["A full e-commerce app with payments", "A React dashboard on your own API", "An AI feature inside your app"],
     tools: ["React", "Node.js", "MongoDB"], range: "₹4–8 LPA" },
-  { slug: "cloud-devops-engineer-ai", role: "Cloud Engineer", color: "#22C58B",
-    hook: "Keep real apps live, fast and secure",
-    build: ["A CI/CD pipeline that deploys on every push", "Dockerised apps running on AWS", "Monitoring and alerts for a live service"],
-    tools: ["AWS", "Docker", "Kubernetes"], range: "₹4–8 LPA" },
-  { slug: "qa-ai-testing-engineer", role: "QA Engineer", color: "#F0569A",
-    hook: "Break apps before users do — with automation",
-    build: ["An automated Selenium test suite", "API tests in Postman", "AI-generated test cases you review"],
-    tools: ["Selenium", "Postman", "Jira"], range: "₹3–6 LPA" },
+  { slug: "mobile-app-developer-ai", role: "App Developer", color: "#22C58B",
+    hook: "Build apps people keep on their phones",
+    build: ["An AI chat assistant app", "A food-ordering app with login", "Your own app on the Play Store"],
+    tools: ["Flutter", "React Native", "Firebase"], range: "₹4–7 LPA" },
+  { slug: "cybersecurity-ai-security", role: "Cybersecurity Analyst", color: "#F0569A",
+    hook: "Catch attackers before they get in",
+    build: ["A network scan and vulnerability report", "A web app penetration test (lab)", "A real SOC alert investigation"],
+    tools: ["Kali Linux", "Wireshark", "Burp Suite"], range: "₹4–7 LPA" },
 ];
 
 const duration = (slug: string) => getCourseBySlug(slug)?.duration.toLowerCase() ?? "";
@@ -47,23 +47,35 @@ export function HeroStories({ index, setIndex }: { index: number; setIndex: (i: 
   const n = HERO_PROGRAMS.length;
   const p = HERO_PROGRAMS[index];
   const [paused, setPaused] = useState(false);
-  const pressAt = useRef(0);
+  // A press only counts as a tap/hold while the finger stays put. Once it moves more than
+  // 10px it's a scroll: unpause and ignore it, so scrolling past the card never skips a story.
+  const press = useRef<{ x: number; y: number; at: number; moved: boolean } | null>(null);
 
   const go = (d: number) => setIndex((index + d + n) % n);
 
-  const onDown = () => { pressAt.current = Date.now(); setPaused(true); };
+  const onDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    press.current = { x: e.clientX, y: e.clientY, at: Date.now(), moved: false };
+    setPaused(true);
+  };
+  const onMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const p = press.current;
+    if (p && !p.moved && Math.hypot(e.clientX - p.x, e.clientY - p.y) > 10) { p.moved = true; setPaused(false); }
+  };
   const onUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    const p = press.current;
+    press.current = null;
     setPaused(false);
-    if (Date.now() - pressAt.current > 280) return; // a hold just pauses
+    if (!p || p.moved || Date.now() - p.at > 280) return; // a scroll or a hold: no skip
     const r = e.currentTarget.getBoundingClientRect();
     go(e.clientX - r.left < r.width * 0.3 ? -1 : 1);
   };
+  const onCancel = () => { press.current = null; setPaused(false); };
 
   return (
     <div
       className="relative w-full max-w-[420px] mx-auto rounded-[22px] overflow-hidden select-none text-left"
-      style={{ background: `linear-gradient(155deg, ${p.color}40 0%, rgba(16,22,48,0.92) 55%)`, border: "1px solid rgba(255,255,255,0.12)", boxShadow: `0 18px 44px -18px ${p.color}88, inset 0 1px 0 rgba(255,255,255,0.1)`, transition: "background 400ms ease, box-shadow 400ms ease" }}
-      onPointerDown={onDown} onPointerUp={onUp} onPointerLeave={() => setPaused(false)} onPointerCancel={() => setPaused(false)}
+      style={{ touchAction: "pan-y", background: `linear-gradient(155deg, ${p.color}40 0%, rgba(16,22,48,0.92) 55%)`, border: "1px solid rgba(255,255,255,0.12)", boxShadow: `0 18px 44px -18px ${p.color}88, inset 0 1px 0 rgba(255,255,255,0.1)`, transition: "background 400ms ease, box-shadow 400ms ease" }}
+      onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerLeave={onCancel} onPointerCancel={onCancel}
       role="group" aria-roledescription="carousel" aria-label="Career programs"
     >
       {/* progress bars */}

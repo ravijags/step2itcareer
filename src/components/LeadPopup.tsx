@@ -74,10 +74,10 @@ export default function LeadPopup({ submitted, onSubmit, onClose, preset }: {
             </button>
             <div className="relative flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.15em] text-[#FF9A6C] mb-1.5">
               <span className="relative inline-block w-2 h-2 rounded-full bg-[#4ADE80] pulse-ring text-[#4ADE80]" />
-              3 counselors online
+              Free · No obligation
             </div>
             <h3 className="relative text-[22px] font-extrabold text-white tracking-tight leading-tight">{preset?.heading ?? "Get job-ready. Get hired."}</h3>
-            <p className="relative text-[13px] text-white/60 mt-1">{preset?.sub ?? "We call back within 2 hours · Free · No obligation"}</p>
+            <p className="relative text-[13px] text-white/60 mt-1">{preset?.sub ?? "We reply on WhatsApp within 2 hours."}</p>
           </div>
 
           <div className="overflow-y-auto">
@@ -130,9 +130,6 @@ export default function LeadPopup({ submitted, onSubmit, onClose, preset }: {
                     </optgroup>
                     <optgroup label="Short courses">
                       {courses.filter((c) => c.level === "short").map((c) => <option key={c.slug} value={c.title}>{c.title}</option>)}
-                    </optgroup>
-                    <optgroup label="Advanced courses">
-                      {courses.filter((c) => c.level === "advanced").map((c) => <option key={c.slug} value={c.title}>{c.title}</option>)}
                     </optgroup>
                     <optgroup label="More">
                       <option value="Internship">Internship + certificate</option>

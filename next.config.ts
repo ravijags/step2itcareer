@@ -1,5 +1,5 @@
 import type { NextConfig } from "next";
-import { LEGACY_SLUGS } from "./src/lib/courses";
+import { courseRedirects } from "./src/lib/courses";
 
 const nextConfig: NextConfig = {
   images: {
@@ -8,7 +8,8 @@ const nextConfig: NextConfig = {
   // Course links already shared on WhatsApp keep working after the catalogue rename.
   async redirects() {
     return [
-      ...Object.entries(LEGACY_SLUGS).map(([from, to]) => ({
+      // Course links already shared on WhatsApp keep working after each catalogue change.
+      ...courseRedirects().map(({ from, to }) => ({
         source: `/courses/${from}`,
         destination: to ? `/courses/${to}` : "/courses",
         permanent: true,

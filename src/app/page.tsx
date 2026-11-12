@@ -3,11 +3,11 @@
 import Link from "next/link";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence, type PanInfo } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValueEvent, useReducedMotion, AnimatePresence, type PanInfo } from "framer-motion";
 import { courses } from "@/lib/courses";
 import { Icon, IconTile } from "@/components/Icons";
 import { Grain, Slashes } from "@/components/Decor";
-import { HERO_PROGRAMS, HeroStories, HeroDeck } from "@/components/HeroPrograms";
+import { HeroStories, HeroDeck } from "@/components/HeroPrograms";
 import Magnetic from "@/components/Magnetic";
 import CourseArt from "@/components/CourseArt";
 import WorkshopButton from "@/components/inner/WorkshopButton";
@@ -36,6 +36,7 @@ export default function HomePage() {
     <>
       <div className="relative z-10 cut-bottom bg-ink2">
         <HeroSection />
+        <HeroRolesMobile />
         <SocialProofTicker />
       </div>
       <AlumniMarquee />
@@ -108,25 +109,22 @@ function HeroSection() {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 700], [0, 60]);
   const opacity = useTransform(scrollY, [160, 760], [1, 0]);
+  const [prog, setProg] = useState(0); // desktop deck only
 
-  const [prog, setProg] = useState(0);
-  const role = HERO_PROGRAMS[prog].role;
-
-  /* Mesh gradient canvas — paused when off-screen, off entirely for reduced motion */
+  /* Mesh gradient canvas — slow drift on desktop only. Phones get one still frame:
+     a constantly animating canvas drains battery and stutters on budget Android phones. */
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   useEffect(() => {
     const canvas = canvasRef.current, section = sectionRef.current;
     if (!canvas || !section) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches || !window.matchMedia("(min-width: 1024px)").matches;
     let raf = 0, t = 0, visible = true;
     const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
     resize();
-    const draw = () => {
-      if (!visible) return;
-      t += 0.004;
+    const frame = () => {
       const w = canvas.width, h = canvas.height;
       ctx.clearRect(0, 0, w, h);
       const blob = (cx: number, cy: number, r: number, col: string) => {
@@ -137,8 +135,9 @@ function HeroSection() {
       blob(w * (0.18 + 0.1 * Math.sin(t * 0.7)), h * (0.28 + 0.08 * Math.cos(t * 0.5)), w * 0.6, "rgba(59,91,255,0.22)");
       blob(w * (0.82 + 0.08 * Math.cos(t * 0.6)), h * (0.7 + 0.1 * Math.sin(t * 0.4)), w * 0.5, "rgba(255,122,61,0.13)");
       blob(w * (0.55 + 0.16 * Math.sin(t * 0.35 + 1)), h * (0.12 + 0.06 * Math.cos(t * 0.8)), w * 0.4, "rgba(123,91,255,0.16)");
-      raf = requestAnimationFrame(draw);
     };
+    if (still) { frame(); return; }
+    const draw = () => { if (!visible) return; t += 0.004; frame(); raf = requestAnimationFrame(draw); };
     const io = new IntersectionObserver(([e]) => {
       visible = e.isIntersecting;
       if (visible) { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); }
@@ -157,79 +156,106 @@ function HeroSection() {
       <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(59,91,255,0.18) 1px, transparent 1px)", backgroundSize: "36px 36px", opacity: 0.4 }} />
       <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 60%, transparent 45%, rgba(7,11,24,0.55) 100%)" }} />
 
-      <div className="relative max-w-brand mx-auto px-6 w-full py-7 md:py-16 lg:py-10 grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-16 items-center">
-        {/* Left — copy */}
+      <div className="relative max-w-brand mx-auto px-6 w-full py-8 md:py-16 lg:py-10 grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-16 items-center">
+        {/* One idea: a small batch, and a seat for you in it. */}
         <motion.div style={{ y, opacity }} className="text-center lg:text-left">
           <motion.div data-rise style={{ "--d": "0s", "--ry": "10px" } as React.CSSProperties}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-[#FF9A6C] text-[10.5px] sm:text-[11px] font-extrabold tracking-[0.16em] uppercase mb-4 md:mb-6">
-            <Icon.Bolt size={12} /> Live · Mentor-led · Max 5 per batch
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-[#FF9A6C] text-[11px] font-extrabold tracking-[0.16em] uppercase mb-5 md:mb-7">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#FF7A3D]" /> Job-ready IT courses · Live
           </motion.div>
 
           <motion.h1 data-rise style={{ "--d": "0.08s", "--ry": "18px" } as React.CSSProperties}
-            className="text-[40px] sm:text-6xl lg:text-[72px] font-extrabold text-white leading-[1.02] tracking-[-0.03em] mb-1">
-            Get Hired<span className="-ml-[0.04em]">.</span>
-          </motion.h1>
-          <motion.h1 data-rise style={{ "--d": "0.14s", "--ry": "18px" } as React.CSSProperties}
-            className="text-[40px] sm:text-6xl lg:text-[72px] font-extrabold leading-[1.02] tracking-[-0.03em] mb-4 md:mb-5">
-            <span className="text-white/45 font-light">Not just </span>
-            <span className="grad-text">Trained<span className="-ml-[0.04em]">.</span></span>
+            className="text-[42px] sm:text-6xl lg:text-[70px] font-extrabold leading-[1.02] tracking-[-0.035em]">
+            <span className="block text-white">Learn in a</span>
+            <span className="block text-white">batch of&nbsp;5.</span>
+            <span className="block grad-text mt-1">Not 500.</span>
           </motion.h1>
 
-          {/* Kinetic role pill — synced with the program cards */}
-          <motion.div data-rise style={{ "--d": "0.3s", "--ry": "0px" } as React.CSSProperties}
-            className="flex items-center justify-center lg:justify-start gap-2 mb-4 md:mb-5 flex-nowrap">
-            <span className="text-white/60 text-[14px] font-medium whitespace-nowrap">Train for roles like</span>
-            <div className="relative h-8 min-w-[200px] flex items-center justify-start overflow-hidden">
-              <AnimatePresence mode="popLayout" initial={false}>
-                <motion.span key={role}
-                  initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.25, ease: EASE }}
-                  className="absolute text-[14px] font-extrabold px-3 py-1 rounded-full whitespace-nowrap"
-                  style={{ background: `${HERO_PROGRAMS[prog].color}33`, color: "#fff", border: `1px solid ${HERO_PROGRAMS[prog].color}88` }}>
-                  {role}
-                </motion.span>
-              </AnimatePresence>
+          <HeroSeats />
+
+          <motion.div data-rise style={{ "--d": "0.5s", "--ry": "10px" } as React.CSSProperties}
+            className="mt-7 md:mt-8 flex flex-col items-center lg:items-start">
+            <Magnetic className="w-full max-w-[360px] sm:w-auto">
+              <Link href="/courses" className="btn-grad tap flex items-center justify-center gap-2 w-full sm:w-auto sm:min-w-[240px] px-8 py-4 text-white font-extrabold rounded-full text-[16px] whitespace-nowrap">
+                Find your course <Icon.ArrowRight size={17} />
+              </Link>
+            </Magnetic>
+            <Link href="/workshops" className="mt-4 text-[13.5px] font-semibold text-white/70 hover:text-white transition-colors">
+              or join a free AI workshop on Saturday <span aria-hidden>→</span>
+            </Link>
+            <div className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] text-white/45 font-semibold">
+              <Icon.Star size={13} className="text-[#FFB547]" /> 4.8 · 350+ learners
             </div>
           </motion.div>
-
-          <motion.p data-rise style={{ "--d": "0.22s", "--ry": "10px" } as React.CSSProperties}
-            className="hidden md:block text-[16px] text-white/55 max-w-md mx-auto lg:mx-0 mb-7 leading-relaxed">
-            Live, mentor-led IT programs with AI built into every course. 5 learners per batch, real projects, and placement support.
-          </motion.p>
-
-          {/* Phones: program stories sit right under the headline */}
-          <motion.div data-rise style={{ "--d": "0.26s", "--ry": "10px" } as React.CSSProperties} className="lg:hidden mb-5">
-            <HeroStories index={prog} setIndex={setProg} />
-          </motion.div>
-
-          {/* CTAs */}
-          <motion.div data-rise style={{ "--d": "0.3s", "--ry": "10px" } as React.CSSProperties}
-            className="flex gap-3 justify-center lg:justify-start mb-5">
-            <Magnetic className="flex-1 sm:flex-none max-w-[200px]">
-              <Link href="/courses" className="btn-grad tap block w-full sm:w-auto sm:min-w-[170px] px-4 sm:px-7 py-3.5 sm:py-4 text-white font-extrabold rounded-full text-[14px] sm:text-[15px] text-center whitespace-nowrap">Explore programs</Link>
-            </Magnetic>
-            <Magnetic className="flex-1 sm:flex-none max-w-[200px]">
-              <button onClick={openPopup} className="btn-ghost-dark tap block w-full sm:w-auto sm:min-w-[170px] px-4 sm:px-7 py-3.5 sm:py-4 text-white font-bold rounded-full text-[14px] sm:text-[15px] whitespace-nowrap">Free counseling</button>
-            </Magnetic>
-          </motion.div>
-
-          {/* "I'm a…" — one tap sorts the catalogue for your situation */}
-          <motion.div data-rise style={{ "--d": "0.4s", "--ry": "0px" } as React.CSSProperties}
-            className="flex items-center justify-start sm:justify-center lg:justify-start gap-1.5 overflow-x-auto scrollbar-hide -mx-6 px-6 lg:mx-0 lg:px-0">
-            <span className="shrink-0 text-[12px] text-white/50 font-semibold whitespace-nowrap mr-0.5">I&apos;m a…</span>
-            {AUDIENCE_CHIPS.map((a) => (
-              <Link key={a.key} href={`/courses?for=${a.key}`}
-                className="tap shrink-0 text-[12px] font-bold px-2.5 sm:px-3 py-1.5 rounded-full text-white/80 bg-white/[0.06] border border-white/[0.12] hover:bg-white/[0.12] hover:text-white transition-colors">
-                {a.label}
-              </Link>
-            ))}
-          </motion.div>
-          <motion.p data-rise style={{ "--d": "0.46s", "--ry": "0px" } as React.CSSProperties}
-            className="hidden md:block mt-5 text-[12.5px] text-white/40">New batches every month · 5 seats each · <button onClick={openPopup} className="underline underline-offset-2 hover:text-white">Book a free counseling call →</button></motion.p>
         </motion.div>
 
         {/* Right — program deck (desktop) */}
         <div className="hidden lg:block"><HeroDeck index={prog} setIndex={setProg} /></div>
+      </div>
+    </section>
+  );
+}
+
+/* The hero's one animation: seats light up left to right, "you" lights last with a single
+   pulse, then everything stays still. Reduced-motion users get the final state instantly. */
+function HeroSeats() {
+  const reduce = useReducedMotion();
+  const seats = [0, 1, 2, 3, 4];
+  const YOU = 2;
+  const base = 0.55;
+  const delayFor = (i: number) => base + (i === YOU ? 5 : i < YOU ? i : i - 1) * 0.1;
+  return (
+    <motion.div data-rise style={{ "--d": "0.3s", "--ry": "10px" } as React.CSSProperties}
+      className="mt-6 md:mt-8 inline-flex flex-col items-center lg:items-start rounded-[20px] px-5 py-4 bg-white/[0.04] border border-white/[0.09]">
+      <div className="flex items-center gap-2.5" aria-hidden>
+        <span className="w-9 h-9 rounded-full flex items-center justify-center text-white" style={{ background: "var(--grad-primary)", boxShadow: "0 6px 18px rgba(59,91,255,0.4)" }}>
+          <Icon.School size={18} />
+        </span>
+        <span className="w-3 h-[2px] rounded bg-white/20" />
+        {seats.map((i) => {
+          const you = i === YOU;
+          return (
+            <motion.span key={i}
+              initial={reduce ? false : { opacity: 0.25, scale: 0.7 }}
+              animate={you && !reduce
+                ? { opacity: 1, scale: [0.7, 1.18, 1], boxShadow: ["0 0 0 0 rgba(255,122,61,0)", "0 0 0 8px rgba(255,122,61,0.25)", "0 0 0 0 rgba(255,122,61,0)"] }
+                : { opacity: 1, scale: 1 }}
+              transition={{ delay: delayFor(i), duration: you ? 0.6 : 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-extrabold ${you ? "text-white" : ""}`}
+              style={you ? { background: "linear-gradient(135deg,#FF7A3D,#FF5E7A)" } : { border: "1.5px solid rgba(139,164,255,0.45)", background: "rgba(59,91,255,0.12)" }}>
+              {you ? "you" : ""}
+            </motion.span>
+          );
+        })}
+      </div>
+      <p className="mt-3 text-[14px] md:text-[15px] font-bold text-white/85">
+        1 mentor. 5 seats. 1 goal: <span className="text-[#FF9A6C]">your first offer.</span>
+      </p>
+    </motion.div>
+  );
+}
+
+/* Phones: the program stories and "I'm a…" chips live just below the hero, so the first
+   screen holds one idea and the next one is already peeking in. Desktop has the deck instead. */
+function HeroRolesMobile() {
+  const [i, setI] = useState(0);
+  return (
+    <section className="lg:hidden relative px-6 pt-2 pb-6 overflow-hidden">
+      <div className="max-w-[420px] mx-auto">
+        <div className="flex items-baseline justify-between mb-3">
+          <h2 className="text-[17px] font-extrabold text-white tracking-[-0.01em]">Pick a role</h2>
+          <Link href="/courses" className="text-[12.5px] font-bold text-[#8BA4FF]">All courses →</Link>
+        </div>
+        <HeroStories index={i} setIndex={setI} />
+        <p className="mt-5 mb-2 text-[12px] text-white/50 font-semibold text-center">I&apos;m a…</p>
+        <div className="flex justify-center gap-1.5">
+          {AUDIENCE_CHIPS.map((a) => (
+            <Link key={a.key} href={`/courses?for=${a.key}`}
+              className="tap shrink-0 text-[11.5px] font-bold px-2.5 py-1.5 rounded-full text-white/80 bg-white/[0.06] border border-white/[0.12] whitespace-nowrap">
+              {a.label}
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -268,19 +294,22 @@ function SocialProofTicker() {
 
 /* ───────────────────────── ALUMNI ───────────────────────── */
 function AlumniMarquee() {
-  // Companies a fresher can realistically join from a small batch. Uniform muted wordmarks, brand colour on hover.
-  const logos: [string, string][] = [
-    ["TCS", "#CC0000"], ["Infosys", "#007CC3"], ["Wipro", "#341C5C"], ["HCLTech", "#0076C0"],
-    ["Cognizant", "#1A4CA1"], ["Accenture", "#A100FF"], ["Capgemini", "#0070AD"], ["Tech Mahindra", "#E31837"],
+  // Where fresher hiring is actually growing in 2026 (not a claim about our learners).
+  const sectors: [string, React.ReactNode][] = [
+    ["AI startups", <Icon.Robot key="i" size={20} />], ["GCCs", <Icon.Globe key="i" size={20} />],
+    ["E-commerce", <Icon.Box key="i" size={20} />], ["Fintech", <Icon.Coin key="i" size={20} />],
+    ["Banking & BFSI", <Icon.Shield key="i" size={20} />], ["SaaS products", <Icon.Layers key="i" size={20} />],
+    ["Healthtech", <Icon.Flask key="i" size={20} />], ["Digital agencies", <Icon.Trend key="i" size={20} />],
   ];
-  const row = logos.map(([name, color]) => (
-    <span key={name} className="alumni-logo inline-flex items-center mx-8 md:mx-12 text-[19px] md:text-[23px] font-extrabold tracking-[-0.01em] text-[#9A98B0] transition-colors duration-200 cursor-default"
-      style={{ ["--brand" as string]: color } as React.CSSProperties}>{name}</span>
+  const row = sectors.map(([name, icon]) => (
+    <span key={name} className="inline-flex items-center gap-2.5 mx-7 md:mx-10 text-[18px] md:text-[22px] font-extrabold tracking-[-0.01em] text-[#8F8DA8]">
+      <span className="text-primary/70">{icon}</span>{name}
+    </span>
   ));
   return (
     <section className="relative overlap-up bg-soft pt-16 md:pt-24 pb-10 md:pb-14 overflow-hidden">
       <Reveal>
-        <p className="text-center text-[11px] font-extrabold text-primary uppercase tracking-[0.25em] mb-2">Where our learners work</p>
+        <p className="text-center text-[11px] font-extrabold text-primary uppercase tracking-[0.25em] mb-2">Where freshers are getting hired now</p>
         <div className="w-8 h-[3px] mx-auto mb-8 rounded" style={{ background: "var(--grad-primary)", transform: "skewX(-20deg)" }} />
       </Reveal>
       <div className="relative flex" style={{ maskImage: "linear-gradient(to right, transparent, #000 12%, #000 88%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, #000 12%, #000 88%, transparent)" }}>
@@ -322,9 +351,9 @@ function StatsRow() {
 
 /* ───────────────────────── COURSES ───────────────────────── */
 function FeaturedCourses() {
-  const featured = ["ai-engineer-agents-automation", "ai-powered-data-analyst", "java-full-stack-ai", "mern-full-stack-ai", "mobile-app-developer-ai", "data-scientist-ml-genai"]
+  const featured = ["ai-engineer-agents-automation", "ai-powered-data-analyst", "java-full-stack-ai", "mern-full-stack-ai", "mobile-app-developer-ai", "cybersecurity-ai-security"]
     .map((slug) => courses.find((c) => c.slug === slug)!).filter(Boolean);
-  const starters = ["ai-productivity", "ai-assisted-coding", "python-programming", "core-java", "flutter-first-app", "sql-excel"]
+  const starters = ["ai-productivity", "ai-assisted-coding", "python-for-ai", "core-java", "build-your-first-app", "sql-excel"]
     .map((slug) => courses.find((c) => c.slug === slug)!).filter(Boolean);
   const [active, setActive] = useState(0);
   const rowRef = useRef<HTMLDivElement>(null);
@@ -348,7 +377,7 @@ function FeaturedCourses() {
         <Reveal className="text-center mb-10 md:mb-14">
           <SectionLabel>AI-native programs</SectionLabel>
           <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">Pick a role. We&apos;ll get you there.</h2>
-          <p className="mt-3 text-muted text-[14px] md:text-[16px] max-w-xl mx-auto">AI is built into every course. Live mentors, max 5 per batch, real projects — and a certificate plus internship with every career program.</p>
+          <p className="mt-3 text-muted text-[14px] md:text-[16px] max-w-xl mx-auto">Seven career programs, each with real projects, AI built in, and a certificate plus internship.</p>
         </Reveal>
       </div>
 
@@ -360,8 +389,8 @@ function FeaturedCourses() {
             style={{ boxShadow: active === i ? "0 0 0 1.5px rgba(59,91,255,0.55), 0 18px 44px rgba(59,91,255,0.22)" : "0 2px 12px rgba(14,21,38,0.06)", transform: active === i ? "scale(1)" : "scale(0.96)", opacity: active === i ? 1 : 0.75 }}>
             <CourseArt slug={course.slug} category={course.category} title={course.title} priority={i === 0} tag={course.hot ? "Trending" : "Career"} />
             <div className="p-4 flex items-center justify-between card-lift">
-              <div><div className="text-[15px] font-extrabold text-ink tracking-tight">{course.duration} · live</div><div className="text-[12px] text-muted">Certificate + internship</div></div>
-              <span className="btn-grad text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>
+              <div className="min-w-0"><div className="text-[15px] font-extrabold text-ink tracking-tight">{course.duration} · live</div><div className="text-[12px] text-muted truncate"><span className="font-bold text-primary">Build:</span> {course.projects[0]}</div></div>
+              <span className="btn-grad shrink-0 text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>
             </div>
           </Link>
         ))}
@@ -381,8 +410,8 @@ function FeaturedCourses() {
               className="group block bg-white rounded-[20px] overflow-hidden" style={{ boxShadow: "0 2px 12px rgba(14,21,38,0.06)" }}>
               <div className="transition-transform duration-500 group-hover:scale-[1.03] origin-center"><CourseArt slug={course.slug} category={course.category} title={course.title} priority={i === 0} tag={course.hot ? "Trending" : "Career"} /></div>
               <div className="p-5 flex items-center justify-between card-lift bg-white relative">
-                <div><div className="text-[16px] font-extrabold text-ink tracking-tight">{course.duration} · live</div><div className="text-[12px] text-muted">Certificate + internship</div></div>
-                <span className="btn-grad text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>
+                <div className="min-w-0"><div className="text-[16px] font-extrabold text-ink tracking-tight">{course.duration} · live</div><div className="text-[12px] text-muted truncate"><span className="font-bold text-primary">Build:</span> {course.projects[0]}</div></div>
+                <span className="btn-grad shrink-0 text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>
               </div>
             </MotionLink>
           </Reveal>
@@ -744,7 +773,7 @@ function FAQSection() {
   const faqs = [
     { q: "Are the classes live or recorded?", a: "100% live. Every session is taught in real time by your mentor. Recordings are shared within 24 hours if you miss a class — but attendance is expected. This is not a pre-recorded course." },
     { q: "What happens after I finish the course?", a: "Placement support kicks in: mock interviews, resume and LinkedIn reviews, and referrals when you're ready to apply. You can also re-attend any future batch for free if you want more practice." },
-    { q: "What's the difference between short courses, advanced courses and career programs?", a: "A short course (4–6 weeks) teaches one skill. An advanced course (6–8 weeks) takes one skill deeper. A career program (3–6 months) combines them with real projects, an internship and interview prep. They stack — start small and upgrade later by paying only the difference." },
+    { q: "What's the difference between a short course and a career program?", a: "A short course (4–6 weeks) teaches one skill. A career program (3–6 months) combines short courses with real projects, an internship and interview prep. They stack — start with a short course and upgrade later by paying only the difference." },
     { q: "Why isn't the fee on the website?", a: "Because it depends on your course, level and the offer running when you join. Tap \"Get fee on WhatsApp\" on any course and we'll share the exact fee, EMI options and next batch date in minutes." },
     { q: "Do I get a certificate and an internship?", a: "Every course comes with a certificate. Every career program also includes an internship with a real project — the kind of experience most fresher job postings now ask for." },
     { q: "How many hours per week does the course require?", a: "Roughly 15–20 hours — three live sessions of 1.5 hours each, plus assignments, projects and self-study. It's intensive by design." },

@@ -10,16 +10,17 @@ import CourseArt from "@/components/CourseArt";
 import CTABand from "@/components/inner/CTABand";
 
 const MotionLink = motion.create(Link);
-const LEVEL_TABS: Level[] = ["career", "short", "advanced"];
+const LEVEL_TABS: Level[] = ["career", "short"];
 
 /* "I'm a…" — one tap puts the most relevant courses first. It sorts, it doesn't decide. */
 type Who = "student" | "fresher" | "working" | "switching";
 const WHO: Record<Who, { label: string; you: string; level: Level; line: string; first?: string[] }> = {
   student: { label: "Student", you: "a student",  level: "short", line: "Start small: 4–6 week courses that fit around college." },
   fresher: { label: "Fresher", you: "a fresher",  level: "career", line: "Get job-ready: career programs with an internship and certificate." },
-  working: { label: "Working pro", you: "a working professional",  level: "advanced", line: "Upskill on weekends: advanced and AI courses that go deeper in one skill." },
+  working: { label: "Working pro", you: "a working professional",  level: "short", line: "Upskill on weekends: short AI and coding courses that fit around your job.",
+    first: ["ai-productivity", "ai-assisted-coding", "no-code-ai-automation", "python-for-ai"] },
   switching: { label: "Switching to IT", you: "switching to IT",  level: "career", line: "No CS background needed: these tracks start from zero.",
-    first: ["ai-powered-data-analyst", "qa-ai-testing-engineer", "business-analyst-project-coordinator-ai", "digital-marketing-ai", "ai-engineer-agents-automation"] },
+    first: ["ai-powered-data-analyst", "digital-marketing-ai", "ai-engineer-agents-automation", "mern-full-stack-ai"] },
 };
 
 export default function CoursesPage() {
@@ -63,7 +64,7 @@ export default function CoursesPage() {
           <h1 className="text-[36px] sm:text-5xl md:text-[64px] font-extrabold text-white leading-[1.02] tracking-[-0.03em] mb-5">
             Start small. <span className="grad-text">Go all the way.</span>
           </h1>
-          <p className="text-white/60 text-[15px] md:text-[17px] max-w-xl mx-auto">Short courses, advanced courses and full career programs — they stack, so you only ever pay the difference to upgrade.</p>
+          <p className="text-white/60 text-[15px] md:text-[17px] max-w-xl mx-auto">Start with a short course, or go all the way with a career program. They stack, so you only ever pay the difference to upgrade.</p>
           <div className="mt-7 flex flex-wrap items-center justify-center gap-1.5">
             <span className="w-full sm:w-auto text-[12px] text-white/50 font-semibold whitespace-nowrap mr-0.5">I&apos;m a…</span>
             {(Object.keys(WHO) as Who[]).map((w) => (
@@ -79,13 +80,13 @@ export default function CoursesPage() {
       {/* Level tabs + track pills — sticky under the nav */}
       <div className="sticky top-14 z-30 -mt-1" style={{ background: "rgba(247,246,255,0.9)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", borderBottom: "1px solid #E6E3F7" }}>
         <div className="max-w-brand mx-auto px-6 pt-3 pb-2">
-          <div className="grid grid-cols-3 gap-1 p-1 rounded-full bg-white border border-[#E6E3F7] max-w-[460px]">
+          <div className="grid grid-cols-2 gap-1 p-1 rounded-full bg-white border border-[#E6E3F7] max-w-[340px]">
             {LEVEL_TABS.map((l) => {
               const on = level === l;
               return (
                 <button key={l} onClick={() => pickLevel(l)} className="relative tap py-2 rounded-full text-[12.5px] sm:text-[13px] font-extrabold whitespace-nowrap">
                   {on && <motion.span layoutId="lvl" className="absolute inset-0 rounded-full btn-grad" transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }} />}
-                  <span className={`relative ${on ? "text-white" : "text-muted"}`}>{l === "career" ? "Career programs" : l === "short" ? "Short courses" : "Advanced"}</span>
+                  <span className={`relative ${on ? "text-white" : "text-muted"}`}>{l === "career" ? "Career programs" : "Short courses"}</span>
                 </button>
               );
             })}
@@ -132,7 +133,8 @@ export default function CoursesPage() {
                     <span className="text-[11px] font-extrabold uppercase tracking-wide px-2.5 py-1 rounded-full truncate" style={{ background: `${course.categoryColor}18`, color: course.categoryColor }}>{course.category}</span>
                     <span className="text-[12px] text-muted font-semibold whitespace-nowrap">{course.duration}</span>
                   </div>
-                  <p className="text-[13.5px] text-muted leading-relaxed mb-4 flex-1 line-clamp-3">{course.description}</p>
+                  <p className="text-[13.5px] text-muted leading-relaxed mb-3 line-clamp-3">{course.description}</p>
+                  <p className="text-[12.5px] text-ink font-semibold leading-snug mb-4 flex-1"><span className="text-primary font-extrabold">You&apos;ll build:</span> {course.projects.slice(0, 2).join(" · ")}</p>
                   <div className="flex items-center justify-between pt-3 border-t border-[#EEEBF8]">
                     <span className="inline-flex items-center gap-1.5 text-[12px] font-bold text-ink"><Icon.Medal size={14} className="text-primary" /> Certificate{course.level === "career" ? " + internship" : ""}</span>
                     <span className="btn-grad text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>

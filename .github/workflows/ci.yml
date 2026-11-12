@@ -1,0 +1,59 @@
+# Step2ITCareer-AI — CI
+# Runs on every push to main and every pull request. If this goes red, the Vercel
+# deploy would most likely break too, so fix it before sharing the link.
+#
+# Blocking checks: install (npm ci) → type-check → production build.
+# Lint runs too but is NON-blocking for now: the codebase still has older lint
+# warnings (setState-in-effect, unescaped apostrophes) that don't affect the live site.
+# Once those are cleaned up, delete the `continue-on-error` line to make lint blocking.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# A newer push cancels an older run still in progress on the same branch.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Type-check and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
+      # /api/leads creates the Resend client when the module loads, so `next build`
+      # needs *a* key to exist. This placeholder is only for the build check and is
+      # never used to send email — the real key stays in Vercel's environment variables.
+      RESEND_API_KEY: re_ci_build_placeholder
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Lint (non-blocking)
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Type-check
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { INTERNSHIPS, PROGRAMS } from "@/lib/internships";
-import { TRACKS } from "@/lib/courses";
+import { TRACKS, courses } from "@/lib/courses";
 import { Icon } from "@/components/Icons";
 import PageHero from "@/components/inner/PageHero";
 import SkillIcon from "@/components/inner/SkillIcon";
@@ -62,7 +62,7 @@ export default function InternshipPage() {
               <div className="text-[11px] font-extrabold uppercase tracking-[0.15em] text-accent">Any track</div>
               <h3 className="mt-1 text-[19px] md:text-[22px] font-extrabold text-ink tracking-[-0.02em]">Do your internship in the field you want to work in</h3>
               <div className="mt-4 flex flex-wrap gap-2">
-                {Object.values(TRACKS).map((t) => (
+                {Object.values(TRACKS).filter((t) => courses.some((c) => c.category === t.label)).map((t) => (
                   <span key={t.label} className="px-3.5 py-2 rounded-full text-[13px] font-bold" style={{ background: `${t.color}14`, color: t.color }}>{t.label}</span>
                 ))}
               </div>

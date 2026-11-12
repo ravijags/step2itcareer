@@ -26,9 +26,9 @@ export const workshops: Workshop[] = [
   {
     slug: "build-an-app-in-2-hours", title: "Build Your Own App in 2 Hours", kind: "free", duration: "2 hours",
     schedule: "Every Sunday · 11 AM", mode: "Live online", icon: "📱",
-    blurb: "Build a real mobile app with Flutter and run it on your own phone before the session ends.",
-    outcomes: ["An app on your phone", "Flutter basics", "How app developers work"],
-    next: "flutter-first-app",
+    blurb: "Build a real mobile app and run it on your own phone before the session ends.",
+    outcomes: ["An app on your phone", "How mobile apps are built", "How app developers work"],
+    next: "build-your-first-app",
   },
   {
     slug: "crack-your-first-tech-job", title: "Crack Your First Tech Job with AI", kind: "free", duration: "90 minutes",
@@ -48,7 +48,7 @@ export const workshops: Workshop[] = [
     schedule: "2nd weekend of every month", mode: "Online + Noida", icon: "🌐",
     blurb: "Design, build and publish your personal portfolio site with HTML, CSS, JavaScript and AI coding tools.",
     outcomes: ["Certificate of completion", "Your portfolio live online", "A GitHub profile recruiters notice"],
-    next: "web-basics",
+    next: "mern-full-stack-ai",
   },
   {
     slug: "data-analytics-weekend", title: "Excel + Power BI Dashboard Weekend", kind: "paid", duration: "2 days · 3 hrs each",
@@ -62,6 +62,6 @@ export const workshops: Workshop[] = [
     schedule: "4th weekend of every month", mode: "Online + Noida", icon: "🛡️",
     blurb: "See how hackers think — legally, in safe labs — and how to defend against them.",
     outcomes: ["Certificate of completion", "Hands-on lab experience", "A taste of a cybersecurity career"],
-    next: "ethical-hacking-basics",
+    next: "cybersecurity-ai-security",
   },
 ];

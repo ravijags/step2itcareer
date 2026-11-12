@@ -1,11 +1,11 @@
 /* One source for the menu links, shared by the desktop nav and the mobile drawer. */
-import { careerPrograms } from "@/lib/courses";
+import { careerPrograms, courses } from "@/lib/courses";
 
 export type NavItem = { name: string; href: string; note?: string };
 
 export const courseLinks: NavItem[] = [
   ...careerPrograms.map((c) => ({ name: c.title, href: `/courses/${c.slug}` })),
-  { name: "All 39 courses →", href: "/courses" },
+  { name: `All ${courses.length} courses →`, href: "/courses" },
 ];
 
 export const internshipLinks: NavItem[] = [

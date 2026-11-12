@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
-import { coursesByLevel, LEVELS, type Level } from "@/lib/courses";
+import { courses, coursesByLevel, LEVELS, type Level } from "@/lib/courses";
 import { internshipLinks, schoolingLinks, resourceLinks, type NavItem } from "@/lib/nav";
 import MobileNav from "@/components/MobileNav";
 import ScrollProgress from "@/components/ScrollProgress";
@@ -148,13 +148,13 @@ function NavDropdown({ label, items, ...m }: MenuProps & { label: string; items:
 
 /* Courses: one three-column panel (Career / Advanced / Short) instead of a 12-item list that ran off-screen. */
 function CoursesMega(m: MenuProps) {
-  const cols: Level[] = ["career", "advanced", "short"];
+  const cols: Level[] = ["career", "short"];
   return (
     <div>
       <Trigger label="Courses" {...m} />
-      <div className="dd-panel absolute top-full left-6 right-6 pt-2 z-50" data-open={m.open}>
+      <div className="dd-panel absolute top-full w-[680px] pt-2 z-50" style={{ left: "50%", marginLeft: -340 }} data-open={m.open}>
         <div className="rounded-2xl overflow-hidden" style={PANEL_STYLE}>
-          <div className="grid grid-cols-3 gap-2 px-5 py-4 max-h-[calc(100svh-120px)] overflow-y-auto">
+          <div className="grid grid-cols-2 gap-4 px-5 py-4 max-h-[calc(100svh-120px)] overflow-y-auto">
             {cols.map((lvl) => (
               <div key={lvl} className="min-w-0">
                 <div className="px-2.5 mb-1.5">
@@ -163,7 +163,7 @@ function CoursesMega(m: MenuProps) {
                 </div>
                 {coursesByLevel(lvl).map((c) => (
                   <Link key={c.slug} href={`/courses/${c.slug}`} onClick={() => m.setOpen(null)}
-                    className="nav-link flex items-center gap-2 px-2.5 py-[4px] rounded-md text-[12.5px] font-semibold leading-[19px]">
+                    className="nav-link flex items-center gap-2 px-2.5 py-[6px] rounded-md text-[13px] font-semibold leading-[19px]">
                     <span className="truncate">{c.title}</span>
                     {c.hot && <span className="shrink-0 text-[9px] font-extrabold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-accent/15 text-[#FF9A6C]">Hot</span>}
                   </Link>
@@ -173,7 +173,7 @@ function CoursesMega(m: MenuProps) {
           </div>
           <div className="flex items-center justify-between px-6 py-2.5 border-t border-white/[0.07] bg-white/[0.02]">
             <span className="text-[12px] text-white/50">Courses stack — start small, upgrade later and pay only the difference.</span>
-            <Link href="/courses" onClick={() => m.setOpen(null)} className="text-[12.5px] font-extrabold text-[#8BA4FF] hover:text-white">See all 39 courses →</Link>
+            <Link href="/courses" onClick={() => m.setOpen(null)} className="text-[12.5px] font-extrabold text-[#8BA4FF] hover:text-white">See all {courses.length} courses →</Link>
           </div>
         </div>
       </div>

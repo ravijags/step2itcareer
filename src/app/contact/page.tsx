@@ -120,7 +120,7 @@ export default function ContactPage() {
                 <SkillIcon emoji="📚" size={44} className="w-fit shrink-0" />
                 <div>
                   <div className="font-extrabold text-ink text-lg">Browse Our Programs</div>
-                  <div className="text-muted text-sm">12 career programs + short courses, workshops &amp; internships</div>
+                  <div className="text-muted text-sm">7 career programs, 8 short courses, workshops &amp; internships</div>
                 </div>
               </Link>
             </div>
