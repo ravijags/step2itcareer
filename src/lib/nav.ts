@@ -21,10 +21,8 @@ export const schoolingLinks: NavItem[] = [
 ];
 
 export const resourceLinks: NavItem[] = [
-  { name: "Blogs", href: "/resources/blogs" },
-  { name: "Career", href: "/resources/career" },
+  { name: "Career Roadmaps", href: "/resources/roadmaps", note: "Step-by-step paths, free" },
+  { name: "Cheat Sheets", href: "/resources/cheat-sheets", note: "Python, SQL, Git, Excel and more" },
+  { name: "Career Guides", href: "/resources/guides", note: "Honest answers, 5-minute reads" },
   { name: "About Us", href: "/about" },
-  { name: "Tutorials", href: "/resources/tutorials" },
-  { name: "Tech Trends", href: "/resources/tech-trends" },
-  { name: "Success Stories", href: "/resources/success-stories" },
 ];

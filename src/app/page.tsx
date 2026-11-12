@@ -722,7 +722,7 @@ function RecentPlacements() {
   const order = [0, 1, 2].map(k => PLACEMENTS[(i + k) % n]);
 
   return (
-    <section className="relative overlap-up bg-soft pt-24 md:pt-32 pb-16 md:pb-24 overflow-hidden">
+    <section id="stories" className="relative overlap-up bg-soft pt-24 md:pt-32 pb-16 md:pb-24 overflow-hidden scroll-mt-16">
       <div className="max-w-brand mx-auto px-6">
         <Reveal className="text-center mb-8 md:mb-14">
           <SectionLabel>Success stories</SectionLabel>

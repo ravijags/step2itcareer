@@ -218,3 +218,12 @@ a {
 
 /* Logo strip: uniform muted wordmarks, brand colour on hover */
 .alumni-logo:hover { color: var(--brand); }
+
+/* Print / "Save as PDF" for cheat sheets: only the content, no site chrome */
+@media print {
+  header, footer, [aria-label="Quick actions"], [aria-label="Chat on WhatsApp"] { display: none !important; }
+  body { background: #fff !important; }
+  .overlap-up { margin-top: 0 !important; }
+  .card-lift, .lift { box-shadow: none !important; }
+  pre { white-space: pre-wrap !important; }
+}

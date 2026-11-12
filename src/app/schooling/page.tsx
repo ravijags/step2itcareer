@@ -1,143 +1,88 @@
-import { Grain, Slashes } from "@/components/Decor";
-import SkillIcon from "@/components/inner/SkillIcon";
+import Link from "next/link";
 import type { Metadata } from "next";
+import { SCHOOLS } from "@/lib/schooling";
+import { Icon } from "@/components/Icons";
+import PageHero from "@/components/inner/PageHero";
+import SkillIcon from "@/components/inner/SkillIcon";
+import SectionLabel from "@/components/inner/SectionLabel";
+import Reveal from "@/components/inner/Reveal";
+import CounselButton from "@/components/inner/CounselButton";
+import CTABand from "@/components/inner/CTABand";
 
 export const metadata: Metadata = {
-  title: "Schooling Programs — Step2ITCareer-AI",
-  description: "Coding programs for Class 6–12 students. Fun, project-based learning with expert mentors. Build future-ready skills early.",
+  title: "Coding for Class 6–12 — Step2ITCareer-AI",
+  description: "Live coding programs for Class 6 to 12 in batches of 5: games and first Python, real code and debugging, and a college-ready stack with a GitHub portfolio.",
 };
 
-const programs = [
-  {
-    class: "Class 6–8",
-    href: "/schooling/class-6-8",
-    color: "#3B5BFF",
-    bg: "#EEF2FF",
-    icon: "🎮",
-    tagline: "Beginner Friendly",
-    desc: "Fun, interactive coding using block-based programming and Python basics. Games, animations, and creative projects that make kids love technology.",
-    highlights: ["Block-Based Programming", "Introduction to Python", "Games & Animations", "Mini Projects", "Parent Progress Reports"],
-  },
-  {
-    class: "Class 8–10",
-    href: "/schooling/class-8-10",
-    color: "#7C3AED",
-    bg: "#F5F3FF",
-    icon: "💡",
-    tagline: "Build Real Code",
-    desc: "Skill-level based learning with real Python, OOP, data structures, and debugging. Students arrive at college with a 2-year head start.",
-    highlights: ["1:1 Online Mentorship", "Skill-Level Assessment", "Python & OOP", "Handwritten Code Practice", "Mini Projects"],
-  },
-  {
-    class: "Class 10–12",
-    href: "/schooling/class-10-12",
-    color: "#FF7A3D",
-    bg: "#FFF3EC",
-    icon: "🚀",
-    tagline: "Pre-College Tech Prep",
-    desc: "Python, Java, SQL, Git, GitHub, and AI tools — the full stack a Class 12 student needs to stand out in college and the job market.",
-    highlights: ["Python & Java", "GitHub Portfolio", "AI & GenAI Tools", "Interview Prep", "Industry Projects"],
-  },
+const WHY = [
+  { icon: "👥", title: "Max 5 students", desc: "Real attention for your child, not a class of 30." },
+  { icon: "🏗️", title: "Build, don't just watch", desc: "Every session ends with something your child made." },
+  { icon: "👨‍👩‍👧", title: "Weekly parent updates", desc: "A short note on what they built and learned." },
+  { icon: "🤖", title: "AI, used safely", desc: "How AI works and how to use it without letting it think for them." },
 ];
 
 export default function SchoolingPage() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero */}
-      <div className="relative z-10 cut-bottom bg-ink2 overflow-hidden">
-        <Grain />
-        <Slashes side="left" tone="primary" opacity={0.09} height={700} />
-        <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "radial-gradient(circle, #3B5BFF 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
-        <div className="max-w-brand mx-auto px-6 pt-32 pb-24 md:pt-40 md:pb-32 text-center relative">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/30 text-[#FF9A6C] text-[11px] font-extrabold rounded-full uppercase tracking-[0.16em] mb-6">
-            School Coding Programs · Class 6 to 12
-          </div>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-            Give Your Child<br />
-            <span style={{ background: "linear-gradient(90deg, #3B5BFF, #7B8FFF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              a Head Start
-            </span>
-          </h1>
-          <p className="text-white/60 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-            Coding programs designed for Class 6 to Class 12. Fun, interactive, project-based — with expert mentors in micro-batches of max 5 students.
-          </p>
+    <div className="min-h-screen bg-soft">
+      <PageHero
+        eyebrow={<><Icon.School size={12} /> Coding for Class 6–12</>}
+        title={<>Give your child <span className="grad-text">a head start.</span></>}
+        description="Live coding classes in batches of 5 — from first games in Class 6 to a GitHub portfolio before college."
+      >
+        <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <CounselButton className="btn-grad tap px-7 py-4 rounded-full text-white font-extrabold text-[15px]">Book a free demo class</CounselButton>
+          <a href="https://wa.me/919936609430?text=Hi!%20I%27d%20like%20to%20know%20about%20the%20coding%20program%20for%20my%20child." target="_blank" rel="noopener noreferrer"
+            className="tap inline-flex items-center justify-center gap-2 px-7 py-4 bg-[#16A34A] text-white font-extrabold rounded-full text-[15px]"><Icon.WhatsApp size={18} /> Ask on WhatsApp</a>
         </div>
-      </div>
+      </PageHero>
 
-      {/* Program Cards */}
-      <section className="overlap-up pt-24 md:pt-32 pb-16 md:pb-20 bg-soft">
+      <section className="overlap-up pt-24 md:pt-32 pb-14 md:pb-20">
         <div className="max-w-brand mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {programs.map((prog) => (
-              <a key={prog.class} href={prog.href}
-                className="bg-white rounded-2xl border border-line shadow-card hover:-translate-y-1.5 hover:shadow-deep transition-all duration-300 overflow-hidden group flex flex-col">
-                <div className="h-3 w-full" style={{ background: prog.color }} />
-                <div className="p-7 flex flex-col flex-1">
-                  <div className="flex items-start justify-between mb-5">
-                    <div>
-                      <span className="inline-block px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider rounded-full mb-3" style={{ background: prog.bg, color: prog.color }}>
-                        {prog.class} · {prog.tagline}
-                      </span>
-                      <h2 className="text-xl font-extrabold text-ink">{prog.class}</h2>
-                      <p className="text-sm font-semibold" style={{ color: prog.color }}>{prog.tagline}</p>
-                    </div>
-                    <SkillIcon emoji={prog.icon} size={44} className="w-fit shrink-0" />
-                  </div>
-                  <p className="text-muted text-sm leading-relaxed mb-6">{prog.desc}</p>
-                  <ul className="space-y-2 mb-6">
-                    {prog.highlights.map((h) => (
-                      <li key={h} className="flex items-center gap-2 text-xs font-semibold text-ink">
-                        <span className="font-bold" style={{ color: prog.color }}></span>{h}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-auto flex items-center justify-between pt-4 border-t border-line">
-                    <div className="text-[13px] font-bold text-muted">Certificate included</div>
-                    <span className="inline-flex items-center gap-1.5 px-5 py-2.5 text-white text-sm font-bold rounded-full group-hover:opacity-90 transition-opacity" style={{ background: prog.color }}>
-                      View Program →
+          <Reveal className="text-center mb-10">
+            <SectionLabel>Pick your child&apos;s class</SectionLabel>
+            <h2 className="mt-4 text-[28px] md:text-[40px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">Three stages. <span className="grad-text">One clear path.</span></h2>
+          </Reveal>
+          <div className="grid md:grid-cols-3 gap-5 md:gap-6">
+            {SCHOOLS.map((s, i) => (
+              <Reveal key={s.slug} delay={i * 0.06} className="h-full">
+                <Link href={`/schooling/${s.slug}`} className="group relative h-full flex flex-col bg-white rounded-[22px] overflow-hidden border border-[#E6E3F7] card-lift lift">
+                  <div className="h-[5px]" style={{ background: s.color }} />
+                  <div className="p-6 flex flex-col flex-1">
+                    <span className="self-start text-[11px] font-extrabold uppercase tracking-[0.14em] px-2.5 py-1 rounded-full" style={{ color: s.color, background: `${s.color}14` }}>{s.accent}</span>
+                    <h3 className="mt-3 text-[24px] font-extrabold text-ink tracking-[-0.02em]">{s.band}</h3>
+                    <p className="mt-2 text-[14px] text-muted leading-relaxed">{s.card}</p>
+                    <ul className="mt-4 mb-6 space-y-2">
+                      {s.highlights.map((h) => <li key={h} className="flex gap-2 text-[13.5px] font-semibold text-ink"><Icon.Check size={16} className="shrink-0 mt-0.5" style={{ color: s.color }} />{h}</li>)}
+                    </ul>
+                    <span className="mt-auto pt-4 border-t border-line inline-flex items-center gap-2 text-[14px] font-extrabold text-primary">
+                      See the program <Icon.ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
                     </span>
                   </div>
-                </div>
-              </a>
+                </Link>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Why Us */}
-      <section className="py-14 bg-white">
+      <section className="pb-16 md:pb-24">
         <div className="max-w-brand mx-auto px-6">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-ink">Why Parents Choose Us</h2>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { icon: "👥", title: "Max 5 Students", desc: "Real individual attention, not a classroom of 30" },
-              { icon: "👨‍🏫", title: "Expert Mentors", desc: "Industry professionals who love teaching kids" },
-              { icon: "🏗️", title: "Project-Based", desc: "Kids build real things, not just read theory" },
-              { icon: "📊", title: "Progress Updates", desc: "Weekly reports so parents stay informed" },
-            ].map((item) => (
-              <div key={item.title} className="text-center p-5 bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap">
-                <SkillIcon emoji={item.icon} size={40} className="w-fit mx-auto mb-3" />
-                <h3 className="font-extrabold text-ink text-sm mb-1">{item.title}</h3>
-                <p className="text-xs text-muted">{item.desc}</p>
+          <Reveal className="text-center mb-8">
+            <SectionLabel>Why parents choose us</SectionLabel>
+          </Reveal>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            {WHY.map((w) => (
+              <div key={w.title} className="bg-white rounded-[18px] p-4 md:p-5 border border-[#E6E3F7] card-lift">
+                <SkillIcon emoji={w.icon} size={40} className="mb-3" />
+                <div className="text-[14px] font-extrabold text-ink leading-snug">{w.title}</div>
+                <p className="mt-1 text-[12.5px] md:text-[13px] text-muted leading-relaxed">{w.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="relative z-10 cut-top overlap-up pt-24 md:pt-32 pb-16 md:pb-20 px-6 text-center overflow-hidden" style={{ background: "var(--grad-primary)" }}>
-        <Grain />
-        <Slashes side="right" tone="white" opacity={0.09} height={560} />
-        <h2 className="text-2xl font-extrabold text-white mb-4">Help Your Child Discover the Joy of Coding</h2>
-        <p className="text-white/70 mb-6">Learn · Think · Create · Innovate</p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="https://wa.me/919936609430" className="w-full sm:w-auto px-8 py-4 tap bg-white text-primary font-bold rounded-full hover:bg-soft transition-colors">WhatsApp to Enroll</a>
-          <a href="tel:+919936609430" className="w-full sm:w-auto px-8 py-4 tap bg-[#16A34A] text-white font-bold rounded-full hover:bg-green-700 transition-colors">Call Us</a>
-        </div>
-      </section>
+      <CTABand title="See if your child enjoys it." sub="Book a free demo class — your child builds something small in the first session." primary="Book a free demo class" />
     </div>
   );
 }

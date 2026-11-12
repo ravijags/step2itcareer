@@ -11,6 +11,8 @@ import CounselButton from "@/components/inner/CounselButton";
 import CurriculumPath from "@/components/inner/CurriculumPath";
 import CTABand from "@/components/inner/CTABand";
 import FeeBar from "@/components/inner/FeeBar";
+import { SHOWCASE } from "@/lib/showcase";
+import LevelCompare from "@/components/inner/LevelCompare";
 
 export async function generateStaticParams() {
   return courses.map((c) => ({ slug: c.slug }));
@@ -136,18 +138,44 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
               <CurriculumPath items={course.curriculum} />
             </Reveal>
 
-            {/* Projects */}
+            {/* Projects — a gallery with what each one proves (career), a simple list (short) */}
             <Reveal>
               <SectionLabel>Projects</SectionLabel>
-              <h2 className="mt-3 mb-6 text-[24px] md:text-[32px] font-extrabold text-ink tracking-[-0.03em]">What you&apos;ll build</h2>
-              <div className="grid sm:grid-cols-2 gap-3">
-                {course.projects.map((pr, i) => (
-                  <div key={pr} className="flex items-start gap-3 bg-white rounded-[16px] p-4 border border-[#E6E3F7] card-lift">
-                    <span className="w-8 h-8 shrink-0 rounded-full btn-grad text-white text-[13px] font-extrabold flex items-center justify-center">{i + 1}</span>
-                    <span className="text-[14px] font-bold text-ink leading-snug pt-1">{pr}</span>
+              <h2 className="mt-3 mb-2 text-[24px] md:text-[32px] font-extrabold text-ink tracking-[-0.03em]">What you&apos;ll build</h2>
+              {SHOWCASE[course.slug] ? (
+                <>
+                  <p className="text-muted text-[14px] mb-6">Recruiters hire on proof of work. Each project shows them one thing you can do.</p>
+                  <div className="grid sm:grid-cols-2 gap-3 md:gap-4">
+                    {course.projects.map((pr, i) => {
+                      const sc = SHOWCASE[course.slug][i];
+                      const capstone = pr.startsWith("Capstone");
+                      return (
+                        <div key={pr} className="relative overflow-hidden bg-white rounded-[18px] border border-[#E6E3F7] card-lift lift flex flex-col">
+                          <div className="relative h-[88px] flex items-center justify-between px-5" style={{ background: `linear-gradient(135deg, ${course.categoryColor}22, ${course.categoryColor}08)` }}>
+                            {sc && <SkillIcon emoji={sc.icon} size={44} />}
+                            <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] px-2.5 py-1 rounded-full" style={capstone ? { background: "var(--grad-accent)", color: "#fff" } : { background: "#fff", color: course.categoryColor }}>
+                              {capstone ? "Capstone" : `Project ${i + 1}`}
+                            </span>
+                          </div>
+                          <div className="p-5 flex-1">
+                            <div className="text-[15px] font-extrabold text-ink leading-snug">{(() => { const t = pr.replace(/^Capstone:\s*/, ""); return t.charAt(0).toUpperCase() + t.slice(1); })()}</div>
+                            {sc && <p className="mt-2 text-[13px] text-muted leading-relaxed"><span className="font-bold text-ink">Proves:</span> {sc.proves}</p>}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                ))}
-              </div>
+                </>
+              ) : (
+                <div className="mt-6 grid sm:grid-cols-2 gap-3">
+                  {course.projects.map((pr, i) => (
+                    <div key={pr} className="flex items-start gap-3 bg-white rounded-[16px] p-4 border border-[#E6E3F7] card-lift">
+                      <span className="w-8 h-8 shrink-0 rounded-full btn-grad text-white text-[13px] font-extrabold flex items-center justify-center">{i + 1}</span>
+                      <span className="text-[14px] font-bold text-ink leading-snug pt-1">{pr}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </Reveal>
 
             {/* Stacking path */}
@@ -170,6 +198,9 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
                 </div>
               </Reveal>
             )}
+
+            {/* Short vs career — only on short course pages, where the upgrade question comes up */}
+            {!isCareer && <Reveal><LevelCompare /></Reveal>}
 
             {/* Tools */}
             <Reveal>

@@ -8,6 +8,7 @@ import { Grain, Slashes } from "@/components/Decor";
 import { Icon } from "@/components/Icons";
 import CourseArt from "@/components/CourseArt";
 import CTABand from "@/components/inner/CTABand";
+import LevelCompare from "@/components/inner/LevelCompare";
 
 const MotionLink = motion.create(Link);
 const LEVEL_TABS: Level[] = ["career", "short"];
@@ -144,6 +145,10 @@ export default function CoursesPage() {
             ))}
           </AnimatePresence>
         </motion.div>
+      </div>
+
+      <div className="max-w-brand mx-auto px-6 pb-24 md:pb-32">
+        <LevelCompare />
       </div>
 
       <CTABand title="Still deciding? Let's just talk." sub="A free 15-minute call with a mentor — we'll help you pick a course and level. No pressure." />

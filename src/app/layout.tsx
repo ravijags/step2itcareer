@@ -10,7 +10,6 @@ import PageTransition from "@/components/PageTransition";
 import { Grain, Slashes } from "@/components/Decor";
 import MobileDock from "@/components/MobileDock";
 import LoginSheet from "@/components/LoginSheet";
-import { resourceHref } from "@/lib/resources";
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], weight: ["300","400","500","600","700","800"], display: "swap", variable: "--font-jakarta" });
 
@@ -82,8 +81,8 @@ function Footer() {
           <div>
             <h4 className="text-sm font-bold mb-4 text-white/80 uppercase tracking-wider">Resources</h4>
             <ul className="space-y-2">
-              {["Blogs", "Career", "About Us", "Tutorials", "Tech Trends", "Success Stories"].map((item) => (
-                <li key={item}><Link href={resourceHref(item)} className="text-sm text-white/60 hover:text-white transition-colors">{item}</Link></li>
+              {[["Free resources", "/resources"], ["Career Roadmaps", "/resources/roadmaps"], ["Cheat Sheets", "/resources/cheat-sheets"], ["Career Guides", "/resources/guides"], ["About Us", "/about"]].map(([name, href]) => (
+                <li key={name}><Link href={href} className="text-sm text-white/60 hover:text-white transition-colors">{name}</Link></li>
               ))}
             </ul>
           </div>
