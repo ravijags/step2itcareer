@@ -3,13 +3,15 @@
 import Link from "next/link";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useMotionValueEvent, useReducedMotion, AnimatePresence, type PanInfo } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion, AnimatePresence, type PanInfo } from "framer-motion";
 import { courses } from "@/lib/courses";
 import { Icon, IconTile } from "@/components/Icons";
 import { Grain, Slashes } from "@/components/Decor";
 import { HeroStories, HeroDeck } from "@/components/HeroPrograms";
 import Magnetic from "@/components/Magnetic";
 import CourseArt from "@/components/CourseArt";
+import { STORIES, SITE } from "@/lib/site";
+import MentorAvatar from "@/components/MentorAvatar";
 import WorkshopButton from "@/components/inner/WorkshopButton";
 import SkillIcon from "@/components/inner/SkillIcon";
 import { workshops } from "@/lib/workshops";
@@ -24,13 +26,7 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const MotionLink = motion.create(Link);
 
 /* ───────────────────────── DATA ───────────────────────── */
-/* Sample stories — fresher-level companies and packages, kept believable. Names changed for privacy. */
-const PLACEMENTS = [
-  { initials: "RS", name: "Rohit S.", location: "Delhi", tag: "B.Com → Analyst", track: "Data Analytics", company: "Accenture", companyColor: "#A100FF", pkg: "₹7 LPA", quote: "I came from B.Com and thought analytics wasn't for me. The mock interviews were tougher than the real one." },
-  { initials: "PA", name: "Priya A.", location: "Noida", tag: "Fresher", track: "Generative AI", company: "TCS", companyColor: "#CC0000", pkg: "₹5.5 LPA", quote: "5 students per batch sounds small but that's exactly why it works. My mentor knew every single gap I had." },
-  { initials: "AK", name: "Arjun K.", location: "Ghaziabad", tag: "Final-year student", track: "Full Stack (MERN)", company: "Infosys", companyColor: "#007CC3", pkg: "₹6 LPA", quote: "Got my offer before the program ended. The projects I built here got me shortlisted — no cold applying." },
-  { initials: "SM", name: "Sneha M.", location: "Gurugram", tag: "Career switch at 26", track: "Cloud & DevOps", company: "Wipro", companyColor: "#341C5C", pkg: "₹9 LPA", quote: "Career switch at 26 with no CS degree. They mapped exactly what I needed and skipped everything I didn't." },
-];
+const PLACEMENTS = STORIES;
 
 export default function HomePage() {
   return (
@@ -48,7 +44,6 @@ export default function HomePage() {
       <MicroBatchUSP />
       <MentorSection />
       <PlacementPath />
-      <CareerOutcomes />
       <RecentPlacements />
       <FAQSection />
       <FinalCTA />
@@ -73,7 +68,7 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
 
 function SectionLabel({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
   return (
-    <span className={`inline-block px-4 py-1.5 text-[11px] font-extrabold rounded-full uppercase tracking-[0.18em] ${dark ? "bg-white/[0.07] text-white/70 border border-white/10" : "bg-primary/10 text-primary"}`}>
+    <span className={`inline-block px-4 py-1.5 text-[11px] font-extrabold rounded-full uppercase tracking-[0.18em] ${dark ? "bg-accent/10 text-[#FF9A6C] border border-accent/30" : "bg-primary/10 text-primary"}`}>
       {children}
     </span>
   );
@@ -335,7 +330,7 @@ function StatsRow() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 0.06}>
-              <div className="relative overflow-hidden h-full p-5 rounded-[18px] bg-soft border border-[#E6E3F7] card-lift lift cursor-default">
+              <div className="relative overflow-hidden h-full p-5 rounded-[16px] bg-soft border border-[#E6E3F7] card-lift lift cursor-default">
                 <IconTile tone={s.tone} size={36}><s.I size={17} /></IconTile>
                 <div className={`mt-3 text-[26px] md:text-[30px] font-extrabold tracking-[-0.03em] leading-none ${s.tone === "accent" ? "grad-text-accent" : "grad-text"}`}>
                   {"raw" in s && s.raw !== undefined ? <Counter target={s.raw} suffix={s.suffix} /> : s.display}
@@ -374,7 +369,7 @@ function FeaturedCourses() {
   }, []);
 
   return (
-    <section className="py-16 md:py-24 bg-soft overflow-hidden">
+    <section className="py-14 md:py-24 bg-soft overflow-hidden">
       <div className="max-w-brand mx-auto px-6">
         <Reveal className="text-center mb-10 md:mb-14">
           <SectionLabel>AI-native programs</SectionLabel>
@@ -391,7 +386,7 @@ function FeaturedCourses() {
             style={{ boxShadow: active === i ? "0 0 0 1.5px rgba(59,91,255,0.55), 0 18px 44px rgba(59,91,255,0.22)" : "0 2px 12px rgba(14,21,38,0.06)", transform: active === i ? "scale(1)" : "scale(0.96)", opacity: active === i ? 1 : 0.75 }}>
             <CourseArt slug={course.slug} category={course.category} title={course.title} priority={i === 0} tag={course.hot ? "Trending" : "Career"} />
             <div className="p-4 flex items-center justify-between card-lift">
-              <div className="min-w-0"><div className="text-[15px] font-extrabold text-ink tracking-tight">{course.duration} · live</div><div className="text-[12px] text-muted truncate"><span className="font-bold text-primary">Build:</span> {course.projects[0]}</div></div>
+              <div className="min-w-0"><div className="text-[15px] font-extrabold text-ink tracking-tight">{course.duration} · live</div><div className="text-[12.5px] text-muted line-clamp-1"><span className="font-bold text-primary">Build:</span> {course.projects[0]}</div></div>
               <span className="btn-grad shrink-0 text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>
             </div>
           </Link>
@@ -412,7 +407,7 @@ function FeaturedCourses() {
               className="group block bg-white rounded-[20px] overflow-hidden" style={{ boxShadow: "0 2px 12px rgba(14,21,38,0.06)" }}>
               <div className="transition-transform duration-500 group-hover:scale-[1.03] origin-center"><CourseArt slug={course.slug} category={course.category} title={course.title} priority={i === 0} tag={course.hot ? "Trending" : "Career"} /></div>
               <div className="p-5 flex items-center justify-between card-lift bg-white relative">
-                <div className="min-w-0"><div className="text-[16px] font-extrabold text-ink tracking-tight">{course.duration} · live</div><div className="text-[12px] text-muted truncate"><span className="font-bold text-primary">Build:</span> {course.projects[0]}</div></div>
+                <div className="min-w-0"><div className="text-[16px] font-extrabold text-ink tracking-tight">{course.duration} · live</div><div className="text-[12.5px] text-muted line-clamp-1"><span className="font-bold text-primary">Build:</span> {course.projects[0]}</div></div>
                 <span className="btn-grad shrink-0 text-[12px] font-bold text-white px-4 py-2.5 rounded-full inline-flex items-center gap-1.5">Explore <Icon.ArrowRight size={13} /></span>
               </div>
             </MotionLink>
@@ -422,7 +417,7 @@ function FeaturedCourses() {
 
       {/* Start small — short courses as the low-commitment front door */}
       <Reveal className="max-w-brand mx-auto px-6 mt-12 md:mt-16">
-        <div className="relative overflow-hidden rounded-[22px] bg-white border border-[#E6E3F7] p-5 md:p-7" style={{ boxShadow: "0 18px 50px -24px rgba(59,91,255,0.25), inset 0 1px 0 #fff" }}>
+        <div className="relative overflow-hidden rounded-[20px] bg-white border border-[#E6E3F7] p-5 md:p-7" style={{ boxShadow: "0 18px 50px -24px rgba(59,91,255,0.25), inset 0 1px 0 #fff" }}>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2 mb-4">
             <div>
               <div className="text-[11px] font-extrabold uppercase tracking-[0.15em] text-accent">Not ready to commit?</div>
@@ -456,7 +451,7 @@ function InternshipsAndWorkshops() {
   ];
   const freeWs = workshops.filter((w) => w.kind === "free");
   return (
-    <section className="relative py-16 md:py-24 bg-ink2 overflow-hidden">
+    <section className="relative py-14 md:py-24 bg-ink2 overflow-hidden">
       <Grain />
       <Slashes side="left" tone="primary" opacity={0.08} height={760} />
       <div className="relative max-w-brand mx-auto px-6">
@@ -539,10 +534,10 @@ function MicroBatchUSP() {
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5">
           {features.map((f, i) => (
             <Reveal key={f.title} delay={i * 0.06} className="h-full">
-              <div className="relative overflow-hidden h-full p-4 md:p-6 rounded-[18px] bg-soft border border-[#E6E3F7] card-lift lift">
+              <div className="relative overflow-hidden h-full p-4 md:p-6 rounded-[16px] bg-soft border border-[#E6E3F7] card-lift lift">
                 <IconTile tone={f.tone} size={40}><f.I size={19} /></IconTile>
-                <h3 className="mt-3 text-[13px] md:text-[15px] font-extrabold text-ink leading-snug">{f.title}</h3>
-                <p className="mt-1.5 text-[12px] md:text-[14px] text-muted leading-relaxed">{f.desc}</p>
+                <h3 className="mt-3 text-[14.5px] md:text-[15px] font-extrabold text-ink leading-snug">{f.title}</h3>
+                <p className="mt-1.5 text-[13px] md:text-[14px] text-muted leading-relaxed">{f.desc}</p>
               </div>
             </Reveal>
           ))}
@@ -558,27 +553,26 @@ function MentorSection() {
     <section className="py-12 md:py-20 bg-soft">
       <div className="max-w-brand mx-auto px-6">
         <Reveal>
-          <div className="relative overflow-hidden rounded-[26px] bg-ink2 p-6 md:p-10 grid md:grid-cols-[auto_1fr_auto] gap-6 md:gap-10 items-center card-lift-dark">
+          <div className="relative overflow-hidden rounded-[28px] bg-ink2 p-6 md:p-10 grid md:grid-cols-[auto_1fr_auto] gap-6 md:gap-10 items-center card-lift-dark">
             <Grain />
             <Slashes side="right" tone="primary" opacity={0.1} height={460} />
             <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 15% 50%, rgba(59,91,255,0.22), transparent 55%)" }} />
             <div className="relative flex items-center gap-4 md:block">
-              <div className="w-[72px] h-[72px] md:w-[96px] md:h-[96px] rounded-full flex items-center justify-center text-white font-extrabold text-[26px] md:text-[34px] shrink-0"
-                style={{ background: "var(--grad-primary)", boxShadow: "0 0 0 4px rgba(255,255,255,0.08), 0 18px 40px rgba(59,91,255,0.4), inset 0 1px 0 rgba(255,255,255,0.3)" }}>AS</div>
+              <MentorAvatar className="w-[72px] h-[72px] md:w-[96px] md:h-[96px] text-[24px] md:text-[32px]" />
               <div className="md:hidden">
                 <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#FF9A6C]">Your mentor</div>
                 <div className="text-[18px] font-extrabold text-white leading-tight">Ashvani Srivastava</div>
-                <div className="text-[12px] text-white/50">Founder & CEO · 10+ years in EdTech</div>
+                <div className="text-[12.5px] text-white/55">{SITE.mentor.role}</div>
               </div>
             </div>
             <div className="relative">
               <div className="hidden md:block mb-3">
                 <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#FF9A6C] mb-1">Your mentor</div>
-                <div className="text-[24px] font-extrabold text-white leading-tight tracking-tight">Ashvani Srivastava <span className="text-white/60 font-medium text-[15px] ml-2">Founder & CEO · 10+ years in EdTech</span></div>
+                <div className="text-[24px] font-extrabold text-white leading-tight tracking-tight">Ashvani Srivastava <span className="text-white/60 font-medium text-[15px] ml-2">{SITE.mentor.role}</span></div>
               </div>
               <p className="text-[15px] md:text-[18px] text-white/80 leading-relaxed">
                 <Icon.Quote size={22} className="inline-block text-primary/60 mr-2 -mt-1" />
-                With five students in a batch, I know every name, every gap and every offer letter. I personally review each student's roadmap before the batch starts — and I stay on your case until you're placed.
+                With five students in a batch, I know every name, every gap and every offer letter. I personally review each student&apos;s roadmap before the batch starts — and I stay on your case until you&apos;re placed.
               </p>
             </div>
             <div className="relative md:justify-self-end">
@@ -598,94 +592,41 @@ function MentorSection() {
 
 /* ───────────────────────── PLACEMENT PATH — the ascent ───────────────────────── */
 function PlacementPath() {
-  const steps = ["Resume building", "Placement training", "Interview questions", "Internships under experts", "Real-time live projects", "Aptitude preparation", "Personality development", "Mock interviews", "Scheduling interviews", "Offer letter"];
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 78%", "end 55%"] });
-  const pathLength = useTransform(scrollYProgress, [0, 1], [0, 1]);
-  const [lit, setLit] = useState(0);
-  useMotionValueEvent(scrollYProgress, "change", v => setLit(Math.min(10, Math.floor(v * 10.999))));
-
-  // Diagonal from bottom-left to top-right; labels alternate sides
-  const W = 360, H = 470;
-  const pts = steps.map((_, i) => ({ x: 34 + (i * (W - 68)) / 9, y: H - 34 - (i * (H - 70)) / 9 }));
-  const d = pts.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
-
-  return (
-    <section className="pt-6 md:pt-8 pb-16 md:pb-24 bg-soft relative overflow-hidden">
-      <Slashes side="right" tone="primary" opacity={0.05} height={700} dot={false} />
-      <div className="relative max-w-brand mx-auto px-6">
-        <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-6 lg:gap-16 items-center">
-        <Reveal className="text-center lg:text-left">
-          <SectionLabel>How it works</SectionLabel>
-          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">From &ldquo;where do I even start?&rdquo; to <span className="grad-text">&ldquo;I got the offer.&rdquo;</span></h2>
-          <p className="mt-3 text-muted text-[14px] md:text-[16px] max-w-md mx-auto lg:mx-0">Ten steps, one mentor, zero guesswork — from your first resume draft to the offer letter.</p>
-        </Reveal>
-        <div ref={ref} className="mx-auto w-full max-w-[460px]">
-          <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Ten-step placement process drawn as a rising path">
-            <defs>
-              <linearGradient id="ascent" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#3B5BFF" /><stop offset="1" stopColor="#7B5BFF" /></linearGradient>
-              <linearGradient id="ascentGoal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#FF7A3D" /><stop offset="1" stopColor="#FF5E7A" /></linearGradient>
-            </defs>
-            <path d={d} fill="none" stroke="#DDDAF0" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-            <motion.path d={d} fill="none" stroke="url(#ascent)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" style={{ pathLength }} />
-            {pts.map((p, i) => {
-              const on = i < lit;
-              const goal = i === 9;
-              const right = i < 4;
-              const label = steps[i];
-              return (
-                <g key={i}>
-                  {goal && on && <circle cx={p.x} cy={p.y} r="24" fill="none" stroke="#FF7A3D" strokeOpacity="0.35" strokeWidth="2" strokeDasharray="4 4" />}
-                  <motion.circle cx={p.x} cy={p.y} r={goal ? 17 : 13}
-                    animate={{ fill: on ? (goal ? "url(#ascentGoal)" : "url(#ascent)") : "#FFFFFF", stroke: on ? "transparent" : "#C9C6E0", scale: on ? 1 : 0.92 }}
-                    transition={{ duration: 0.35, ease: EASE }} strokeWidth="2" style={{ transformOrigin: `${p.x}px ${p.y}px` }} />
-                  <text x={p.x} y={p.y + 4} textAnchor="middle" fontSize={goal ? 12 : 11} fontWeight="800" fill={on ? "#fff" : "#8B8BA0"} style={{ fontFamily: "inherit" }}>{i + 1}</text>
-                  <text x={right ? p.x + 20 : p.x - 20} y={p.y + 4} textAnchor={right ? "start" : "end"} fontSize="12" fontWeight="700"
-                    fill={on ? (goal ? "#FF7A3D" : "#0E1526") : "#A5A3B8"} style={{ fontFamily: "inherit", transition: "fill 300ms" }}>{label}</text>
-                </g>
-              );
-            })}
-          </svg>
-        </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ───────────────────────── CAREER OUTCOMES — dark ───────────────────────── */
-function CareerOutcomes() {
-  const rows = [
-    { from: "₹4L", to: "₹8L", role: "Entry level → Junior", c: "#8BA4FF", bg: "rgba(59,91,255,0.1)", bd: "rgba(59,91,255,0.25)", I: Icon.ArrowUpRight, ml: "mr-10 md:mr-0", goal: false },
-    { from: "₹8L", to: "₹15L", role: "Junior → Mid level", c: "#FF9A6C", bg: "rgba(255,122,61,0.1)", bd: "rgba(255,122,61,0.25)", I: Icon.ArrowUpRight, ml: "mx-5 md:mx-0", goal: false },
-    { from: "₹15L", to: "₹30L", role: "Mid → Senior level", c: "#4ADE80", bg: "rgba(74,222,128,0.08)", bd: "rgba(74,222,128,0.5)", I: Icon.Trophy, ml: "ml-10 md:ml-0", goal: true },
+  const phases = [
+    { n: "01", title: "Build", when: "During the course", line: "Live classes, then real projects with your mentor reviewing every week.", steps: ["Real-time live projects", "Internship under experts"], goal: false },
+    { n: "02", title: "Get ready", when: "Last few weeks", line: "Everything that turns your projects into interview calls.", steps: ["Resume building", "Aptitude preparation", "Interview questions", "Placement training", "Personality development"], goal: false },
+    { n: "03", title: "Get hired", when: "When you're ready", line: "Practise the real thing, then we line up interviews with you.", steps: ["Mock interviews", "Scheduling interviews", "Offer letter"], goal: true },
   ];
   return (
-    <section className="relative z-10 cut-both overlap-up bg-ink2 pt-24 md:pt-32 pb-24 md:pb-32 overflow-hidden">
-      <Grain />
-      <Slashes side="left" tone="primary" opacity={0.08} height={720} />
-      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(59,91,255,0.2) 1px, transparent 1px)", backgroundSize: "30px 30px", opacity: 0.25 }} />
+    <section className="py-14 md:py-24 bg-soft relative overflow-hidden">
+      <Slashes side="right" tone="primary" opacity={0.05} height={700} dot={false} />
       <div className="relative max-w-brand mx-auto px-6">
         <Reveal className="text-center mb-10 md:mb-14">
-          <SectionLabel dark>Career outcomes</SectionLabel>
-          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-white tracking-[-0.03em] leading-[1.08]">Your first job is just <span className="grad-text">level 1.</span></h2>
-          <p className="mt-3 text-white/45 text-[14px] md:text-[16px] max-w-xl mx-auto">Typical industry salary ranges in India as you grow — from first job to senior roles.</p>
+          <SectionLabel>How it works</SectionLabel>
+          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">From &ldquo;where do I start?&rdquo; to <span className="grad-text">&ldquo;I got the offer.&rdquo;</span></h2>
+          <p className="mt-3 text-muted text-[15px] md:text-[16px] max-w-lg mx-auto">Three phases, one mentor the whole way. Ten steps, zero guesswork.</p>
         </Reveal>
-        <div className="flex flex-col md:grid md:grid-cols-3 gap-3 md:gap-6">
-          {rows.map((r, i) => (
-            <motion.div key={r.role}
-              initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0, margin: "0px 0px 120px 0px" }}
-              transition={{ duration: 0.4, delay: i * 0.06, ease: EASE }}
-              whileHover={{ y: -6, boxShadow: `0 28px 60px -14px ${r.c}55, inset 0 1px 0 rgba(255,255,255,0.08)` }}
-              className={`relative rounded-[18px] p-5 md:p-8 card-lift-dark flex items-center justify-between ${r.ml} ${r.goal ? "md:mt-0" : ""}`}
-              style={{ background: r.bg, border: `${r.goal ? 1.5 : 1}px solid ${r.bd}`, boxShadow: r.goal ? "0 0 40px rgba(74,222,128,0.12), inset 0 1px 0 rgba(255,255,255,0.08)" : undefined }}>
-              {r.goal && <span className="absolute -top-2.5 right-4 text-[10px] font-extrabold tracking-[0.15em] px-2.5 py-1 rounded-full text-[#062B12] bg-[#4ADE80]">GOAL</span>}
-              <div>
-                <div className="text-[12px] text-white/60 mb-1">{r.role}</div>
-                <div className={`font-extrabold tracking-[-0.03em] leading-none ${r.goal ? "text-[30px] md:text-[44px]" : "text-[24px] md:text-[34px]"}`} style={{ color: r.c }}>{r.from} → {r.to}</div>
+        <div className="relative grid md:grid-cols-3 gap-4 md:gap-5">
+          <div aria-hidden className="md:hidden absolute left-[34px] top-10 bottom-10 w-[2px] rounded-full" style={{ background: "linear-gradient(#3B5BFF, #7B5BFF, #FF7A3D)" }} />
+          {phases.map((p, i) => (
+            <Reveal key={p.n} delay={i * 0.08} className="h-full">
+              <div className={`relative h-full rounded-[20px] p-5 md:p-7 border card-lift lift ${p.goal ? "bg-ink2 border-transparent text-white" : "bg-white border-[#E6E3F7]"}`}>
+                {p.goal && <span aria-hidden className="absolute inset-0 rounded-[20px] pointer-events-none" style={{ background: "radial-gradient(ellipse at 100% 0%, rgba(255,122,61,0.25), transparent 60%)" }} />}
+                <div className="relative flex items-center gap-3">
+                  <span className="w-[30px] h-[30px] shrink-0 rounded-full flex items-center justify-center text-[12px] font-extrabold text-white" style={{ background: p.goal ? "var(--grad-accent)" : "var(--grad-primary)" }}>{p.n}</span>
+                  <span className={`text-[11px] font-extrabold uppercase tracking-[0.14em] ${p.goal ? "text-[#FF9A6C]" : "text-primary"}`}>{p.when}</span>
+                </div>
+                <h3 className="relative mt-4 text-[22px] md:text-[24px] font-extrabold tracking-[-0.02em]">{p.title}</h3>
+                <p className={`relative mt-1.5 text-[14.5px] leading-relaxed ${p.goal ? "text-white/65" : "text-muted"}`}>{p.line}</p>
+                <div className="relative mt-4 flex flex-wrap gap-2">
+                  {p.steps.map((s) => (
+                    <span key={s} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12.5px] font-bold ${p.goal ? "bg-white/[0.08] text-white/85" : "bg-soft text-ink"}`}>
+                      <Icon.Check size={12} className={p.goal ? "text-[#FF9A6C]" : "text-primary"} />{s}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <r.I size={r.goal ? 26 : 22} className="shrink-0" style={{ color: r.c }} />
-            </motion.div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -783,7 +724,7 @@ function FAQSection() {
     { q: "What makes this different from Udemy or YouTube?", a: "Live mentorship, accountability and placement support. With max 5 students per batch, your mentor knows your name, your gaps, and follows up when you're stuck." },
   ];
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-14 md:py-24 bg-white">
       <div className="max-w-2xl mx-auto px-6">
         <Reveal className="text-center mb-10 md:mb-14">
           <SectionLabel>FAQ</SectionLabel>

@@ -1,8 +1,8 @@
 "use client";
 /* Shared pieces for the daily question and the Job-Ready Check. */
-import { useSyncExternalStore } from "react";
+import { useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Icon } from "@/components/Icons";
 import { SKILLS, msToNext, type Question } from "@/lib/daily";
 import { dismissMilestone } from "@/lib/practice";
@@ -16,8 +16,21 @@ export function QuestionCard({ q, label, picked, onPick }: {
 }) {
   const sk = SKILLS[q.skill];
   const done = picked !== null;
+  const [fresh, setFresh] = useState(false); // answered just now (not a saved answer from earlier)
+  const resultRef = useRef<HTMLDivElement>(null);
+  const pick = (i: number) => {
+    setFresh(true);
+    onPick(i);
+    // Glide down so the verdict and explanation are on screen, not just below the fold.
+    setTimeout(() => {
+      const el = resultRef.current;
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.scrollY - 140;
+      if (el.getBoundingClientRect().bottom > window.innerHeight - 90) window.scrollTo({ top, behavior: "smooth" });
+    }, 180);
+  };
   return (
-    <div className="bg-white rounded-[24px] border border-[#E6E3F7] card-lift shadow-deep overflow-hidden">
+    <div className="bg-white rounded-[20px] border border-[#E6E3F7] card-lift shadow-deep overflow-hidden">
       <div className="px-5 md:px-7 pt-5 md:pt-6">
         <div className="flex items-center justify-between gap-3">
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-[0.12em] text-white" style={{ background: sk.color }}>{sk.name}</span>
@@ -42,14 +55,15 @@ export function QuestionCard({ q, label, picked, onPick }: {
             const right = done && i === q.answer;
             const wrong = done && i === picked && i !== q.answer;
             return (
-              <button key={o} type="button" disabled={done} onClick={() => onPick(i)}
-                className={`tap text-left flex items-start gap-3 w-full px-4 py-3.5 rounded-[14px] border-2 transition-colors ${
+              <button key={o} type="button" disabled={done} onClick={() => pick(i)}
+                className={`relative tap text-left flex items-start gap-3 w-full px-4 py-3.5 rounded-[14px] border-2 transition-colors ${
                   right ? "border-[#16A34A] bg-[#F0FDF4]" : wrong ? "border-[#EF4444] bg-[#FEF2F2]" : done ? "border-[#EEF0F6] bg-white opacity-60" : "border-[#E6E3F7] bg-white hover:border-primary/50 hover:bg-primary-tint"
                 }`}>
                 <span className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-extrabold ${
                   right ? "bg-[#16A34A] text-white" : wrong ? "bg-[#EF4444] text-white" : "bg-soft text-ink"
                 }`}>{right ? <Icon.Check size={14} /> : wrong ? <Icon.Close size={13} /> : LETTERS[i]}</span>
                 <span className="pt-0.5 text-[14.5px] font-semibold text-ink leading-snug">{o}</span>
+                {right && fresh && picked === q.answer && <Burst />}
               </button>
             );
           })}
@@ -57,7 +71,7 @@ export function QuestionCard({ q, label, picked, onPick }: {
 
         <AnimatePresence>
           {done && (
-            <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            <motion.div ref={resultRef} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="mt-5 rounded-[16px] bg-soft border border-[#E6E3F7] p-4 md:p-5">
               <p className="text-[12px] font-extrabold uppercase tracking-[0.14em]" style={{ color: picked === q.answer ? "#16A34A" : "#EF4444" }}>
                 {picked === q.answer ? "You caught it" : "The AI got you this time"}
@@ -134,5 +148,27 @@ export function MilestoneCard({ kind }: { kind: "streak" | "check" }) {
 }
 
 export function Skeleton({ h = 520 }: { h?: number }) {
-  return <div className="rounded-[24px] bg-white/[0.06] border border-white/10 animate-pulse" style={{ height: h }} aria-hidden />;
+  return <div className="rounded-[20px] bg-white/[0.06] border border-white/10 animate-pulse" style={{ height: h }} aria-hidden />;
+}
+
+/* A small confetti burst from the right answer. 18 pieces, under a second, skipped for reduced motion. */
+const BURST_COLORS = ["#3B5BFF", "#7B5BFF", "#FF7A3D", "#FF5E7A", "#16A34A", "#FACC15"];
+function Burst() {
+  const reduce = useReducedMotion();
+  if (reduce) return null;
+  return (
+    <span aria-hidden className="pointer-events-none absolute left-7 top-1/2 z-10">
+      {Array.from({ length: 18 }, (_, k) => {
+        const a = (k / 18) * Math.PI * 2 + (k % 3) * 0.2;
+        const r = 46 + (k % 4) * 16;
+        return (
+          <motion.span key={k} className="absolute block rounded-[2px]"
+            style={{ width: k % 2 ? 6 : 8, height: k % 2 ? 10 : 6, background: BURST_COLORS[k % BURST_COLORS.length] }}
+            initial={{ x: 0, y: 0, opacity: 1, rotate: 0, scale: 0.6 }}
+            animate={{ x: Math.cos(a) * r, y: Math.sin(a) * r + 18, opacity: 0, rotate: (k % 2 ? 1 : -1) * 220, scale: 1 }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }} />
+        );
+      })}
+    </span>
+  );
 }

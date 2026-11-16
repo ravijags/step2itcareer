@@ -134,7 +134,7 @@ export default function CoursesPage() {
                     <span className="text-[11px] font-extrabold uppercase tracking-wide px-2.5 py-1 rounded-full truncate" style={{ background: `${course.categoryColor}18`, color: course.categoryColor }}>{course.category}</span>
                     <span className="text-[12px] text-muted font-semibold whitespace-nowrap">{course.duration}</span>
                   </div>
-                  <p className="text-[13.5px] text-muted leading-relaxed mb-3 line-clamp-3">{course.description}</p>
+                  <p className="text-[13.5px] text-muted leading-relaxed mb-3">{lead(course.description)}</p>
                   <p className="text-[12.5px] text-ink font-semibold leading-snug mb-4 flex-1"><span className="text-primary font-extrabold">You&apos;ll build:</span> {course.projects.slice(0, 2).join(" · ")}</p>
                   <div className="flex items-center justify-between pt-3 border-t border-[#EEEBF8]">
                     <span className="inline-flex items-center gap-1.5 text-[12px] font-bold text-ink"><Icon.Medal size={14} className="text-primary" /> Certificate{course.level === "career" ? " + internship" : ""}</span>
@@ -154,4 +154,12 @@ export default function CoursesPage() {
       <CTABand title="Still deciding? Let's just talk." sub="A free 15-minute call with a mentor — we'll help you pick a course and level. No pressure." />
     </div>
   );
+}
+
+/* Card text: whole sentences only (never cut mid-word), at least ~60 characters. */
+function lead(d: string) {
+  const parts = d.split(/(?<=[.!?])\s+/);
+  let out = "";
+  for (const p of parts) { out = out ? `${out} ${p}` : p; if (out.length >= 60) break; }
+  return out;
 }

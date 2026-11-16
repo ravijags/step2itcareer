@@ -11,6 +11,7 @@ import Reveal from "@/components/inner/Reveal";
 import CounselButton from "@/components/inner/CounselButton";
 import CTABand from "@/components/inner/CTABand";
 import FeeBar from "@/components/inner/FeeBar";
+import NextBatchLine from "@/components/inner/NextBatchLine";
 
 export default function SchoolPage({ s }: { s: School }) {
   const wa = schoolWa(s.band);
@@ -89,12 +90,12 @@ export default function SchoolPage({ s }: { s: School }) {
           </div>
 
           <aside className="lg:sticky lg:top-24">
-            <div className="relative overflow-hidden bg-white rounded-[22px] p-6 md:p-7 border border-[#E6E3F7]" style={{ boxShadow: "0 24px 60px -20px rgba(59,91,255,0.25), inset 0 1px 0 #fff" }}>
+            <div className="relative overflow-hidden bg-white rounded-[20px] p-6 md:p-7 border border-[#E6E3F7]" style={{ boxShadow: "0 24px 60px -20px rgba(59,91,255,0.25), inset 0 1px 0 #fff" }}>
               <div className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.15em] text-[#FF7A3D] mb-5">
                 <span className="relative inline-block w-2 h-2 rounded-full bg-[#FF7A3D] pulse-ring text-[#FF7A3D]" /> Only 5 students per batch
               </div>
               <div className="text-[24px] font-extrabold tracking-[-0.02em] leading-tight text-ink mb-1">Join the next batch</div>
-              <div className="text-[13px] text-muted mb-6">Fee, schedule and the start date — shared on WhatsApp in minutes.</div>
+              <NextBatchLine fallback="Fee, schedule and the start date — shared on WhatsApp in minutes." />
               <div className="mb-6">
                 {s.facts.map(([k, v]) => (
                   <div key={k} className="flex justify-between items-center gap-4 py-3 border-b border-[#EEEBF8] text-[14px]">

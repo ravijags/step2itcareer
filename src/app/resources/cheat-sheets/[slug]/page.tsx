@@ -41,16 +41,16 @@ export default async function SheetPage({ params }: { params: Promise<{ slug: st
           <h1 className="hidden print:block text-[22px] font-extrabold text-ink mb-4">{s.title} — Step2ITCareer-AI cheat sheet</h1>
           <div className="columns-1 md:columns-2 gap-5 [column-fill:_balance]">
             {s.sections.map((sec) => (
-              <section key={sec.title} className="break-inside-avoid mb-5 rounded-[18px] bg-white border border-[#E6E3F7] p-4 md:p-5 card-lift">
+              <section key={sec.title} className="break-inside-avoid mb-5 rounded-[16px] bg-white border border-[#E6E3F7] p-4 md:p-5 card-lift">
                 <h2 className="text-[13px] font-extrabold uppercase tracking-[0.14em] mb-3" style={{ color: s.color }}>{sec.title}</h2>
                 <div className="space-y-3">
                   {sec.items.map((it) => (
                     <div key={it.code}>
-                      <div className="flex items-start gap-2 rounded-[12px] bg-ink2 px-3.5 py-3">
+                      <div className="flex items-start gap-2 rounded-[14px] bg-ink2 px-3.5 py-3">
                         <pre className="flex-1 min-w-0 overflow-x-auto text-[12.5px] leading-relaxed text-[#E6E8F5] font-mono whitespace-pre">{it.code}</pre>
                         <CopyButton text={it.code} />
                       </div>
-                      <p className="mt-1.5 text-[12.5px] text-muted leading-snug">{it.note}</p>
+                      <p className="mt-1.5 text-[13px] text-muted leading-snug">{it.note}</p>
                     </div>
                   ))}
                 </div>

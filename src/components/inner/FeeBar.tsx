@@ -22,7 +22,7 @@ export default function FeeBar({ title, href }: { title: string; href: string })
         <motion.div
           initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 24, opacity: 0 }}
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="md:hidden fixed inset-x-3 z-30 flex items-center gap-3 rounded-[18px] pl-4 pr-1.5 py-1.5"
+          className="md:hidden fixed inset-x-3 z-30 flex items-center gap-3 rounded-[16px] pl-4 pr-1.5 py-1.5"
           style={{
             bottom: "calc(74px + env(safe-area-inset-bottom, 0px))",
             background: "rgba(12,19,40,0.95)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",

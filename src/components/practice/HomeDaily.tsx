@@ -31,14 +31,14 @@ export default function HomeDaily() {
 function Teaser({ today }: { today: number }) {
   const q = questionFor(today);
   return (
-    <div className="grid md:grid-cols-[1.1fr_1fr] gap-7 md:gap-10 items-center">
+    <div className="grid md:grid-cols-[1.15fr_1fr] gap-7 md:gap-10 items-center">
       <div>
         <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-[#FF9A6C] text-[11px] font-extrabold tracking-[0.16em] uppercase"><Icon.Bolt size={12} /> Daily · 30 seconds</span>
-        <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-white tracking-[-0.03em] leading-[1.06]">AI writes the code now.<br /><span className="grad-text-accent">Can you catch its mistake?</span></h2>
+        <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-white tracking-[-0.03em] leading-[1.06]">AI writes the code.<br /><span className="grad-text-accent">Can you catch its mistake?</span></h2>
         <p className="mt-3 text-[14.5px] md:text-[16px] text-white/60 max-w-md">One question a day. That&apos;s the skill companies hire for in 2026: checking what the AI got wrong.</p>
         <div className="mt-6 flex flex-col sm:flex-row gap-3">
-          <Link href="/daily" className="tap inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full btn-grad-accent text-white font-extrabold text-[15px]">Play today&apos;s question <Icon.ArrowRight size={16} /></Link>
-          <Link href="/check" className="tap inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full border border-white/15 bg-white/[0.06] text-white font-extrabold text-[15px]">10-question Job-Ready Check</Link>
+          <Link href="/daily" className="tap whitespace-nowrap inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full btn-grad-accent text-white font-extrabold text-[15px]">Play today&apos;s question <Icon.ArrowRight size={16} /></Link>
+          <Link href="/check" className="tap whitespace-nowrap inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full border border-white/15 bg-white/[0.06] text-white font-extrabold text-[15px]">Job-Ready Check</Link>
         </div>
       </div>
       <Link href="/daily" className="group block rounded-[20px] bg-white/[0.05] border border-white/10 p-4 md:p-5 lift" aria-label="Open today's question">
@@ -47,7 +47,7 @@ function Teaser({ today }: { today: number }) {
           <span className="text-[12px] font-bold text-white/50">Daily #{today}</span>
         </div>
         <p className="mt-3 text-[15px] font-bold text-white leading-snug">{q.task}</p>
-        <pre className="mt-3 rounded-[12px] bg-black/30 px-3.5 py-3 text-[12.5px] leading-relaxed text-[#E6E8F5] font-mono whitespace-pre overflow-hidden max-h-[132px]">{q.code}</pre>
+        <pre className="mt-3 rounded-[14px] bg-black/30 px-3.5 py-3 text-[12.5px] leading-relaxed text-[#E6E8F5] font-mono whitespace-pre overflow-hidden max-h-[132px]">{q.code}</pre>
         <p className="mt-3 text-[14px] font-extrabold text-[#FF9A6C] inline-flex items-center gap-1.5">{q.ask} <Icon.ArrowRight size={14} className="transition-transform group-hover:translate-x-1" /></p>
       </Link>
     </div>
@@ -78,13 +78,13 @@ function Returning({ p, today }: { p: NonNullable<ReturnType<typeof usePractice>
 
       <div className="grid md:grid-cols-2 gap-3">
         {doneToday ? (
-          <div className="rounded-[18px] bg-white/[0.05] border border-white/10 p-5">
+          <div className="rounded-[16px] bg-white/[0.05] border border-white/10 p-5">
             <p className="text-[13px] font-bold text-white/55">Next question in</p>
             <Countdown className="mt-1 block text-[30px] font-extrabold text-white" />
             <p className="mt-1 text-[13px] text-white/50">Drops at midnight. Weekends never break your streak.</p>
           </div>
         ) : (
-          <Link href="/daily" className="tap group rounded-[18px] bg-white/[0.05] border border-white/10 p-5 lift block">
+          <Link href="/daily" className="tap group rounded-[16px] bg-white/[0.05] border border-white/10 p-5 lift block">
             <span className="px-2.5 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-[0.12em] text-white" style={{ background: SKILLS[q.skill].color }}>{SKILLS[q.skill].name}</span>
             <p className="mt-3 text-[15px] font-bold text-white leading-snug">{q.task}</p>
             <p className="mt-3 text-[14px] font-extrabold text-[#FF9A6C] inline-flex items-center gap-1.5">{streak > 0 ? "Keep the streak going" : "Start a new streak"} <Icon.ArrowRight size={14} className="transition-transform group-hover:translate-x-1" /></p>
@@ -92,13 +92,13 @@ function Returning({ p, today }: { p: NonNullable<ReturnType<typeof usePractice>
         )}
 
         {weak ? (
-          <Link href={SKILLS[weak].sheet} className="tap group rounded-[18px] bg-white/[0.05] border border-white/10 p-5 lift block">
+          <Link href={SKILLS[weak].sheet} className="tap group rounded-[16px] bg-white/[0.05] border border-white/10 p-5 lift block">
             <p className="text-[13px] font-bold text-white/55">Your weak spot so far</p>
             <p className="mt-1 text-[20px] font-extrabold text-white">{SKILLS[weak].name} <span className="text-white/45 text-[15px] tabular-nums">· {st[weak][0]}/{st[weak][1]} right</span></p>
             <p className="mt-2 text-[14px] font-extrabold text-[#FF9A6C] inline-flex items-center gap-1.5">10-minute fix: the 1-page cheat sheet <Icon.ArrowRight size={14} className="transition-transform group-hover:translate-x-1" /></p>
           </Link>
         ) : (
-          <Link href="/check" className="tap group rounded-[18px] bg-white/[0.05] border border-white/10 p-5 lift block">
+          <Link href="/check" className="tap group rounded-[16px] bg-white/[0.05] border border-white/10 p-5 lift block">
             <p className="text-[13px] font-bold text-white/55">{best ? "A new set every Monday" : "See where you stand"}</p>
             <p className="mt-1 text-[20px] font-extrabold text-white">{best ? "Beat your score" : "Take the Job-Ready Check"}</p>
             <p className="mt-2 text-[14px] font-extrabold text-[#FF9A6C] inline-flex items-center gap-1.5">10 questions · 4 minutes <Icon.ArrowRight size={14} className="transition-transform group-hover:translate-x-1" /></p>

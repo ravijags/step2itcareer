@@ -13,6 +13,7 @@ import CTABand from "@/components/inner/CTABand";
 import FeeBar from "@/components/inner/FeeBar";
 import { SHOWCASE } from "@/lib/showcase";
 import LevelCompare from "@/components/inner/LevelCompare";
+import NextBatchLine from "@/components/inner/NextBatchLine";
 
 export async function generateStaticParams() {
   return courses.map((c) => ({ slug: c.slug }));
@@ -46,14 +47,14 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
   return (
     <div className="min-h-screen bg-soft">
       {/* ── HERO BAND ── */}
-      <section className="relative z-10 cut-bottom bg-ink2 overflow-hidden pt-28 md:pt-36 pb-20 md:pb-28">
+      <section className="relative z-10 cut-bottom bg-ink2 overflow-hidden pt-24 md:pt-36 pb-20 md:pb-28">
         <Grain />
         <Slashes side="right" tone="primary" opacity={0.1} height={720} />
         <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(59,91,255,0.18) 1px, transparent 1px)", backgroundSize: "36px 36px", opacity: 0.35 }} />
         <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse at 20% 20%, ${course.categoryColor}33, transparent 55%)` }} />
         <div className="relative max-w-brand mx-auto px-6 lg:grid lg:grid-cols-[1fr_380px] lg:gap-14 lg:items-center">
           <div>
-          <Link href="/courses" className="inline-flex items-center gap-2 text-white/50 hover:text-white text-[13px] font-semibold mb-7 transition-colors">
+          <Link href="/courses" className="inline-flex items-center gap-2 text-white/50 hover:text-white text-[13px] font-semibold mb-5 md:mb-7 transition-colors">
             <Icon.ArrowRight size={14} className="rotate-180" /> All courses
           </Link>
           <div className="flex flex-wrap gap-2 mb-5">
@@ -76,7 +77,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
 
           {/* Desktop: the course photo fills the right side instead of empty space */}
           <div className="hidden lg:block">
-            <div className="rounded-[22px] overflow-hidden" style={{ boxShadow: `0 30px 70px -20px ${course.categoryColor}77, 0 0 0 1px rgba(255,255,255,0.08)` }}>
+            <div className="rounded-[20px] overflow-hidden" style={{ boxShadow: `0 30px 70px -20px ${course.categoryColor}77, 0 0 0 1px rgba(255,255,255,0.08)` }}>
               <CourseArt slug={course.slug} title={course.roles.slice(0, 2).join(" · ")} tag={LEVELS[course.level].short} height="h-[250px]" priority />
               <div className="bg-[#0C1328] px-5 py-4 grid grid-cols-3 gap-3 text-center">
                 {[[course.duration, "Duration"], ["Max 5", "Per batch"], [isCareer ? "Yes" : "Cert.", isCareer ? "Internship" : "On completion"]].map(([v, l]) => (
@@ -96,7 +97,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
             {/* Who it's for + AI angle */}
             <Reveal>
               <div className="grid sm:grid-cols-2 gap-4">
-                <div className="relative overflow-hidden bg-white rounded-[18px] p-5 md:p-6 border border-[#E6E3F7] card-lift">
+                <div className="relative overflow-hidden bg-white rounded-[16px] p-5 md:p-6 border border-[#E6E3F7] card-lift">
                   <SectionLabel>Who it&apos;s for</SectionLabel>
                   <ul className="mt-4 space-y-2.5">
                     {course.audience.map((a) => (
@@ -104,7 +105,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
                     ))}
                   </ul>
                 </div>
-                <div className="relative overflow-hidden rounded-[18px] p-5 md:p-6 text-white" style={{ background: "linear-gradient(135deg,#0E1526,#1B2466)" }}>
+                <div className="relative overflow-hidden rounded-[16px] p-5 md:p-6 text-white" style={{ background: "linear-gradient(135deg,#0E1526,#1B2466)" }}>
                   <Grain />
                   <CornerSlash />
                   <div className="relative">
@@ -150,7 +151,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
                       const sc = SHOWCASE[course.slug][i];
                       const capstone = pr.startsWith("Capstone");
                       return (
-                        <div key={pr} className="relative overflow-hidden bg-white rounded-[18px] border border-[#E6E3F7] card-lift lift flex flex-col">
+                        <div key={pr} className="relative overflow-hidden bg-white rounded-[16px] border border-[#E6E3F7] card-lift lift flex flex-col">
                           <div className="relative h-[88px] flex items-center justify-between px-5" style={{ background: `linear-gradient(135deg, ${course.categoryColor}22, ${course.categoryColor}08)` }}>
                             {sc && <SkillIcon emoji={sc.icon} size={44} />}
                             <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] px-2.5 py-1 rounded-full" style={capstone ? { background: "var(--grad-accent)", color: "#fff" } : { background: "#fff", color: course.categoryColor }}>
@@ -187,7 +188,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {(isCareer ? stack : upgrade ? [upgrade, ...builtInto.filter((b) => b.slug !== upgrade.slug)] : builtInto).map((c) => (
                     <Link key={c.slug} href={`/courses/${c.slug}`} className="tap group min-w-0 flex items-center gap-3 bg-white rounded-[16px] p-3 border border-[#E6E3F7] card-lift">
-                      <div className="w-20 shrink-0 rounded-[12px] overflow-hidden"><CourseArt slug={c.slug} title="" badge={false} height="h-[56px]" /></div>
+                      <div className="w-20 shrink-0 rounded-[14px] overflow-hidden"><CourseArt slug={c.slug} title="" badge={false} height="h-[56px]" /></div>
                       <div className="min-w-0 flex-1">
                         <div className="text-[10.5px] font-extrabold uppercase tracking-wide text-primary">{LEVELS[c.level].label} · {c.duration}</div>
                         <div className="text-[14px] font-extrabold text-ink leading-snug line-clamp-2">{c.title}</div>
@@ -229,14 +230,14 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
 
           {/* ── STICKY SIDEBAR ── */}
           <aside className="lg:sticky lg:top-24">
-            <div className="relative overflow-hidden bg-white rounded-[22px] p-6 md:p-7 border border-[#E6E3F7]" style={{ boxShadow: "0 24px 60px -20px rgba(59,91,255,0.25), inset 0 1px 0 #fff" }}>
+            <div className="relative overflow-hidden bg-white rounded-[20px] p-6 md:p-7 border border-[#E6E3F7]" style={{ boxShadow: "0 24px 60px -20px rgba(59,91,255,0.25), inset 0 1px 0 #fff" }}>
               <CornerSlash />
               <div className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.15em] text-[#FF7A3D] mb-5">
                 <span className="relative inline-block w-2 h-2 rounded-full bg-[#FF7A3D] pulse-ring text-[#FF7A3D]" />
                 Only 5 seats per batch
               </div>
               <div className="text-[24px] font-extrabold tracking-[-0.02em] leading-tight text-ink mb-1">Join the next batch</div>
-              <div className="text-[13px] text-muted mb-6">Fee, EMI and the start date — shared personally on WhatsApp in minutes.</div>
+              <NextBatchLine fallback="Fee, EMI and the start date — shared personally on WhatsApp in minutes." />
               <div className="mb-6">
                 {facts.map(([label, value]) => (
                   <div key={label} className="flex justify-between items-center py-3 border-b border-[#EEEBF8] text-[14px]">

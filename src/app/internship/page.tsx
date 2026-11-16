@@ -81,7 +81,7 @@ export default function InternshipPage() {
           <div className="grid md:grid-cols-2 gap-5 md:gap-6">
             {PROGRAMS.map((p, i) => (
               <Reveal key={p.slug} delay={i * 0.06} className="h-full">
-                <Link href={`/internship/${p.slug}`} className="group relative h-full flex flex-col overflow-hidden rounded-[22px] bg-ink2 p-6 md:p-8 text-white card-lift-dark lift">
+                <Link href={`/internship/${p.slug}`} className="group relative h-full flex flex-col overflow-hidden rounded-[20px] bg-ink2 p-6 md:p-8 text-white card-lift-dark lift">
                   <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 90% 0%, rgba(59,91,255,0.3), transparent 60%)" }} />
                   <div className="relative">
                     <span className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#FF9A6C]">{p.eyebrow}</span>

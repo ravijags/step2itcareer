@@ -1,9 +1,9 @@
 "use client";
 /* The Job-Ready Check: 10 "catch the AI's mistake" questions, a score per skill, and the weak spots
    linked to the free cheat sheets and roadmaps. A new set every Monday, so a retake measures you, not memory. */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { animate, motion, useMotionValue, useReducedMotion, useTransform } from "framer-motion";
 import { Icon } from "@/components/Icons";
 import { CHECK_MIX, SKILLS, checkSet, type Skill } from "@/lib/daily";
 import { bestCheck, milestoneReached, recordCheck, usePractice, useToday } from "@/lib/practice";
@@ -47,12 +47,15 @@ export default function CheckRunner() {
   /* ── intro ── */
   if (stage === "intro") {
     return (
-      <div className="rounded-[24px] bg-white border border-[#E6E3F7] card-lift shadow-deep p-6 md:p-8">
+      <div className="rounded-[20px] bg-white border border-[#E6E3F7] card-lift shadow-deep p-6 md:p-8">
         <div className="grid grid-cols-3 gap-2.5 text-center">
           {[["10", "questions"], ["~4", "minutes"], ["0", "sign-ups"]].map(([a, b]) => (
             <div key={b} className="rounded-[16px] bg-soft py-4"><div className="text-[26px] font-extrabold text-ink leading-none">{a}</div><div className="mt-1 text-[12px] font-bold text-muted">{b}</div></div>
           ))}
         </div>
+        <button type="button" onClick={start} className="tap mt-5 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full btn-grad text-white font-extrabold text-[15px]">
+          {thisWeek ? "Try this set again" : "Start the check"} <Icon.ArrowRight size={16} />
+        </button>
         <p className="mt-6 text-[15px] text-ink leading-relaxed">Each question shows something an AI wrote: a SQL query, an Excel formula, Python code, or a prompt. Your job is to spot the mistake. Sometimes there isn&apos;t one.</p>
         <div className="mt-4 flex flex-wrap gap-2">
           {CHECK_MIX.map(([s, k]) => (
@@ -65,9 +68,7 @@ export default function CheckRunner() {
             {best && !thisWeek ? <>Your best so far: <b className="text-ink">{best.score}/10</b>. This week&apos;s set is new.</> : null}
           </p>
         )}
-        <button type="button" onClick={start} className="tap mt-6 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full btn-grad text-white font-extrabold text-[15px]">
-          {thisWeek ? "Try this set again" : "Start the check"} <Icon.ArrowRight size={16} />
-        </button>
+
         <p className="mt-3 text-[12px] text-muted">Your answers stay on this phone. Nothing is sent anywhere.</p>
       </div>
     );
@@ -110,11 +111,10 @@ export default function CheckRunner() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-[24px] bg-white border border-[#E6E3F7] card-lift shadow-deep p-6 md:p-8">
+      <div className="rounded-[20px] bg-white border border-[#E6E3F7] card-lift shadow-deep p-6 md:p-8">
         <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-muted">Your Job-Ready score</p>
         <div className="mt-2 flex items-end gap-2">
-          <motion.span initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 260, damping: 18 }}
-            className="text-[64px] md:text-[76px] font-extrabold leading-none tracking-[-0.04em] grad-text">{score}</motion.span>
+          <ScoreNumber score={score} />
           <span className="pb-2 text-[22px] font-extrabold text-muted">/10</span>
         </div>
         <p className="mt-3 text-[20px] font-extrabold text-ink">{v.title}</p>
@@ -133,7 +133,7 @@ export default function CheckRunner() {
       </div>
 
       {weak.length > 0 && (
-        <div className="rounded-[24px] bg-white border border-[#E6E3F7] p-6 md:p-7">
+        <div className="rounded-[20px] bg-white border border-[#E6E3F7] p-6 md:p-7">
           <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-accent">Fix these first</p>
           <div className="mt-3 grid gap-2.5">
             {weak.map((s) => (
@@ -151,7 +151,7 @@ export default function CheckRunner() {
 
       {milestone && <MilestoneCard kind={milestone} />}
 
-      <div className="rounded-[24px] bg-white/[0.05] border border-white/10 p-5 md:p-6 space-y-4">
+      <div className="rounded-[20px] bg-white/[0.05] border border-white/10 p-5 md:p-6 space-y-4">
         <a href={waPlan} target="_blank" rel="noopener noreferrer" className="tap w-full inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-ink font-extrabold text-[15px]">
           <Icon.WhatsApp size={18} className="text-[#16A34A]" /> Get my free 2-week plan
         </a>
@@ -163,4 +163,17 @@ export default function CheckRunner() {
       </div>
     </div>
   );
+}
+
+/* The score counts up from 0, so the result lands as a moment instead of a static number. */
+function ScoreNumber({ score }: { score: number }) {
+  const reduce = useReducedMotion();
+  const mv = useMotionValue(reduce ? score : 0);
+  const shown = useTransform(mv, (v) => Math.round(v));
+  useEffect(() => {
+    if (reduce) return;
+    const c = animate(mv, score, { duration: 0.9, ease: [0.22, 1, 0.36, 1] });
+    return () => c.stop();
+  }, [mv, score, reduce]);
+  return <motion.span className="text-[64px] md:text-[76px] font-extrabold leading-none tracking-[-0.04em] grad-text tabular-nums">{shown}</motion.span>;
 }

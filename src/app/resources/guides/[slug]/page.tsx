@@ -55,7 +55,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
             })}
           </div>
 
-          <div className="mt-10 rounded-[22px] bg-ink2 text-white p-6 md:p-7">
+          <div className="mt-10 rounded-[20px] bg-ink2 text-white p-6 md:p-7">
             <div className="text-[11px] font-extrabold uppercase tracking-[0.15em] text-[#FF9A6C]">Your next step</div>
             <Link href={g.next.href} className="mt-2 inline-flex items-center gap-2 text-[19px] md:text-[21px] font-extrabold hover:text-[#8BA4FF]">{g.next.label} <Icon.ArrowRight size={18} /></Link>
             <div className="mt-5"><ShareWhatsApp text={`Worth a read: "${g.title}"`} /></div>

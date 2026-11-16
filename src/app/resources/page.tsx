@@ -36,7 +36,7 @@ export default function ResourcesPage() {
         <div className="max-w-brand mx-auto px-6 grid md:grid-cols-2 gap-5 md:gap-6 mb-5 md:mb-6">
           {PRACTICE.map((s, i) => (
             <Reveal key={s.href} delay={i * 0.06} className="h-full">
-              <Link href={s.href} className="group relative h-full flex flex-col rounded-[22px] p-6 md:p-7 bg-ink2 text-white overflow-hidden lift">
+              <Link href={s.href} className="group relative h-full flex flex-col rounded-[20px] p-6 md:p-7 bg-ink2 text-white overflow-hidden lift">
                 <span className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 100% 0%, rgba(255,122,61,0.22), transparent 60%)" }} />
                 <span className="relative w-12 h-12 rounded-[14px] flex items-center justify-center text-white" style={{ background: s.color }}><s.I size={22} /></span>
                 <div className="relative mt-4 text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#FF9A6C]">{s.count}</div>
@@ -50,7 +50,7 @@ export default function ResourcesPage() {
         <div className="max-w-brand mx-auto px-6 grid md:grid-cols-3 gap-5 md:gap-6">
           {SECTIONS.map((s, i) => (
             <Reveal key={s.href} delay={i * 0.06} className="h-full">
-              <Link href={s.href} className="group h-full flex flex-col bg-white rounded-[22px] p-6 md:p-7 border border-[#E6E3F7] card-lift lift">
+              <Link href={s.href} className="group h-full flex flex-col bg-white rounded-[20px] p-6 md:p-7 border border-[#E6E3F7] card-lift lift">
                 <span className="w-12 h-12 rounded-[14px] flex items-center justify-center text-white" style={{ background: s.color }}><s.I size={22} /></span>
                 <div className="mt-4 text-[11px] font-extrabold uppercase tracking-[0.14em] text-muted">{s.count}</div>
                 <h2 className="mt-1 text-[22px] font-extrabold text-ink tracking-[-0.02em]">{s.title}</h2>

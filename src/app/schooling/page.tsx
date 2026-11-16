@@ -45,7 +45,7 @@ export default function SchoolingPage() {
           <div className="grid md:grid-cols-3 gap-5 md:gap-6">
             {SCHOOLS.map((s, i) => (
               <Reveal key={s.slug} delay={i * 0.06} className="h-full">
-                <Link href={`/schooling/${s.slug}`} className="group relative h-full flex flex-col bg-white rounded-[22px] overflow-hidden border border-[#E6E3F7] card-lift lift">
+                <Link href={`/schooling/${s.slug}`} className="group relative h-full flex flex-col bg-white rounded-[20px] overflow-hidden border border-[#E6E3F7] card-lift lift">
                   <div className="h-[5px]" style={{ background: s.color }} />
                   <div className="p-6 flex flex-col flex-1">
                     <span className="self-start text-[11px] font-extrabold uppercase tracking-[0.14em] px-2.5 py-1 rounded-full" style={{ color: s.color, background: `${s.color}14` }}>{s.accent}</span>
@@ -72,10 +72,10 @@ export default function SchoolingPage() {
           </Reveal>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             {WHY.map((w) => (
-              <div key={w.title} className="bg-white rounded-[18px] p-4 md:p-5 border border-[#E6E3F7] card-lift">
+              <div key={w.title} className="bg-white rounded-[16px] p-4 md:p-5 border border-[#E6E3F7] card-lift">
                 <SkillIcon emoji={w.icon} size={40} className="mb-3" />
                 <div className="text-[14px] font-extrabold text-ink leading-snug">{w.title}</div>
-                <p className="mt-1 text-[12.5px] md:text-[13px] text-muted leading-relaxed">{w.desc}</p>
+                <p className="mt-1 text-[13.5px] text-muted leading-relaxed">{w.desc}</p>
               </div>
             ))}
           </div>

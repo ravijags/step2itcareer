@@ -60,7 +60,7 @@ export default function LeadPopup({ submitted, onSubmit, onClose, preset }: {
           initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
           transition={{ type: "spring", stiffness: 380, damping: 36 }}
           drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={{ top: 0, bottom: 0.55 }} onDragEnd={onDragEnd}
-          className="relative w-full sm:max-w-[440px] bg-white rounded-t-[26px] sm:rounded-[26px] overflow-hidden flex flex-col"
+          className="relative w-full sm:max-w-[440px] bg-white rounded-t-[26px] sm:rounded-[28px] overflow-hidden flex flex-col"
           style={{ maxHeight: "92dvh", boxShadow: "0 -16px 60px rgba(0,0,0,0.35)", paddingBottom: "env(safe-area-inset-bottom)" }}
           role="dialog" aria-modal="true" aria-label="Book free counseling"
         >

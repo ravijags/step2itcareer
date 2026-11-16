@@ -99,7 +99,7 @@ export default function WorkshopsPage() {
               { n: "2", t: "Get the joining link", d: "We WhatsApp you the link or classroom details and a reminder before it starts." },
               { n: "3", t: "Build something real", d: "Leave with a working project — and a certificate on weekend workshops." },
             ].map((s) => (
-              <div key={s.n} className="bg-white rounded-[18px] p-5 border border-[#E6E3F7] card-lift">
+              <div key={s.n} className="bg-white rounded-[16px] p-5 border border-[#E6E3F7] card-lift">
                 <span className="w-9 h-9 rounded-full btn-grad text-white font-extrabold flex items-center justify-center mb-3">{s.n}</span>
                 <div className="text-[15px] font-extrabold text-ink mb-1">{s.t}</div>
                 <p className="text-[13px] text-muted leading-relaxed">{s.d}</p>

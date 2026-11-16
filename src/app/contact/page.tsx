@@ -28,7 +28,7 @@ export default function ContactPage() {
             <h2 className="text-2xl font-extrabold text-ink mb-8">Reach Out Directly</h2>
 
             <div className="space-y-6">
-              <div className="flex items-start gap-4 p-5 bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap">
+              <div className="flex items-start gap-4 p-5 bg-soft rounded-[16px] border border-[#E6E3F7] card-lift tap">
                 <SkillIcon emoji="📞" size={44} className="w-fit shrink-0" />
                 <div>
                   <div className="font-extrabold text-ink mb-1">Phone & WhatsApp</div>
@@ -37,7 +37,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-5 bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap">
+              <div className="flex items-start gap-4 p-5 bg-soft rounded-[16px] border border-[#E6E3F7] card-lift tap">
                 <SkillIcon emoji="📧" size={44} className="w-fit shrink-0" />
                 <div>
                   <div className="font-extrabold text-ink mb-2">Email Addresses</div>
@@ -55,7 +55,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-5 bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap">
+              <div className="flex items-start gap-4 p-5 bg-soft rounded-[16px] border border-[#E6E3F7] card-lift tap">
                 <SkillIcon emoji="🗺️" size={44} className="w-fit shrink-0" />
                 <div>
                   <div className="font-extrabold text-ink mb-1">Office Address</div>
@@ -68,7 +68,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-5 bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap">
+              <div className="flex items-start gap-4 p-5 bg-soft rounded-[16px] border border-[#E6E3F7] card-lift tap">
                 <SkillIcon emoji="🌐" size={44} className="w-fit shrink-0" />
                 <div>
                   <div className="font-extrabold text-ink mb-2">Follow Us</div>

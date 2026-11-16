@@ -7,7 +7,7 @@ export default function PageHero({ eyebrow, title, description, chips, children,
 }) {
   const c = align === "center" ? "text-center items-center" : "text-left items-start";
   return (
-    <section className="relative z-10 cut-bottom bg-ink2 overflow-hidden pt-32 md:pt-40 pb-20 md:pb-28">
+    <section className="relative z-10 cut-bottom bg-ink2 overflow-hidden pt-28 md:pt-40 pb-20 md:pb-28">
       <Grain />
       <Slashes side="left" tone="primary" opacity={0.09} height={700} />
       <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(59,91,255,0.18) 1px, transparent 1px)", backgroundSize: "36px 36px", opacity: 0.35 }} />

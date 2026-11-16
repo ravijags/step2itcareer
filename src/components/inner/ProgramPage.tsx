@@ -11,6 +11,7 @@ import CounselButton from "@/components/inner/CounselButton";
 import CurriculumPath from "@/components/inner/CurriculumPath";
 import CTABand from "@/components/inner/CTABand";
 import FeeBar from "@/components/inner/FeeBar";
+import NextBatchLine from "@/components/inner/NextBatchLine";
 
 export default function ProgramPage({ p }: { p: Program }) {
   const head = p.title.replace(p.accent, "").trim();
@@ -80,7 +81,7 @@ export default function ProgramPage({ p }: { p: Program }) {
                   <div key={w.title} className="bg-white rounded-[16px] p-4 md:p-5 border border-[#E6E3F7] card-lift">
                     <SkillIcon emoji={w.icon} size={36} className="mb-3" />
                     <div className="text-[13.5px] md:text-[14.5px] font-extrabold text-ink leading-snug">{w.title}</div>
-                    <p className="mt-1 text-[12.5px] md:text-[13px] text-muted leading-relaxed">{w.desc}</p>
+                    <p className="mt-1 text-[13.5px] text-muted leading-relaxed">{w.desc}</p>
                   </div>
                 ))}
               </div>
@@ -103,12 +104,12 @@ export default function ProgramPage({ p }: { p: Program }) {
           </div>
 
           <aside className="lg:sticky lg:top-24">
-            <div className="relative overflow-hidden bg-white rounded-[22px] p-6 md:p-7 border border-[#E6E3F7]" style={{ boxShadow: "0 24px 60px -20px rgba(59,91,255,0.25), inset 0 1px 0 #fff" }}>
+            <div className="relative overflow-hidden bg-white rounded-[20px] p-6 md:p-7 border border-[#E6E3F7]" style={{ boxShadow: "0 24px 60px -20px rgba(59,91,255,0.25), inset 0 1px 0 #fff" }}>
               <div className="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.15em] text-[#FF7A3D] mb-5">
                 <span className="relative inline-block w-2 h-2 rounded-full bg-[#FF7A3D] pulse-ring text-[#FF7A3D]" /> Only 5 seats per batch
               </div>
               <div className="text-[24px] font-extrabold tracking-[-0.02em] leading-tight text-ink mb-1">Join the next batch</div>
-              <div className="text-[13px] text-muted mb-6">Fee, EMI and the start date — shared personally on WhatsApp in minutes.</div>
+              <NextBatchLine fallback="Fee, EMI and the start date — shared personally on WhatsApp in minutes." />
               <div className="mb-6">
                 {p.facts.map(([k, v]) => (
                   <div key={k} className="flex justify-between items-center gap-4 py-3 border-b border-[#EEEBF8] text-[14px]">

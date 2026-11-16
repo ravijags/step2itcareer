@@ -137,7 +137,7 @@ function NavDropdown({ label, items, ...m }: MenuProps & { label: string; items:
           {items.map((item) => (
             <Link key={item.href} href={item.href} onClick={() => m.setOpen(null)} className="nav-link block px-4 py-2.5" style={{ borderRadius: 0 }}>
               <span className="block text-[13px] font-semibold">{item.name}</span>
-              {item.note && <span className="block text-[11.5px] text-white/40 mt-0.5">{item.note}</span>}
+              {item.note && <span className="block text-[11.5px] text-white/55 mt-0.5">{item.note}</span>}
             </Link>
           ))}
         </div>
@@ -159,7 +159,7 @@ function CoursesMega(m: MenuProps) {
               <div key={lvl} className="min-w-0">
                 <div className="px-2.5 mb-1.5">
                   <div className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#8BA4FF]">{LEVELS[lvl].label}s</div>
-                  <div className="text-[11.5px] text-white/40 mt-0.5">{LEVELS[lvl].blurb}</div>
+                  <div className="text-[11.5px] text-white/55 mt-0.5">{LEVELS[lvl].blurb}</div>
                 </div>
                 {coursesByLevel(lvl).map((c) => (
                   <Link key={c.slug} href={`/courses/${c.slug}`} onClick={() => m.setOpen(null)}

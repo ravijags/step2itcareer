@@ -107,7 +107,7 @@ export default function AboutPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {leadership.map((m) => (
-              <div key={m.name} className="bg-soft rounded-[18px] border border-[#E6E3F7] card-lift tap p-6 text-center hover:border-primary hover:shadow-card transition-all duration-200">
+              <div key={m.name} className="bg-soft rounded-[16px] border border-[#E6E3F7] card-lift tap p-6 text-center hover:border-primary hover:shadow-card transition-all duration-200">
                 <div className="w-16 h-16 text-white font-extrabold text-2xl rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: "var(--grad-primary)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3)" }}>{m.initial}</div>
                 <h3 className="font-extrabold text-ink mb-1">{m.name}</h3>
                 <p className="text-xs font-bold text-primary mb-1">{m.role}</p>
@@ -129,7 +129,7 @@ export default function AboutPage() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {team.members.map((m) => (
-                <div key={m.name} className="bg-white rounded-[18px] border border-[#E6E3F7] card-lift tap p-5 hover:shadow-card transition-all duration-200 flex gap-4">
+                <div key={m.name} className="bg-white rounded-[16px] border border-[#E6E3F7] card-lift tap p-5 hover:shadow-card transition-all duration-200 flex gap-4">
                   <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-extrabold text-lg shrink-0"
                     style={{ background: `linear-gradient(135deg, ${team.color}, ${team.color}CC)`, boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3)" }}>{m.initial}</div>
                   <div>

@@ -2,6 +2,7 @@
 /* One daily question. With no `n` it plays today's; with `n` it plays that day (older days are practice
    rounds, future days stay locked). Answers are saved in this browser only. */
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { Icon } from "@/components/Icons";
 import { BANK, SKILLS, isWeekend, questionFor } from "@/lib/daily";
 import { milestoneReached, recordDay, streakOf, usePractice, useToday, type Practice } from "@/lib/practice";
@@ -15,7 +16,7 @@ export default function DailyPlayer({ n: fixed }: { n?: number }) {
   const n = fixed ?? Math.max(1, today);
   if (n > today) {
     return (
-      <div className="rounded-[24px] bg-white p-8 text-center border border-[#E6E3F7]">
+      <div className="rounded-[20px] bg-white p-8 text-center border border-[#E6E3F7]">
         <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-muted">Daily #{n}</p>
         <p className="mt-2 text-[22px] font-extrabold text-ink">Not out yet.</p>
         <p className="mt-1 text-[14px] text-muted">It unlocks in {n - today} day{n - today === 1 ? "" : "s"}. Today&apos;s question is ready though.</p>
@@ -40,11 +41,11 @@ export default function DailyPlayer({ n: fixed }: { n?: number }) {
       <QuestionCard q={q} label={label} picked={picked} onPick={(i) => recordDay(n, i, i === q.answer)} />
 
       {ans && (
-        <div className="rounded-[24px] bg-white/[0.05] border border-white/10 p-5 md:p-6 space-y-5">
+        <div className="rounded-[20px] bg-white/[0.05] border border-white/10 p-5 md:p-6 space-y-5">
           {live ? (
             <div>
               <p className="text-[20px] font-extrabold text-white leading-tight">
-                {ans.ok ? "Nice catch." : "Now you know that one."} {streak > 0 && <span className="text-[#FF9A6C]">🔥 {streak}-day streak</span>}
+                {ans.ok ? "Nice catch." : "Now you know that one."} {streak > 0 && <motion.span initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 300, damping: 14, delay: 0.25 }} className="inline-block text-[#FF9A6C]">🔥 {streak}-day streak</motion.span>}
               </p>
               <p className="mt-1 text-[14px] text-white/60">Next mistake drops in <Countdown className="font-extrabold text-white" /> · midnight India time.</p>
             </div>
@@ -76,11 +77,14 @@ export default function DailyPlayer({ n: fixed }: { n?: number }) {
 function StreakStrip({ p, today, streak }: { p: Practice; today: number; streak: number }) {
   const days = Array.from({ length: 7 }, (_, i) => today - 6 + i).filter((d) => d >= 1);
   return (
-    <div className="flex items-center justify-between gap-3 rounded-[18px] bg-white/[0.05] border border-white/10 px-4 py-3">
+    <div className="flex items-center justify-between gap-3 rounded-[16px] bg-white/[0.05] border border-white/10 px-4 py-3">
       <div className="flex items-center gap-2 text-white">
-        <Icon.Flame size={18} className={streak > 0 ? "text-[#FF7A3D]" : "text-white/30"} />
-        <span className="text-[15px] font-extrabold">{streak}</span>
-        <span className="text-[12.5px] text-white/55">day streak</span>
+        <motion.span key={streak} initial={{ scale: 0.6, rotate: -8 }} animate={{ scale: [0.6, 1.25, 1], rotate: [-8, 6, 0] }} transition={{ duration: 0.6 }} className="inline-flex">
+          <Icon.Flame size={18} className={streak > 0 ? "text-[#FF7A3D]" : "text-white/30"} />
+        </motion.span>
+        {streak > 0
+          ? <><motion.span key={`n${streak}`} initial={{ y: 8, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-[15px] font-extrabold tabular-nums">{streak}</motion.span><span className="text-[12.5px] text-white/55">day streak</span></>
+          : <span className="text-[13px] font-bold text-white/70">Start your streak today</span>}
       </div>
       <div className="flex items-center gap-1.5" aria-label="Last 7 days">
         {days.map((d) => {

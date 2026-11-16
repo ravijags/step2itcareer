@@ -73,7 +73,7 @@ export function HeroStories({ index, setIndex }: { index: number; setIndex: (i: 
 
   return (
     <div
-      className="relative w-full max-w-[420px] mx-auto rounded-[22px] overflow-hidden select-none text-left"
+      className="relative w-full max-w-[420px] mx-auto rounded-[20px] overflow-hidden select-none text-left"
       style={{ touchAction: "pan-y", background: `linear-gradient(155deg, ${p.color}40 0%, rgba(16,22,48,0.92) 55%)`, border: "1px solid rgba(255,255,255,0.12)", boxShadow: `0 18px 44px -18px ${p.color}88, inset 0 1px 0 rgba(255,255,255,0.1)`, transition: "background 400ms ease, box-shadow 400ms ease" }}
       onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerLeave={onCancel} onPointerCancel={onCancel}
       role="group" aria-roledescription="carousel" aria-label="Career programs"
@@ -145,7 +145,7 @@ export function HeroDeck({ index, setIndex }: { index: number; setIndex: (i: num
               animate={{ opacity: 1, y: k * 16, scale: 1 - k * 0.05, x: 0, rotate: k === 0 ? 0 : k === 1 ? 2 : -2.5 }}
               exit={{ opacity: 0, x: -70, rotate: -4, transition: { duration: 0.28, ease: EASE } }}
               transition={{ duration: 0.45, ease: EASE }}
-              className="absolute inset-x-0 top-0 rounded-[22px] bg-white overflow-hidden"
+              className="absolute inset-x-0 top-0 rounded-[20px] bg-white overflow-hidden"
               style={{ zIndex: 10 - k, boxShadow: k === 0 ? "0 28px 64px rgba(0,0,0,0.38)" : "0 10px 30px rgba(0,0,0,0.25)" }}>
               <div className="h-[5px]" style={{ background: p.color }} />
               {k === 0 ? <DeckFace p={p} /> : <div className="h-[340px]" aria-hidden />}
