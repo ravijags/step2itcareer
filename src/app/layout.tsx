@@ -81,7 +81,7 @@ function Footer() {
           <div>
             <h4 className="text-sm font-bold mb-4 text-white/80 uppercase tracking-wider">Resources</h4>
             <ul className="space-y-2">
-              {[["Free resources", "/resources"], ["Career Roadmaps", "/resources/roadmaps"], ["Cheat Sheets", "/resources/cheat-sheets"], ["Career Guides", "/resources/guides"], ["About Us", "/about"]].map(([name, href]) => (
+              {[["Free resources", "/resources"], ["Daily AI Challenge", "/daily"], ["Job-Ready Check", "/check"], ["Career Roadmaps", "/resources/roadmaps"], ["Cheat Sheets", "/resources/cheat-sheets"], ["Career Guides", "/resources/guides"], ["About Us", "/about"]].map(([name, href]) => (
                 <li key={name}><Link href={href} className="text-sm text-white/60 hover:text-white transition-colors">{name}</Link></li>
               ))}
             </ul>

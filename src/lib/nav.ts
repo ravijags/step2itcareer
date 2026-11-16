@@ -21,6 +21,8 @@ export const schoolingLinks: NavItem[] = [
 ];
 
 export const resourceLinks: NavItem[] = [
+  { name: "Catch the AI's Mistake", href: "/daily", note: "1 question a day, 30 seconds" },
+  { name: "Job-Ready Check", href: "/check", note: "10 questions, see your weak spots" },
   { name: "Career Roadmaps", href: "/resources/roadmaps", note: "Step-by-step paths, free" },
   { name: "Cheat Sheets", href: "/resources/cheat-sheets", note: "Python, SQL, Git, Excel and more" },
   { name: "Career Guides", href: "/resources/guides", note: "Honest answers, 5-minute reads" },

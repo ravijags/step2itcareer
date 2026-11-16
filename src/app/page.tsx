@@ -13,6 +13,7 @@ import CourseArt from "@/components/CourseArt";
 import WorkshopButton from "@/components/inner/WorkshopButton";
 import SkillIcon from "@/components/inner/SkillIcon";
 import { workshops } from "@/lib/workshops";
+import HomeDaily from "@/components/practice/HomeDaily";
 
 function openPopup() {
   window.dispatchEvent(new CustomEvent("openLeadPopup"));
@@ -40,6 +41,7 @@ export default function HomePage() {
         <SocialProofTicker />
       </div>
       <AlumniMarquee />
+      <HomeDaily />
       <StatsRow />
       <FeaturedCourses />
       <InternshipsAndWorkshops />
