@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "@/components/Logo";
-import { courseLinks, internshipLinks, schoolingLinks, resourceLinks } from "@/lib/nav";
+import { courseLinks, internshipLinks, resourceLinks } from "@/lib/nav";
 
 type Section = "courses" | "internship" | "schooling" | "resources" | null;
 
@@ -105,14 +105,13 @@ export default function MobileNav() {
             {/* Nav */}
             <div className="flex-1 overflow-y-auto overscroll-contain">
               <NavAccordion label="Courses" section="courses" expanded={expanded} onToggle={toggle} items={courseLinks} onClose={close} />
-              <NavAccordion label="Internship" section="internship" expanded={expanded} onToggle={toggle} items={internshipLinks} onClose={close} />
+              <NavAccordion label="Internships" section="internship" expanded={expanded} onToggle={toggle} items={internshipLinks} onClose={close} />
               <Link href="/workshops" onClick={close} className="flex items-center justify-between px-5 py-4 text-[14px] font-bold text-ink hover:bg-soft border-b border-line transition-colors">
                 Workshops <span className="text-[10px] font-extrabold uppercase tracking-wide px-2 py-0.5 rounded-full bg-accent/10 text-accent">Free + paid</span>
               </Link>
-              <NavAccordion label="Schooling Program" section="schooling" expanded={expanded} onToggle={toggle} items={schoolingLinks} onClose={close} />
-              <NavAccordion label="Resources" section="resources" expanded={expanded} onToggle={toggle} items={resourceLinks} onClose={close} />
+              <NavAccordion label="Free stuff" section="resources" expanded={expanded} onToggle={toggle} items={resourceLinks} onClose={close} />
               <Link href="/contact" onClick={close} className="flex items-center justify-between px-5 py-4 text-[14px] font-bold text-ink hover:bg-soft border-b border-line transition-colors">
-                Contact Us
+                Contact
               </Link>
             </div>
 

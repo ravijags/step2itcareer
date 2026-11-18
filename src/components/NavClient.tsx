@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
 import { courses, coursesByLevel, LEVELS, type Level } from "@/lib/courses";
-import { internshipLinks, schoolingLinks, resourceLinks, type NavItem } from "@/lib/nav";
+import { internshipLinks, resourceLinks, type NavItem } from "@/lib/nav";
 import MobileNav from "@/components/MobileNav";
 import ScrollProgress from "@/components/ScrollProgress";
 
@@ -71,14 +71,13 @@ export default function NavClient() {
             style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)" }}
           >
             <CoursesMega {...menu("courses")} />
-            <NavDropdown label="Internship" items={internshipLinks} {...menu("internship")} />
+            <NavDropdown label="Internships" items={internshipLinks} {...menu("internship")} />
             <Link href="/workshops" onMouseEnter={() => setOpen(null)} className="nav-link px-3.5 py-2 text-[13px] font-semibold rounded-full">
               Workshops
             </Link>
-            <NavDropdown label="Schooling Program" items={schoolingLinks} {...menu("schooling")} />
-            <NavDropdown label="Resources" items={resourceLinks} {...menu("resources")} />
+            <NavDropdown label="Free stuff" items={resourceLinks} {...menu("resources")} />
             <Link href="/contact" onMouseEnter={() => setOpen(null)} className="nav-link px-4 py-2 text-[13px] font-semibold rounded-full">
-              Contact Us
+              Contact
             </Link>
           </div>
 
@@ -172,7 +171,7 @@ function CoursesMega(m: MenuProps) {
             ))}
           </div>
           <div className="flex items-center justify-between px-6 py-2.5 border-t border-white/[0.07] bg-white/[0.02]">
-            <span className="text-[12px] text-white/50">Courses stack — start small, upgrade later and pay only the difference.</span>
+            <Link href="/schooling" onClick={() => m.setOpen(null)} className="text-[12.5px] font-bold text-white/70 hover:text-white">School coding · Class 6–12 →</Link>
             <Link href="/courses" onClick={() => m.setOpen(null)} className="text-[12.5px] font-extrabold text-[#8BA4FF] hover:text-white">See all {courses.length} courses →</Link>
           </div>
         </div>

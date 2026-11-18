@@ -5,6 +5,7 @@ export type NavItem = { name: string; href: string; note?: string };
 
 export const courseLinks: NavItem[] = [
   ...careerPrograms.map((c) => ({ name: c.title, href: `/courses/${c.slug}` })),
+  { name: "School coding (Class 6–12)", href: "/schooling", note: "For school students" },
   { name: `All ${courses.length} courses →`, href: "/courses" },
 ];
 
@@ -26,5 +27,4 @@ export const resourceLinks: NavItem[] = [
   { name: "Career Roadmaps", href: "/resources/roadmaps", note: "Step-by-step paths, free" },
   { name: "Cheat Sheets", href: "/resources/cheat-sheets", note: "Python, SQL, Git, Excel and more" },
   { name: "Career Guides", href: "/resources/guides", note: "Honest answers, 5-minute reads" },
-  { name: "About Us", href: "/about" },
 ];

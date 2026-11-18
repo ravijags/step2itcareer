@@ -15,10 +15,11 @@ export const SITE = {
   mentor: {
     name: "Ashvani Srivastava",
     initials: "AS",
-    role: "Founder & CEO · 10+ years in EdTech",
+    role: "Founder & mentor · 10+ years in EdTech",
     /* Put a square photo in /public (e.g. public/ashvani.jpg) and set "/ashvani.jpg".
        Leave null to show the initials avatar. */
-    photo: null as string | null,
+    photo: "/ashvani.jpg" as string | null,
+    photoFull: "/ashvani-full.jpg",
   },
 };
 
