@@ -3,19 +3,15 @@
 import Link from "next/link";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useReducedMotion, AnimatePresence, type PanInfo } from "framer-motion";
+import { motion, useReducedMotion, AnimatePresence, type PanInfo } from "framer-motion";
 import { courses } from "@/lib/courses";
-import { Icon, IconTile } from "@/components/Icons";
+import { Icon } from "@/components/Icons";
 import { Grain, Slashes } from "@/components/Decor";
-import { HeroStories, HeroDeck } from "@/components/HeroPrograms";
 import Magnetic from "@/components/Magnetic";
 import CourseArt from "@/components/CourseArt";
 import { STORIES, SITE } from "@/lib/site";
-import MentorAvatar from "@/components/MentorAvatar";
-import WorkshopButton from "@/components/inner/WorkshopButton";
-import SkillIcon from "@/components/inner/SkillIcon";
-import { workshops } from "@/lib/workshops";
-import HomeDaily from "@/components/practice/HomeDaily";
+import Image from "next/image";
+import DailyTile from "@/components/practice/DailyTile";
 
 function openPopup() {
   window.dispatchEvent(new CustomEvent("openLeadPopup"));
@@ -31,20 +27,15 @@ const PLACEMENTS = STORIES;
 export default function HomePage() {
   return (
     <>
+      {/* Six sections, each answering one question a first-time visitor has:
+          what is this · is it for me · why them · can I trust them · (not ready? start free) · what now */}
       <div className="relative z-10 cut-bottom bg-ink2">
         <HeroSection />
-        <HeroRolesMobile />
-        <SocialProofTicker />
       </div>
-      <AlumniMarquee />
-      <HomeDaily />
-      <StatsRow />
       <FeaturedCourses />
-      <InternshipsAndWorkshops />
-      <MicroBatchUSP />
-      <MentorSection />
-      <PlacementPath />
+      <WhyUs />
       <RecentPlacements />
+      <StartFree />
       <FAQSection />
       <FinalCTA />
     </>
@@ -74,184 +65,58 @@ function SectionLabel({ children, dark = false }: { children: React.ReactNode; d
   );
 }
 
-function Counter({ target, suffix = "", prefix = "" }: { target: number; suffix?: string; prefix?: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const started = useRef(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting && !started.current) {
-        started.current = true;
-        const start = performance.now();
-        const dur = 1100;
-        const tick = (now: number) => {
-          const p = Math.min(1, (now - start) / dur);
-          const eased = 1 - Math.pow(1 - p, 3);
-          setCount(Math.round(target * eased));
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      }
-    }, { threshold: 0.4 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [target]);
-  return <span ref={ref}>{prefix}{count.toLocaleString("en-IN")}{suffix}</span>;
-}
-
 /* ───────────────────────── HERO ───────────────────────── */
 function HeroSection() {
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 700], [0, 60]);
-  const opacity = useTransform(scrollY, [160, 760], [1, 0]);
-  const [prog, setProg] = useState(0); // desktop deck only
-
-  /* Mesh gradient canvas — slow drift on desktop only. Phones get one still frame:
-     a constantly animating canvas drains battery and stutters on budget Android phones. */
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const canvas = canvasRef.current, section = sectionRef.current;
-    if (!canvas || !section) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches || !window.matchMedia("(min-width: 1024px)").matches;
-    let raf = 0, t = 0, visible = true;
-    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
-    resize();
-    const frame = () => {
-      const w = canvas.width, h = canvas.height;
-      ctx.clearRect(0, 0, w, h);
-      const blob = (cx: number, cy: number, r: number, col: string) => {
-        const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-        g.addColorStop(0, col); g.addColorStop(1, "rgba(0,0,0,0)");
-        ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
-      };
-      blob(w * (0.18 + 0.1 * Math.sin(t * 0.7)), h * (0.28 + 0.08 * Math.cos(t * 0.5)), w * 0.6, "rgba(59,91,255,0.22)");
-      blob(w * (0.82 + 0.08 * Math.cos(t * 0.6)), h * (0.7 + 0.1 * Math.sin(t * 0.4)), w * 0.5, "rgba(255,122,61,0.13)");
-      blob(w * (0.55 + 0.16 * Math.sin(t * 0.35 + 1)), h * (0.12 + 0.06 * Math.cos(t * 0.8)), w * 0.4, "rgba(123,91,255,0.16)");
-    };
-    if (still) { frame(); return; }
-    const draw = () => { if (!visible) return; t += 0.004; frame(); raf = requestAnimationFrame(draw); };
-    const io = new IntersectionObserver(([e]) => {
-      visible = e.isIntersecting;
-      if (visible) { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); }
-    }, { threshold: 0.05 });
-    io.observe(section);
-    window.addEventListener("resize", resize);
-    raf = requestAnimationFrame(draw);
-    return () => { cancelAnimationFrame(raf); io.disconnect(); window.removeEventListener("resize", resize); };
-  }, []);
-
-  return (
-    <section ref={sectionRef} className="hero-h relative flex items-center overflow-hidden" style={{ paddingTop: 56 }}>
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
-      <Grain />
-      <Slashes side="left" tone="primary" opacity={0.09} height={760} />
-      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(59,91,255,0.18) 1px, transparent 1px)", backgroundSize: "36px 36px", opacity: 0.4 }} />
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 60%, transparent 45%, rgba(7,11,24,0.55) 100%)" }} />
-
-      <div className="relative max-w-brand mx-auto px-6 w-full py-8 md:py-16 lg:py-10 grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-16 items-center">
-        {/* One idea: a small batch, and a seat for you in it. */}
-        <motion.div style={{ y, opacity }} className="text-center lg:text-left">
-          <motion.div data-rise style={{ "--d": "0s", "--ry": "10px" } as React.CSSProperties}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-[#FF9A6C] text-[11px] font-extrabold tracking-[0.16em] uppercase mb-5 md:mb-7">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF7A3D]" /> Job-ready IT courses · Live
-          </motion.div>
-
-          <motion.h1 data-rise style={{ "--d": "0.08s", "--ry": "18px" } as React.CSSProperties}
-            className="text-[42px] sm:text-6xl lg:text-[70px] font-extrabold leading-[1.02] tracking-[-0.035em]">
-            <span className="block text-white">Learn in a</span>
-            <span className="block text-white">batch of&nbsp;5.</span>
-            <span className="block grad-text mt-1">Not 500.</span>
-          </motion.h1>
-
-          <HeroSeats />
-
-          <motion.div data-rise style={{ "--d": "0.5s", "--ry": "10px" } as React.CSSProperties}
-            className="mt-7 md:mt-8 flex flex-col items-center lg:items-start">
-            <Magnetic className="w-full max-w-[360px] sm:w-auto">
-              <Link href="/courses" className="btn-grad tap flex items-center justify-center gap-2 w-full sm:w-auto sm:min-w-[240px] px-8 py-4 text-white font-extrabold rounded-full text-[16px] whitespace-nowrap">
-                Find your course <Icon.ArrowRight size={17} />
-              </Link>
-            </Magnetic>
-            <Link href="/workshops" className="mt-4 text-[13.5px] font-semibold text-white/70 hover:text-white transition-colors">
-              or join a free AI workshop on Saturday <span aria-hidden>→</span>
-            </Link>
-            <div className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] text-white/45 font-semibold">
-              <Icon.Star size={13} className="text-[#FFB547]" /> 4.8 · 350+ learners
-            </div>
-          </motion.div>
-        </motion.div>
-
-        {/* Right — program deck (desktop) */}
-        <div className="hidden lg:block"><HeroDeck index={prog} setIndex={setProg} /></div>
-      </div>
-    </section>
-  );
-}
-
-/* The hero's one animation: seats light up left to right, "you" lights last with a single
-   pulse, then everything stays still. Reduced-motion users get the final state instantly. */
-function HeroSeats() {
   const reduce = useReducedMotion();
-  const seats = [0, 1, 2, 3, 4];
-  const YOU = 2;
-  const base = 0.55;
-  const delayFor = (i: number) => base + (i === YOU ? 5 : i < YOU ? i : i - 1) * 0.1;
   return (
-    <motion.div data-rise style={{ "--d": "0.3s", "--ry": "10px" } as React.CSSProperties}
-      className="mt-6 md:mt-8 inline-flex flex-col items-center lg:items-start rounded-[20px] px-5 py-4 bg-white/[0.04] border border-white/[0.09]">
-      <div className="flex items-center gap-2.5" aria-hidden>
-        <span className="w-9 h-9 rounded-full flex items-center justify-center text-white" style={{ background: "var(--grad-primary)", boxShadow: "0 6px 18px rgba(59,91,255,0.4)" }}>
-          <Icon.School size={18} />
-        </span>
-        <span className="w-3 h-[2px] rounded bg-white/20" />
-        {seats.map((i) => {
-          const you = i === YOU;
-          return (
-            <motion.span key={i}
-              initial={reduce ? false : { opacity: 0.25, scale: 0.7 }}
-              animate={you && !reduce
-                ? { opacity: 1, scale: [0.7, 1.18, 1], boxShadow: ["0 0 0 0 rgba(255,122,61,0)", "0 0 0 8px rgba(255,122,61,0.25)", "0 0 0 0 rgba(255,122,61,0)"] }
-                : { opacity: 1, scale: 1 }}
-              transition={{ delay: delayFor(i), duration: you ? 0.6 : 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className={`w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-extrabold ${you ? "text-white" : ""}`}
-              style={you ? { background: "linear-gradient(135deg,#FF7A3D,#FF5E7A)" } : { border: "1.5px solid rgba(139,164,255,0.45)", background: "rgba(59,91,255,0.12)" }}>
-              {you ? "you" : ""}
-            </motion.span>
-          );
-        })}
-      </div>
-      <p className="mt-3 text-[14px] md:text-[15px] font-bold text-white/85">
-        1 mentor. 5 seats. 1 goal: <span className="text-[#FF9A6C]">your first offer.</span>
-      </p>
-    </motion.div>
-  );
-}
-
-/* Phones: the program stories and "I'm a…" chips live just below the hero, so the first
-   screen holds one idea and the next one is already peeking in. Desktop has the deck instead. */
-function HeroRolesMobile() {
-  const [i, setI] = useState(0);
-  return (
-    <section className="lg:hidden relative px-6 pt-2 pb-6 overflow-hidden">
-      <div className="max-w-[420px] mx-auto">
-        <div className="flex items-baseline justify-between mb-3">
-          <h2 className="text-[17px] font-extrabold text-white tracking-[-0.01em]">Pick a role</h2>
-          <Link href="/courses" className="text-[12.5px] font-bold text-[#8BA4FF]">All courses →</Link>
+    /* One soft spotlight, one message, one button. The bright 5 against a struck-out 500 says it all.
+       Centred and balanced: two lines on desktop, three on phones; full stops hang so the words sit on centre. */
+    <section className="relative min-h-[82svh] md:min-h-[100svh] bg-[#060915] overflow-hidden flex items-center pt-16">
+      <Grain />
+      <div aria-hidden className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 55% 45% at 50% 42%, rgba(75,95,255,0.30), transparent 72%)" }} />
+      <div className="relative max-w-[1100px] mx-auto px-6 w-full text-center flex flex-col items-center py-6">
+        <div data-rise style={{ "--d": "0s", "--ry": "10px" } as React.CSSProperties}
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/30 bg-accent/10 text-[#FF9A6C] text-[11px] font-extrabold tracking-[0.16em] uppercase">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#FF7A3D]" /> Job-ready IT courses · Live
         </div>
-        <HeroStories index={i} setIndex={setI} />
-        <p className="mt-5 mb-2 text-[12px] text-white/50 font-semibold text-center">I&apos;m a…</p>
-        <div className="flex justify-center gap-1.5">
-          {AUDIENCE_CHIPS.map((a) => (
-            <Link key={a.key} href={`/courses?for=${a.key}`}
-              className="tap shrink-0 text-[11.5px] font-bold px-2.5 py-1.5 rounded-full text-white/80 bg-white/[0.06] border border-white/[0.12] whitespace-nowrap">
-              {a.label}
+
+        <h1 data-rise style={{ "--d": "0.08s", "--ry": "16px" } as React.CSSProperties}
+          className="mt-6 md:mt-8 text-[52px] sm:text-[72px] lg:text-[96px] font-extrabold leading-[0.98] tracking-[-0.045em] text-white">
+          <span className="lg:hidden">Learn in a<br /></span><span className="hidden lg:inline">Learn in a </span>batch of&nbsp;<span className="grad-text" style={{ filter: "drop-shadow(0 0 24px rgba(91,107,255,0.55))" }}>5</span><span className="inline-block w-0 overflow-visible">.</span>
+          <br />
+          <span className="inline-block" style={{ marginRight: "-0.25em" }} aria-label="Not 500">
+            <span className="text-white/25" aria-hidden>Not </span>
+            <span aria-hidden className="relative inline-block text-white/25">500
+              <svg viewBox="0 0 200 60" preserveAspectRatio="none" className="absolute left-[-6%] top-[22%] w-[112%] h-[60%] overflow-visible">
+                <defs><linearGradient id="hero-strike" x1="0" x2="1"><stop offset="0" stopColor="#FF7A3D" /><stop offset="1" stopColor="#FF5E7A" /></linearGradient></defs>
+                <motion.path d="M4 42 C 50 28, 120 32, 196 14" fill="none" stroke="url(#hero-strike)" strokeWidth="10" strokeLinecap="round"
+                  initial={reduce ? false : { pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.75, duration: 0.55, ease: [0.65, 0, 0.35, 1] }} />
+              </svg>
+            </span>
+            <span className="text-white/25" aria-hidden>.</span>
+          </span>
+        </h1>
+
+        <p data-rise style={{ "--d": "0.2s", "--ry": "10px" } as React.CSSProperties}
+          className="mt-5 md:mt-7 text-[17px] md:text-[22px] font-medium text-white/70">
+          Live IT &amp; AI courses with a personal mentor.
+        </p>
+
+        <div data-rise style={{ "--d": "0.32s", "--ry": "10px" } as React.CSSProperties} className="mt-8 w-full flex flex-col items-center">
+          <Magnetic className="w-full max-w-[360px] sm:w-auto">
+            <Link href="/courses" className="btn-grad tap flex items-center justify-center gap-2 w-full sm:w-auto sm:min-w-[260px] px-9 py-[18px] text-white font-extrabold rounded-full text-[17px] whitespace-nowrap transition-[filter] hover:brightness-110">
+              Find your course <Icon.ArrowRight size={18} />
             </Link>
-          ))}
+          </Magnetic>
+          <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-3 text-[13px] font-semibold text-white/55">
+            <span className="inline-flex items-center gap-3">
+              <span className="inline-flex items-center gap-1.5"><Icon.Star size={13} className="text-[#FFB547]" /> 4.8 · 350+ learners</span>
+              <span className="text-white/20" aria-hidden>|</span>
+              <span className="inline-flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#4ADE80] shadow-[0_0_0_4px_rgba(74,222,128,0.15)]" /> Live classes</span>
+            </span>
+            <span className="hidden sm:inline text-white/20" aria-hidden>|</span>
+            <span>Max 5 per batch</span>
+          </div>
         </div>
       </div>
     </section>
@@ -264,87 +129,6 @@ const AUDIENCE_CHIPS = [
   { key: "working", label: "Working pro" },
   { key: "switching", label: "Switching to IT" },
 ];
-
-/* ───────────────────────── TICKER ───────────────────────── */
-function SocialProofTicker() {
-  const events = [
-    { I: Icon.Sparkle, c: "#8BA4FF", t: "Free AI Agent workshop every Saturday" },
-    { I: Icon.Medal, c: "#FF9A6C", t: "Every career program includes an internship + certificate" },
-    { I: Icon.Bolt, c: "#FF7A3D", t: "New: AI Engineer — Agents & Automation" },
-    { I: Icon.Users, c: "#4ADE80", t: "Max 5 learners per batch — your mentor knows your name" },
-    { I: Icon.Layers, c: "#8BA4FF", t: "Start with a 4-week course, upgrade later and pay only the difference" },
-    { I: Icon.Mobile, c: "#FF9A6C", t: "Build your first app in 2 hours — free, every Sunday" },
-    { I: Icon.Video, c: "#4ADE80", t: "100% live classes — online, offline or hybrid" },
-  ];
-  return (
-    <div className="relative border-t border-white/[0.06] overflow-hidden py-3 pb-12 md:pb-16">
-      <div className="flex animate-ticker whitespace-nowrap items-center">
-        {[...events, ...events].map((e, i) => (
-          <span key={i} className="inline-flex items-center gap-2 mx-7 text-[12px] font-semibold text-white/55">
-            <e.I size={14} className="shrink-0" style={{ color: e.c }} />{e.t}<span className="ml-7 text-white/15">·</span>
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ───────────────────────── ALUMNI ───────────────────────── */
-function AlumniMarquee() {
-  // Where fresher hiring is actually growing in 2026 (not a claim about our learners).
-  const sectors: [string, React.ReactNode][] = [
-    ["AI startups", <Icon.Robot key="i" size={20} />], ["GCCs", <Icon.Globe key="i" size={20} />],
-    ["E-commerce", <Icon.Box key="i" size={20} />], ["Fintech", <Icon.Coin key="i" size={20} />],
-    ["Banking & BFSI", <Icon.Shield key="i" size={20} />], ["SaaS products", <Icon.Layers key="i" size={20} />],
-    ["Healthtech", <Icon.Flask key="i" size={20} />], ["Digital agencies", <Icon.Trend key="i" size={20} />],
-  ];
-  const row = sectors.map(([name, icon]) => (
-    <span key={name} className="inline-flex items-center gap-2.5 mx-7 md:mx-10 text-[18px] md:text-[22px] font-extrabold tracking-[-0.01em] text-[#8F8DA8]">
-      <span className="text-primary/70">{icon}</span>{name}
-    </span>
-  ));
-  return (
-    <section className="relative overlap-up bg-soft pt-16 md:pt-24 pb-10 md:pb-14 overflow-hidden">
-      <Reveal>
-        <p className="text-center text-[11px] font-extrabold text-primary uppercase tracking-[0.25em] mb-2">Where freshers are getting hired now</p>
-        <div className="w-8 h-[3px] mx-auto mb-8 rounded" style={{ background: "var(--grad-primary)", transform: "skewX(-20deg)" }} />
-      </Reveal>
-      <div className="relative flex" style={{ maskImage: "linear-gradient(to right, transparent, #000 12%, #000 88%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, #000 12%, #000 88%, transparent)" }}>
-        <div className="flex animate-marquee whitespace-nowrap items-center">{row}{row.map((el, i) => <span key={`d${i}`} aria-hidden>{el}</span>)}</div>
-      </div>
-    </section>
-  );
-}
-
-/* ───────────────────────── STATS ───────────────────────── */
-function StatsRow() {
-  const stats = [
-    { I: Icon.School, raw: 350, suffix: "+", label: "Learners mentored", sub: "across all programs", tone: "primary" as const },
-    { I: Icon.Briefcase, raw: 120, suffix: "+", label: "Placed", sub: "across 40+ companies", tone: "primary" as const },
-    { I: Icon.Trophy, display: "₹9 LPA", label: "Highest package", sub: "career-switcher offer", tone: "primary" as const },
-    { I: Icon.Star, display: "4.8", label: "Learner rating", sub: "from 200+ reviews", tone: "accent" as const },
-  ];
-  return (
-    <section className="py-12 md:py-16 bg-white">
-      <div className="max-w-brand mx-auto px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-          {stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.06}>
-              <div className="relative overflow-hidden h-full p-5 rounded-[16px] bg-soft border border-[#E6E3F7] card-lift lift cursor-default">
-                <IconTile tone={s.tone} size={36}><s.I size={17} /></IconTile>
-                <div className={`mt-3 text-[26px] md:text-[30px] font-extrabold tracking-[-0.03em] leading-none ${s.tone === "accent" ? "grad-text-accent" : "grad-text"}`}>
-                  {"raw" in s && s.raw !== undefined ? <Counter target={s.raw} suffix={s.suffix} /> : s.display}
-                </div>
-                <div className="mt-1.5 text-[13px] font-bold text-ink">{s.label}</div>
-                <div className="text-[12px] text-muted">{s.sub}</div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /* ───────────────────────── COURSES ───────────────────────── */
 function FeaturedCourses() {
@@ -372,9 +156,18 @@ function FeaturedCourses() {
     <section className="py-14 md:py-24 bg-soft overflow-hidden">
       <div className="max-w-brand mx-auto px-6">
         <Reveal className="text-center mb-10 md:mb-14">
-          <SectionLabel>AI-native programs</SectionLabel>
+          <SectionLabel>Courses</SectionLabel>
           <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">Pick a role. We&apos;ll get you there.</h2>
-          <p className="mt-3 text-muted text-[14px] md:text-[16px] max-w-xl mx-auto">Seven career programs, each with real projects, AI built in, and a certificate plus internship.</p>
+          <p className="mt-3 text-muted text-[15px] md:text-[16px] max-w-xl mx-auto">7 career programs with real projects, a certificate and an internship.</p>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+            <span className="text-[13px] font-bold text-muted mr-0.5">I&apos;m a</span>
+            {AUDIENCE_CHIPS.map((a) => (
+              <Link key={a.key} href={`/courses?for=${a.key}`}
+                className="tap text-[13px] font-bold px-3.5 py-2 rounded-full bg-white border border-[#E6E3F7] text-ink hover:border-primary hover:text-primary transition-colors">
+                {a.label}
+              </Link>
+            ))}
+          </div>
         </Reveal>
       </div>
 
@@ -442,147 +235,47 @@ function FeaturedCourses() {
   );
 }
 
-/* ───────────────────────── INTERNSHIPS + WORKSHOPS ───────────────────────── */
-function InternshipsAndWorkshops() {
-  const internships = [
-    { weeks: "4 weeks", title: "Starter Internship", desc: "One real project, mentor reviews and a certificate — perfect for a semester requirement.", I: Icon.Seedling },
-    { weeks: "6 weeks", title: "Project Internship", desc: "Build and deploy a portfolio project with a team, Git workflow and weekly reviews.", I: Icon.Rocket, hot: true },
-    { weeks: "8 weeks", title: "Industry Internship", desc: "A capstone-grade project, presentation and a letter of recommendation.", I: Icon.Trophy },
+/* ───────────────────────── WHY US — the person and the batch ───────────────────────── */
+function WhyUs() {
+  const points = [
+    { I: Icon.Users, t: "Your mentor knows your name", d: "Max 5 students per batch, so nobody hides at the back." },
+    { I: Icon.Video, t: "Live classes, real projects", d: "Not recordings. You build things a recruiter can open." },
+    { I: Icon.Target, t: "Help until you're hired", d: "Mock interviews, resume reviews and referrals when you're ready." },
   ];
-  const freeWs = workshops.filter((w) => w.kind === "free");
+  const m = SITE.mentor;
   return (
-    <section className="relative py-14 md:py-24 bg-ink2 overflow-hidden">
-      <Grain />
-      <Slashes side="left" tone="primary" opacity={0.08} height={760} />
-      <div className="relative max-w-brand mx-auto px-6">
-        {/* Internships */}
-        <Reveal className="text-center mb-10 md:mb-12">
-          <SectionLabel dark>Internships + certificate</SectionLabel>
-          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-white tracking-[-0.03em] leading-[1.08]">&ldquo;No experience&rdquo;? <span className="grad-text">Let&apos;s fix that.</span></h2>
-          <p className="mt-3 text-white/60 text-[14px] md:text-[16px] max-w-xl mx-auto">Most fresher job posts now ask for real project experience. Get yours with a mentor, in any track.</p>
-        </Reveal>
-        <div className="swipe-row md:grid-cols-3 md:gap-5">
-          {internships.map((it, i) => (
-            <Reveal key={it.title} delay={i * 0.08} className="w-[80vw] max-w-[320px] md:w-auto md:max-w-none">
-              <div className="relative h-full flex flex-col overflow-hidden rounded-[20px] p-5 md:p-6 card-lift-dark" style={{ background: "rgba(255,255,255,0.04)", border: it.hot ? "1px solid rgba(139,164,255,0.45)" : "1px solid rgba(255,255,255,0.09)" }}>
-                {it.hot && <span className="absolute top-4 right-4 text-[10px] font-extrabold uppercase tracking-wide px-2.5 py-1 rounded-full text-white btn-grad">Most chosen</span>}
-                <IconTile tone="primary" size={44} dark><it.I size={21} /></IconTile>
-                <div className="mt-4 text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#8BA4FF]">{it.weeks}</div>
-                <div className="mt-1 text-[19px] font-extrabold text-white tracking-[-0.01em]">{it.title}</div>
-                <p className="mt-2 text-[13.5px] text-white/60 leading-relaxed">{it.desc}</p>
-                <div className="mt-auto pt-4 flex flex-wrap gap-1.5">
-                  {["Real project", "Mentor", "Certificate"].map((b) => (
-                    <span key={b} className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-white/[0.06] border border-white/10 text-white/75">{b}</span>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-        <Reveal className="mt-7 flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href="/internship" className="btn-grad tap inline-flex items-center justify-center gap-2 px-7 py-3.5 text-white font-extrabold rounded-full text-[14px]">Explore internships <Icon.ArrowRight size={15} /></Link>
-          <a href="https://wa.me/919936609430?text=Hi!%20I%27m%20interested%20in%20an%20internship%20with%20certificate." target="_blank" rel="noopener noreferrer" className="tap inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#16A34A] text-white font-bold rounded-full text-[14px]"><Icon.WhatsApp size={17} /> Ask on WhatsApp</a>
-        </Reveal>
-
-        {/* Workshops */}
-        <div className="mt-16 md:mt-20">
-          <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-6">
-            <div>
-              <SectionLabel dark>Free workshops</SectionLabel>
-              <h3 className="mt-3 text-[24px] md:text-[32px] font-extrabold text-white tracking-[-0.03em] leading-[1.1]">Build something real this weekend. <span className="grad-text">Free.</span></h3>
+    <section className="py-14 md:py-24 bg-white">
+      <div className="max-w-brand mx-auto px-6 grid md:grid-cols-[0.85fr_1.15fr] gap-8 md:gap-14 items-center">
+        <Reveal>
+          <div className="relative mx-auto max-w-[420px] rounded-[28px] overflow-hidden bg-soft aspect-square" style={{ boxShadow: "0 30px 60px -30px rgba(14,21,38,0.35)" }}>
+            <Image src={m.photoFull} alt={`${m.name}, founder and mentor`} fill sizes="(min-width: 768px) 420px, 90vw" className="object-cover object-top" />
+            <div className="absolute left-3 right-3 bottom-3 rounded-[16px] px-4 py-3 text-white" style={{ background: "rgba(7,11,24,0.72)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)" }}>
+              <div className="text-[16px] font-extrabold leading-tight">{m.name}</div>
+              <div className="text-[12.5px] text-white/65">{m.role}</div>
             </div>
-            <Link href="/workshops" className="text-[13px] font-bold text-[#8BA4FF] hover:text-white inline-flex items-center gap-1.5">All workshops, incl. weekend certificates <Icon.ArrowRight size={14} /></Link>
-          </Reveal>
-          <div className="snap-row flex md:grid md:grid-cols-3 gap-4 overflow-x-auto scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0 pb-1">
-            {freeWs.map((w) => (
-              <div key={w.slug} className="shrink-0 w-[80vw] max-w-[320px] md:w-auto md:max-w-none flex flex-col rounded-[20px] p-5 bg-white">
-                <div className="flex items-center justify-between mb-3">
-                  <SkillIcon emoji={w.icon} size={40} />
-                  <span className="text-[10.5px] font-extrabold uppercase tracking-wide px-2.5 py-1 rounded-full bg-[#16A34A]/10 text-[#16A34A]">Free · {w.duration}</span>
+          </div>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <SectionLabel>Why us</SectionLabel>
+          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">1 mentor. 5 students.<br /><span className="grad-text">That&apos;s the difference.</span></h2>
+          <p className="mt-3 text-muted text-[15px] md:text-[16px] leading-relaxed max-w-lg">&ldquo;With five students in a batch, I know every name, every gap and every offer letter.&rdquo; <span className="text-ink font-semibold">— {m.name.split(" ")[0]}</span></p>
+          <div className="mt-6 space-y-4">
+            {points.map((x) => (
+              <div key={x.t} className="flex gap-3.5">
+                <span className="w-10 h-10 shrink-0 rounded-[14px] bg-primary-tint text-primary flex items-center justify-center"><x.I size={19} /></span>
+                <div>
+                  <div className="text-[15.5px] font-extrabold text-ink">{x.t}</div>
+                  <div className="text-[14px] text-muted leading-relaxed">{x.d}</div>
                 </div>
-                <div className="text-[17px] font-extrabold text-ink leading-snug">{w.title}</div>
-                <div className="mt-1.5 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-muted"><Icon.Calendar size={14} className="text-primary" />{w.schedule} · {w.mode}</div>
-                <p className="mt-2 text-[13px] text-muted leading-relaxed flex-1">{w.blurb}</p>
-                <WorkshopButton title={w.title} kind="free" className="btn-grad tap mt-4 w-full py-3 rounded-full text-white font-extrabold text-[14px]">Reserve free seat</WorkshopButton>
               </div>
             ))}
           </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ───────────────────────── USP ───────────────────────── */
-function MicroBatchUSP() {
-  const features = [
-    { I: Icon.Users, tone: "primary" as const, title: "Max 5 students per batch", desc: "You're not a number. Real 1:1 attention from day one." },
-    { I: Icon.Route, tone: "primary" as const, title: "Personalized roadmap", desc: "Built around your goals and background, not a template." },
-    { I: Icon.Calendar, tone: "primary" as const, title: "Weekly 1:1 mentor reviews", desc: "Direct feedback every week — not once a month." },
-    { I: Icon.Trophy, tone: "primary" as const, title: "Guaranteed capstone", desc: "Ship a real, portfolio-worthy project before graduating." },
-    { I: Icon.Refresh, tone: "primary" as const, title: "Free re-attendance", desc: "Attend any future batch for free if you need more time." },
-    { I: Icon.Target, tone: "accent" as const, title: "Placement support", desc: "Mock interviews, referrals and resume reviews when you're ready to apply." },
-  ];
-  return (
-    <section className="py-14 md:py-24 bg-white">
-      <div className="max-w-brand mx-auto px-6">
-        <Reveal className="text-center mb-10 md:mb-14">
-          <SectionLabel>Our difference</SectionLabel>
-          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">5 people. 1 mentor. <span className="grad-text">No hiding at the back.</span></h2>
-          <p className="mt-3 text-muted text-[14px] md:text-[16px] max-w-xl mx-auto">Not a classroom. Not a MOOC. A focused, high-accountability program built for real outcomes.</p>
-        </Reveal>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5">
-          {features.map((f, i) => (
-            <Reveal key={f.title} delay={i * 0.06} className="h-full">
-              <div className="relative overflow-hidden h-full p-4 md:p-6 rounded-[16px] bg-soft border border-[#E6E3F7] card-lift lift">
-                <IconTile tone={f.tone} size={40}><f.I size={19} /></IconTile>
-                <h3 className="mt-3 text-[14.5px] md:text-[15px] font-extrabold text-ink leading-snug">{f.title}</h3>
-                <p className="mt-1.5 text-[13px] md:text-[14px] text-muted leading-relaxed">{f.desc}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ───────────────────────── MENTOR — the human behind the batch ───────────────────────── */
-function MentorSection() {
-  return (
-    <section className="py-12 md:py-20 bg-soft">
-      <div className="max-w-brand mx-auto px-6">
-        <Reveal>
-          <div className="relative overflow-hidden rounded-[28px] bg-ink2 p-6 md:p-10 grid md:grid-cols-[auto_1fr_auto] gap-6 md:gap-10 items-center card-lift-dark">
-            <Grain />
-            <Slashes side="right" tone="primary" opacity={0.1} height={460} />
-            <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 15% 50%, rgba(59,91,255,0.22), transparent 55%)" }} />
-            <div className="relative flex items-center gap-4 md:block">
-              <MentorAvatar className="w-[72px] h-[72px] md:w-[96px] md:h-[96px] text-[24px] md:text-[32px]" />
-              <div className="md:hidden">
-                <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#FF9A6C]">Your mentor</div>
-                <div className="text-[18px] font-extrabold text-white leading-tight">Ashvani Srivastava</div>
-                <div className="text-[12.5px] text-white/55">{SITE.mentor.role}</div>
-              </div>
-            </div>
-            <div className="relative">
-              <div className="hidden md:block mb-3">
-                <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#FF9A6C] mb-1">Your mentor</div>
-                <div className="text-[24px] font-extrabold text-white leading-tight tracking-tight">Ashvani Srivastava <span className="text-white/60 font-medium text-[15px] ml-2">{SITE.mentor.role}</span></div>
-              </div>
-              <p className="text-[15px] md:text-[18px] text-white/80 leading-relaxed">
-                <Icon.Quote size={22} className="inline-block text-primary/60 mr-2 -mt-1" />
-                With five students in a batch, I know every name, every gap and every offer letter. I personally review each student&apos;s roadmap before the batch starts — and I stay on your case until you&apos;re placed.
-              </p>
-            </div>
-            <div className="relative md:justify-self-end">
-              <a href="https://wa.me/919936609430?text=Hi%20Ashvani%2C%20I%27d%20like%20to%20know%20more%20about%20the%20next%20batch."
-                className="tap inline-flex w-full md:w-auto items-center justify-center gap-2 px-6 py-3.5 bg-[#16A34A] text-white font-extrabold rounded-full text-[14px]"
-                style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25), 0 12px 30px rgba(22,163,74,0.35)" }}>
-                <Icon.WhatsApp size={18} /> Message Ashvani
-              </a>
-              <p className="mt-2 text-center md:text-right text-[11px] text-white/60">Replies personally · usually within 2 hours</p>
-            </div>
+          <div className="mt-7 flex flex-col sm:flex-row sm:items-center gap-3">
+            <a href={`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(`Hi ${m.name.split(" ")[0]}, I'd like to know which course fits me.`)}`} target="_blank" rel="noopener noreferrer"
+              className="tap inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-[#16A34A] text-white font-extrabold text-[15px]" style={{ boxShadow: "0 12px 30px rgba(22,163,74,0.3)" }}>
+              <Icon.WhatsApp size={18} /> Message {m.name.split(" ")[0]}
+            </a>
+            <span className="text-[13px] text-muted text-center sm:text-left">Free · Replies personally, usually within 2 hours</span>
           </div>
         </Reveal>
       </div>
@@ -590,42 +283,30 @@ function MentorSection() {
   );
 }
 
-/* ───────────────────────── PLACEMENT PATH — the ascent ───────────────────────── */
-function PlacementPath() {
-  const phases = [
-    { n: "01", title: "Build", when: "During the course", line: "Live classes, then real projects with your mentor reviewing every week.", steps: ["Real-time live projects", "Internship under experts"], goal: false },
-    { n: "02", title: "Get ready", when: "Last few weeks", line: "Everything that turns your projects into interview calls.", steps: ["Resume building", "Aptitude preparation", "Interview questions", "Placement training", "Personality development"], goal: false },
-    { n: "03", title: "Get hired", when: "When you're ready", line: "Practise the real thing, then we line up interviews with you.", steps: ["Mock interviews", "Scheduling interviews", "Offer letter"], goal: true },
+/* ───────────────────────── START FREE — side doors for people not ready to talk yet ───────────────────────── */
+function StartFree() {
+  const tiles = [
+    { href: "/workshops", I: Icon.Calendar, t: "Free AI workshop", d: "Every Saturday · live online", c: "#3B5BFF" },
+    { href: "/resources", I: Icon.Route, t: "Free roadmaps & cheat sheets", d: "Step by step · no sign-up", c: "#16A34A" },
   ];
   return (
-    <section className="py-14 md:py-24 bg-soft relative overflow-hidden">
-      <Slashes side="right" tone="primary" opacity={0.05} height={700} dot={false} />
-      <div className="relative max-w-brand mx-auto px-6">
-        <Reveal className="text-center mb-10 md:mb-14">
-          <SectionLabel>How it works</SectionLabel>
-          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">From &ldquo;where do I start?&rdquo; to <span className="grad-text">&ldquo;I got the offer.&rdquo;</span></h2>
-          <p className="mt-3 text-muted text-[15px] md:text-[16px] max-w-lg mx-auto">Three phases, one mentor the whole way. Ten steps, zero guesswork.</p>
+    <section className="py-14 md:py-20 bg-white">
+      <div className="max-w-brand mx-auto px-6">
+        <Reveal className="text-center mb-8 md:mb-10">
+          <h2 className="text-[24px] md:text-[32px] font-extrabold text-ink tracking-[-0.02em]">Not ready yet? <span className="grad-text">Start free.</span></h2>
         </Reveal>
-        <div className="relative grid md:grid-cols-3 gap-4 md:gap-5">
-          <div aria-hidden className="md:hidden absolute left-[34px] top-10 bottom-10 w-[2px] rounded-full" style={{ background: "linear-gradient(#3B5BFF, #7B5BFF, #FF7A3D)" }} />
-          {phases.map((p, i) => (
-            <Reveal key={p.n} delay={i * 0.08} className="h-full">
-              <div className={`relative h-full rounded-[20px] p-5 md:p-7 border card-lift lift ${p.goal ? "bg-ink2 border-transparent text-white" : "bg-white border-[#E6E3F7]"}`}>
-                {p.goal && <span aria-hidden className="absolute inset-0 rounded-[20px] pointer-events-none" style={{ background: "radial-gradient(ellipse at 100% 0%, rgba(255,122,61,0.25), transparent 60%)" }} />}
-                <div className="relative flex items-center gap-3">
-                  <span className="w-[30px] h-[30px] shrink-0 rounded-full flex items-center justify-center text-[12px] font-extrabold text-white" style={{ background: p.goal ? "var(--grad-accent)" : "var(--grad-primary)" }}>{p.n}</span>
-                  <span className={`text-[11px] font-extrabold uppercase tracking-[0.14em] ${p.goal ? "text-[#FF9A6C]" : "text-primary"}`}>{p.when}</span>
-                </div>
-                <h3 className="relative mt-4 text-[22px] md:text-[24px] font-extrabold tracking-[-0.02em]">{p.title}</h3>
-                <p className={`relative mt-1.5 text-[14.5px] leading-relaxed ${p.goal ? "text-white/65" : "text-muted"}`}>{p.line}</p>
-                <div className="relative mt-4 flex flex-wrap gap-2">
-                  {p.steps.map((s) => (
-                    <span key={s} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12.5px] font-bold ${p.goal ? "bg-white/[0.08] text-white/85" : "bg-soft text-ink"}`}>
-                      <Icon.Check size={12} className={p.goal ? "text-[#FF9A6C]" : "text-primary"} />{s}
-                    </span>
-                  ))}
-                </div>
-              </div>
+        <div className="grid md:grid-cols-3 gap-3 md:gap-5">
+          <Reveal className="h-full"><DailyTile /></Reveal>
+          {tiles.map((x, i) => (
+            <Reveal key={x.href} delay={(i + 1) * 0.06} className="h-full">
+              <Link href={x.href} className="group tap h-full flex items-center md:items-start md:flex-col gap-4 rounded-[20px] bg-soft border border-[#E6E3F7] p-4 md:p-6 lift">
+                <span className="w-11 h-11 shrink-0 rounded-[14px] flex items-center justify-center text-white" style={{ background: x.c }}><x.I size={20} /></span>
+                <span className="flex-1 min-w-0">
+                  <span className="block text-[16px] font-extrabold text-ink">{x.t}</span>
+                  <span className="block text-[13.5px] text-muted">{x.d}</span>
+                </span>
+                <Icon.ArrowRight size={17} className="shrink-0 text-primary md:hidden" />
+              </Link>
             </Reveal>
           ))}
         </div>
@@ -665,7 +346,7 @@ function RecentPlacements() {
   const order = [0, 1, 2].map(k => PLACEMENTS[(i + k) % n]);
 
   return (
-    <section id="stories" className="relative overlap-up bg-soft pt-24 md:pt-32 pb-16 md:pb-24 overflow-hidden scroll-mt-16">
+    <section id="stories" className="relative bg-soft py-14 md:py-24 overflow-hidden scroll-mt-16">
       <div className="max-w-brand mx-auto px-6">
         <Reveal className="text-center mb-8 md:mb-14">
           <SectionLabel>Success stories</SectionLabel>
@@ -712,19 +393,16 @@ function RecentPlacements() {
 
 /* ───────────────────────── FAQ ───────────────────────── */
 function FAQSection() {
-  const [open, setOpen] = useState<number | null>(1);
+  const [open, setOpen] = useState<number | null>(0);
   const faqs = [
-    { q: "Are the classes live or recorded?", a: "100% live. Every session is taught in real time by your mentor. Recordings are shared within 24 hours if you miss a class — but attendance is expected. This is not a pre-recorded course." },
-    { q: "What happens after I finish the course?", a: "Placement support kicks in: mock interviews, resume and LinkedIn reviews, and referrals when you're ready to apply. You can also re-attend any future batch for free if you want more practice." },
-    { q: "What's the difference between a short course and a career program?", a: "A short course (4–6 weeks) teaches one skill. A career program (3–6 months) combines short courses with real projects, an internship and interview prep. They stack — start with a short course and upgrade later by paying only the difference." },
-    { q: "Why isn't the fee on the website?", a: "Because it depends on your course, level and the offer running when you join. Tap \"Get fee on WhatsApp\" on any course and we'll share the exact fee, EMI options and next batch date in minutes." },
-    { q: "Do I get a certificate and an internship?", a: "Every course comes with a certificate. Every career program also includes an internship with a real project — the kind of experience most fresher job postings now ask for." },
-    { q: "How many hours per week does the course require?", a: "Roughly 15–20 hours — three live sessions of 1.5 hours each, plus assignments, projects and self-study. It's intensive by design." },
-    { q: "I have no prior coding experience. Can I still join?", a: "Yes. Most programs start from fundamentals. Many of our placed students had zero coding background when they started — commitment is the only requirement." },
-    { q: "What makes this different from Udemy or YouTube?", a: "Live mentorship, accountability and placement support. With max 5 students per batch, your mentor knows your name, your gaps, and follows up when you're stuck." },
+    { q: "Are the classes live or recorded?", a: "100% live. Every session is taught in real time by your mentor, in a batch of max 5. If you miss a class, the recording is shared within 24 hours." },
+    { q: "I have no coding experience. Can I still join?", a: "Yes. Programs start from the basics. Commitment is the only requirement — your mentor fills the gaps as you go." },
+    { q: "Why isn't the fee on the website?", a: "It depends on the course, the level and any offer running when you join. Message us on WhatsApp and we'll share the exact fee, EMI options and the next batch date in about 2 minutes. No obligation." },
+    { q: "Do I get a certificate and an internship?", a: "Every course comes with a certificate. Every career program also includes an internship with a real project — the experience most fresher job posts now ask for." },
+    { q: "How is this different from YouTube or Udemy?", a: "A live mentor who knows your name, a batch of 5 that keeps you accountable, and help until you're hired: mock interviews, resume reviews and referrals." },
   ];
   return (
-    <section className="py-14 md:py-24 bg-white">
+    <section className="py-14 md:py-24 bg-soft">
       <div className="max-w-2xl mx-auto px-6">
         <Reveal className="text-center mb-10 md:mb-14">
           <SectionLabel>FAQ</SectionLabel>
@@ -738,7 +416,7 @@ function FAQSection() {
               <Reveal key={i} delay={i * 0.04}>
                 <motion.div onClick={() => setOpen(on ? null : i)}
                   className="relative rounded-[16px] overflow-hidden cursor-pointer tap transition-all duration-300"
-                  style={{ background: on ? "#fff" : "#F7F6FF", border: on ? "1.5px solid #3B5BFF" : "1px solid #E6E3F7", boxShadow: on ? "0 12px 32px rgba(59,91,255,0.12)" : "inset 0 1px 0 #fff" }}>
+                  style={{ background: "#fff", border: on ? "1.5px solid #3B5BFF" : "1px solid #E6E3F7", boxShadow: on ? "0 12px 32px rgba(59,91,255,0.12)" : "inset 0 1px 0 #fff" }}>
                   {on && <div className="absolute left-0 top-0 bottom-0 w-[4px]" style={{ background: "var(--grad-primary)" }} />}
                   <div className="flex items-center justify-between px-5 py-4 md:py-5">
                     <span className="font-bold text-ink text-[14px] md:text-[15px] pr-4 leading-snug">{f.q}</span>
@@ -774,12 +452,13 @@ function FinalCTA() {
       <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.14) 1px, transparent 1px)", backgroundSize: "28px 28px", opacity: 0.5 }} />
       <div className="relative max-w-brand mx-auto px-6 text-center">
         <Reveal>
-          <h2 className="text-[30px] md:text-[48px] font-extrabold text-white tracking-[-0.03em] leading-[1.05] mb-4">Still scrolling?<br className="md:hidden" /> Let&apos;s just talk.</h2>
-          <p className="text-white/70 text-[14px] md:text-[16px] mb-8">Free 1:1 counseling · Certificate + internship · EMI available · No pressure</p>
+          <h2 className="text-[30px] md:text-[48px] font-extrabold text-white tracking-[-0.03em] leading-[1.05] mb-4">Not sure which course?<br className="md:hidden" /> Let&apos;s talk.</h2>
+          <p className="text-white/75 text-[14px] md:text-[16px] mb-8">A free 15-minute call. We&apos;ll suggest the right course and share the fee and EMI on WhatsApp.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Magnetic className="w-full sm:w-auto"><button onClick={openPopup} className="tap w-full sm:w-auto px-8 py-4 bg-white text-primary font-extrabold rounded-full text-[15px]" style={{ boxShadow: "0 14px 36px rgba(0,0,0,0.2)" }}>Free counseling</button></Magnetic>
             <Magnetic className="w-full sm:w-auto"><a href="https://wa.me/919936609430" className="tap w-full sm:w-auto px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full text-[15px] inline-flex items-center justify-center gap-2" style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2), 0 12px 30px rgba(0,0,0,0.18)" }}><Icon.WhatsApp size={18} /> WhatsApp now</a></Magnetic>
           </div>
+          <p className="mt-5 text-[12.5px] font-semibold text-white/65">Free · No obligation · Replies in about 2 hours</p>
         </Reveal>
       </div>
     </section>
