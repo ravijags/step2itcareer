@@ -21,7 +21,7 @@ const nextConfig: NextConfig = {
       { source: "/resources/career", destination: "/resources/roadmaps", permanent: true },
       { source: "/resources/tutorials", destination: "/resources/cheat-sheets", permanent: true },
       { source: "/resources/tech-trends", destination: "/resources", permanent: true },
-      { source: "/resources/success-stories", destination: "/#stories", permanent: false },
+      { source: "/resources/success-stories", destination: "/", permanent: false },
     ];
   },
 };

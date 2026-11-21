@@ -12,7 +12,7 @@ export default function CTABand({ title, sub, primary = "Free counseling" }: { t
         {sub && <p className="text-white/70 text-[14px] md:text-[16px] mb-8 max-w-xl mx-auto">{sub}</p>}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <CounselButton className="tap w-full sm:w-auto px-8 py-4 bg-white text-primary font-extrabold rounded-full text-[15px]" >{primary}</CounselButton>
-          <a href="https://wa.me/919936609430" className="tap w-full sm:w-auto px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full text-[15px] inline-flex items-center justify-center gap-2"><Icon.WhatsApp size={18} /> WhatsApp now</a>
+          <a href="https://wa.me/919936609430" className="tap w-full sm:w-auto px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full text-[15px] inline-flex items-center justify-center gap-2"><Icon.WhatsApp size={18} /> WhatsApp us</a>
         </div>
       </div>
     </section>

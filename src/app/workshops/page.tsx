@@ -44,7 +44,7 @@ function WorkshopCard({ w }: { w: Workshop }) {
       <div className="mt-auto">
         <WorkshopButton title={w.title} kind={w.kind}
           className={`tap w-full py-3.5 rounded-full font-extrabold text-[14px] text-white ${free ? "btn-grad" : "btn-grad-accent"}`}>
-          {free ? "Reserve free seat" : "Register now"}
+          {free ? "Reserve free seat" : "Reserve your seat"}
         </WorkshopButton>
         <div className="mt-3 min-h-[34px] text-center text-[12px] leading-snug">
           {next ? (

@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const course = getCourseBySlug(slug);
   if (!course) return {};
-  return { title: `${course.title} — Step2ITCareer-AI`, description: course.description };
+  return { title: `${course.title} — Step2ITCareer-AI`, description: course.description, alternates: { canonical: `/courses/${course.slug}` } };
 }
 
 export default async function CourseDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -46,6 +46,11 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
 
   return (
     <div className="min-h-screen bg-soft">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org", "@type": "Course", name: course.title, description: course.description,
+        url: `https://step2itcareer.vercel.app/courses/${course.slug}`,
+        provider: { "@type": "EducationalOrganization", name: "Step2ITCareer-AI", url: "https://step2itcareer.vercel.app" },
+      }) }} />
       {/* ── HERO BAND ── */}
       <section className="relative z-10 cut-bottom bg-ink2 overflow-hidden pt-24 md:pt-36 pb-20 md:pb-28">
         <Grain />

@@ -151,7 +151,7 @@ export default function AboutPage() {
         <h2 className="text-2xl md:text-3xl font-extrabold text-white mb-4">One Team. One Purpose.</h2>
         <p className="text-white/70 mb-8 max-w-xl mx-auto">Different roles. Different expertise. One common objective — to make learners more skilled, confident and career-ready.</p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="https://wa.me/919936609430" className="px-8 py-4 tap bg-white text-primary font-bold rounded-full">Book Free Counseling</a>
+          <a href="https://wa.me/919936609430" className="px-8 py-4 tap bg-white text-primary font-bold rounded-full">Free counseling</a>
           <Link href="/courses" className="px-8 py-4 tap bg-[#16A34A] text-white font-bold rounded-full">Explore Programs</Link>
         </div>
       </section>

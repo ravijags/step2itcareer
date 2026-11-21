@@ -15,6 +15,20 @@ import LoginSheet from "@/components/LoginSheet";
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], weight: ["300","400","500","600","700","800"], display: "swap", variable: "--font-jakarta" });
 
+const ORG_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  name: "Step2ITCareer-AI",
+  url: "https://step2itcareer.vercel.app",
+  logo: "https://step2itcareer.vercel.app/opengraph-image",
+  slogan: "Get Hired. Not just Trained.",
+  founder: { "@type": "Person", name: "Ashvani Srivastava" },
+  telephone: "+91-99366-09430",
+  email: "hello@step2itcareer.com",
+  address: { "@type": "PostalAddress", streetAddress: "Street No-2, House No. 904, Amrapali Sphere, Gate No-6, Sector 45", addressLocality: "Noida", addressRegion: "Uttar Pradesh", postalCode: "201303", addressCountry: "IN" },
+  sameAs: ["https://www.instagram.com/step2itcareerai_official/", "https://www.facebook.com/profile.php?id=61592017550216", "https://www.youtube.com/channel/UCOZ6YNuhMhT2waMGIhkXKoQ"],
+};
+
 export const viewport: Viewport = { themeColor: "#070B18" };
 
 export const metadata: Metadata = {
@@ -29,6 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={jakarta.variable} data-scroll-behavior="smooth">
       <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_JSONLD) }} />
         <Loader />
         <NavClient />
         <main><PageTransition>{children}</PageTransition></main>
@@ -83,7 +98,7 @@ function Footer() {
           <FootCol title="Free for you" links={FOOT_FREE} />
 
           <div className="col-span-2 md:col-span-1">
-            <h4 className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-white/45 mb-4">Talk to us</h4>
+            <h4 className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-white/60 mb-4">Talk to us</h4>
             <div className="grid grid-cols-3 md:grid-cols-1 gap-2.5">
               <FootAction href="https://wa.me/919936609430" label="WhatsApp" sub="Replies in ~2 hrs" green><Icon.WhatsApp size={19} /></FootAction>
               <FootAction href="tel:+919936609430" label="Call" sub="+91 99366 09430"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></FootAction>
@@ -91,7 +106,7 @@ function Footer() {
             </div>
             <a href={MAP_URL} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-start gap-2 text-[13px] text-white/55 hover:text-white transition-colors leading-snug">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="mt-0.5 shrink-0" aria-hidden><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-              <span><span className="md:hidden">Amrapali Sphere, Sector 45, Noida</span><span className="hidden md:inline">House No. 904, Amrapali Sphere, Gate No-6, Sector 45, Noida, UP 201303</span></span>
+              <span>Street No-2, House No. 904,<br />Noida Sec 45, Amrapali Sphere,<br />Gate No-6, Noida, UP 201303</span>
             </a>
           </div>
         </div>
@@ -108,7 +123,7 @@ function Footer() {
 function FootCol({ title, links }: { title: string; links: [string, string][] }) {
   return (
     <div>
-      <h4 className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-white/45 mb-4">{title}</h4>
+      <h4 className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-white/60 mb-4">{title}</h4>
       <ul className="space-y-3">
         {links.map(([name, href]) => (
           <li key={href}><Link href={href} className="text-[14px] text-white/75 hover:text-white transition-colors">{name}</Link></li>

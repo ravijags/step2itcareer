@@ -98,7 +98,7 @@ export default function ContactPage() {
               <a href="https://wa.me/919936609430" className="flex items-center gap-4 p-6 bg-[#16A34A] text-white rounded-brand hover:opacity-90 transition-opacity">
                 <SkillIcon emoji="💬" size={44} dark className="w-fit shrink-0" />
                 <div>
-                  <div className="font-extrabold text-lg">WhatsApp Us Now</div>
+                  <div className="font-extrabold text-lg">WhatsApp us</div>
                   <div className="text-white/80 text-sm">Fastest way to reach us — instant reply</div>
                 </div>
               </a>

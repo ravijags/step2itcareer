@@ -83,10 +83,10 @@ export default function NavClient() {
 
           <button
             type="button"
-            onClick={() => window.dispatchEvent(new CustomEvent("openLoginSheet"))}
+            onClick={() => window.dispatchEvent(new CustomEvent("openLeadPopup"))}
             className="btn-grad tap hidden lg:inline-flex items-center px-5 py-2 text-[13px] font-bold rounded-full text-white"
           >
-            Login / Sign In
+            Free counseling
           </button>
 
           <MobileNav />

@@ -63,8 +63,8 @@ const t = (track: Track) => ({ track, category: TRACKS[track].label, categoryCol
 const career: Course[] = [
   {
     slug: "ai-engineer-agents-automation", title: "AI Engineer: Agents & Automation", level: "career", ...t("ai"), duration: "5 Months", hot: true,
-    description: "Build AI agents, chatbots and automations that do real work — from your first prompt to a deployed multi-agent app. One of the fastest-growing roles in tech, taught from scratch.",
-    audience: ["Students and freshers who want the hottest role in tech", "Developers and testers moving into AI", "Non-CS learners — Python is taught from zero"],
+    description: "Build AI agents, chatbots and automations that do real work — from your first prompt to a deployed multi-agent app. Taught from scratch, one project at a time.",
+    audience: ["Students and freshers who want to work in AI", "Developers and testers moving into AI", "Non-CS learners — Python is taught from zero"],
     aiAngle: "This whole program is AI: you build with LLM APIs, agent frameworks and automation tools the way AI teams work today.",
     skills: [
       { icon: "🤖", name: "AI Agents & Tool Calling" }, { icon: "🔗", name: "RAG & Vector Databases" },
@@ -128,7 +128,7 @@ const career: Course[] = [
   },
   {
     slug: "java-full-stack-ai", title: "Java Full Stack Developer + AI", level: "career", ...t("dev"), duration: "5 Months", hot: true,
-    description: "India's most-hired fresher stack: Core Java, Advanced Java, Spring Boot and React — with AI coding tools built in. Build and deploy real apps, then crack the interview.",
+    description: "Core Java, Advanced Java, Spring Boot and React — with AI coding tools built in. Build and deploy real apps, then crack the interview.",
     audience: ["B.Tech, BCA, MCA students and freshers", "Anyone targeting service companies and GCCs", "Beginners — Java is taught from zero"],
     aiAngle: "Code with AI assistants like Copilot and Claude Code, review AI-written code, and add an AI feature to your app.",
     skills: [
@@ -172,7 +172,7 @@ const career: Course[] = [
   },
   {
     slug: "cybersecurity-ai-security", title: "Cybersecurity & AI Security Analyst", level: "career", ...t("security"), duration: "5 Months",
-    description: "India is short of over a million security professionals. Learn ethical hacking, network and web security, SOC operations — and the new world of AI security.",
+    description: "Learn ethical hacking, network and web security, SOC operations — and the new world of AI security.",
     audience: ["Students curious about how systems get hacked", "Freshers aiming for SOC and security analyst roles", "IT and networking learners going into security"],
     aiAngle: "Learn AI-era threats like prompt injection and deepfake phishing, and use AI tools to detect and investigate attacks.",
     skills: [
@@ -234,7 +234,7 @@ const short: Course[] = [
   },
   {
     slug: "ai-assisted-coding", title: "Coding with AI", level: "short", ...t("ai"), duration: "4 Weeks", hot: true,
-    description: "The skill every developer is hired for in 2026: build real apps with AI coding tools — and learn to review what they write.",
+    description: "Build real apps with AI coding tools — and learn to review what they write.",
     audience: ["Students who know basic programming", "Developers who want to work 2× faster"],
     aiAngle: "You'll pair-program with AI every day and learn to specify, review and test AI-written code.",
     skills: [{ icon: "🤖", name: "AI Pair Programming" }, { icon: "📝", name: "Spec-Driven Building" }, { icon: "🔍", name: "Reviewing AI Code" }, { icon: "🧪", name: "Testing & Debugging" }],

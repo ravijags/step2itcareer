@@ -38,7 +38,7 @@ export default async function SheetPage({ params }: { params: Promise<{ slug: st
 
       <div className="overlap-up pt-24 md:pt-32 pb-16 md:pb-24 print:pt-0 print:mt-0">
         <div className="max-w-brand mx-auto px-6">
-          <h1 className="hidden print:block text-[22px] font-extrabold text-ink mb-4">{s.title} — Step2ITCareer-AI cheat sheet</h1>
+          <p className="hidden print:block text-[22px] font-extrabold text-ink mb-4">{s.title} — Step2ITCareer-AI cheat sheet</p>
           <div className="columns-1 md:columns-2 gap-5 [column-fill:_balance]">
             {s.sections.map((sec) => (
               <section key={sec.title} className="break-inside-avoid mb-5 rounded-[16px] bg-white border border-[#E6E3F7] p-4 md:p-5 card-lift">

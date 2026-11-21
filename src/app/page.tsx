@@ -9,7 +9,7 @@ import { Icon } from "@/components/Icons";
 import { Grain, Slashes } from "@/components/Decor";
 import Magnetic from "@/components/Magnetic";
 import CourseArt from "@/components/CourseArt";
-import { STORIES, SITE } from "@/lib/site";
+import { STORIES, SITE, SHOW_STORIES } from "@/lib/site";
 import Image from "next/image";
 import DailyTile from "@/components/practice/DailyTile";
 
@@ -34,7 +34,7 @@ export default function HomePage() {
       </div>
       <FeaturedCourses />
       <WhyUs />
-      <RecentPlacements />
+      {SHOW_STORIES && <RecentPlacements />}
       <StartFree />
       <FAQSection />
       <FinalCTA />
@@ -238,34 +238,44 @@ function FeaturedCourses() {
 /* ───────────────────────── WHY US — the person and the batch ───────────────────────── */
 function WhyUs() {
   const points = [
-    { I: Icon.Users, t: "Your mentor knows your name", d: "Max 5 students per batch, so nobody hides at the back." },
-    { I: Icon.Video, t: "Live classes, real projects", d: "Not recordings. You build things a recruiter can open." },
-    { I: Icon.Target, t: "Help until you're hired", d: "Mock interviews, resume reviews and referrals when you're ready." },
+    { I: Icon.Users, t: "Batches of 5", d: "Small enough that nobody gets lost in the crowd." },
+    { I: Icon.Video, t: "Live classes", d: "Learn live with a mentor, not from old recordings." },
+    { I: Icon.Target, t: "Real projects", d: "Build projects you can show in interviews." },
   ];
   const m = SITE.mentor;
   return (
-    <section className="py-14 md:py-24 bg-white">
-      <div className="max-w-brand mx-auto px-6 grid md:grid-cols-[0.85fr_1.15fr] gap-8 md:gap-14 items-center">
+    <section className="relative z-10 cut-both bg-[#060915] overflow-hidden py-16 md:py-24">
+      <Grain />
+      <Slashes side="left" opacity={0.10} height={900} />
+      <div aria-hidden className="absolute inset-0 pointer-events-none md:hidden" style={{ background: "radial-gradient(70% 30% at 50% 36%, rgba(75,95,255,0.32), transparent 72%)" }} />
+      <div aria-hidden className="absolute inset-0 pointer-events-none hidden md:block" style={{ background: "radial-gradient(40% 55% at 28% 48%, rgba(75,95,255,0.30), transparent 72%)" }} />
+      <div className="relative max-w-brand mx-auto px-6 grid md:grid-cols-[0.85fr_1.15fr] gap-8 md:gap-14 items-center">
         <Reveal>
-          <div className="relative mx-auto max-w-[420px] rounded-[28px] overflow-hidden bg-soft aspect-square" style={{ boxShadow: "0 30px 60px -30px rgba(14,21,38,0.35)" }}>
-            <Image src={m.photoFull} alt={`${m.name}, founder and mentor`} fill sizes="(min-width: 768px) 420px, 90vw" className="object-cover object-top" />
-            <div className="absolute left-3 right-3 bottom-3 rounded-[16px] px-4 py-3 text-white" style={{ background: "rgba(7,11,24,0.72)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)" }}>
-              <div className="text-[16px] font-extrabold leading-tight">{m.name}</div>
-              <div className="text-[12.5px] text-white/65">{m.role}</div>
+          {/* Phones: the message first, then the face */}
+          <div className="md:hidden text-center mb-6">
+            <SectionLabel dark>Why us</SectionLabel>
+            <h2 className="mt-4 text-[28px] font-extrabold text-white tracking-[-0.03em] leading-[1.08]">1 mentor. 5 students.<br /><span className="grad-text">That&apos;s the difference.</span></h2>
+          </div>
+          {/* No frame: he stands in the section's own spotlight and fades into the dark */}
+          <div className="relative mx-auto w-full max-w-[300px] md:max-w-[440px] aspect-[4/5]">
+            <Image src="/ashvani-portrait.webp" alt={`${m.name}, founder and mentor`} fill sizes="(min-width: 768px) 440px, 300px" className="object-contain object-bottom" style={{ maskImage: "linear-gradient(to bottom, #000 62%, transparent 98%)", WebkitMaskImage: "linear-gradient(to bottom, #000 62%, transparent 98%)" }} />
+            <div className="absolute left-0 right-0 bottom-1 text-center">
+              <div className="text-[17px] font-extrabold text-white leading-tight">{m.name}</div>
+              <div className="mt-0.5 text-[13px] text-white/60">{m.role}</div>
             </div>
           </div>
         </Reveal>
         <Reveal delay={0.08}>
-          <SectionLabel>Why us</SectionLabel>
-          <h2 className="mt-4 text-[28px] md:text-[42px] font-extrabold text-ink tracking-[-0.03em] leading-[1.08]">1 mentor. 5 students.<br /><span className="grad-text">That&apos;s the difference.</span></h2>
-          <p className="mt-3 text-muted text-[15px] md:text-[16px] leading-relaxed max-w-lg">&ldquo;With five students in a batch, I know every name, every gap and every offer letter.&rdquo; <span className="text-ink font-semibold">— {m.name.split(" ")[0]}</span></p>
+          <div className="hidden md:block"><SectionLabel dark>Why us</SectionLabel></div>
+          <h2 className="hidden md:block mt-4 text-[28px] md:text-[42px] font-extrabold text-white tracking-[-0.03em] leading-[1.08]">1 mentor. 5 students.<br /><span className="grad-text">That&apos;s the difference.</span></h2>
+          <p className="mt-3 text-white/65 text-[15px] md:text-[16px] leading-relaxed max-w-lg">&ldquo;I started Step2ITCareer so no one gets lost in a class of 500.&rdquo; <span className="text-white font-semibold">— {m.name.split(" ")[0]}, Founder</span></p>
           <div className="mt-6 space-y-4">
             {points.map((x) => (
               <div key={x.t} className="flex gap-3.5">
-                <span className="w-10 h-10 shrink-0 rounded-[14px] bg-primary-tint text-primary flex items-center justify-center"><x.I size={19} /></span>
+                <span className="w-10 h-10 shrink-0 rounded-[14px] bg-white/[0.07] text-[#8BA4FF] border border-white/10 flex items-center justify-center"><x.I size={19} /></span>
                 <div>
-                  <div className="text-[15.5px] font-extrabold text-ink">{x.t}</div>
-                  <div className="text-[14px] text-muted leading-relaxed">{x.d}</div>
+                  <div className="text-[15.5px] font-extrabold text-white">{x.t}</div>
+                  <div className="text-[14px] text-white/60 leading-relaxed">{x.d}</div>
                 </div>
               </div>
             ))}
@@ -275,7 +285,7 @@ function WhyUs() {
               className="tap inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-[#16A34A] text-white font-extrabold text-[15px]" style={{ boxShadow: "0 12px 30px rgba(22,163,74,0.3)" }}>
               <Icon.WhatsApp size={18} /> Message {m.name.split(" ")[0]}
             </a>
-            <span className="text-[13px] text-muted text-center sm:text-left">Free · Replies personally, usually within 2 hours</span>
+            <span className="text-[13px] text-white/55 text-center sm:text-left">Free · Usually replies within 2 hours</span>
           </div>
         </Reveal>
       </div>
@@ -299,8 +309,8 @@ function StartFree() {
           <Reveal className="h-full"><DailyTile /></Reveal>
           {tiles.map((x, i) => (
             <Reveal key={x.href} delay={(i + 1) * 0.06} className="h-full">
-              <Link href={x.href} className="group tap h-full flex items-center md:items-start md:flex-col gap-4 rounded-[20px] bg-soft border border-[#E6E3F7] p-4 md:p-6 lift">
-                <span className="w-11 h-11 shrink-0 rounded-[14px] flex items-center justify-center text-white" style={{ background: x.c }}><x.I size={20} /></span>
+              <Link href={x.href} className="group tap h-full flex items-center md:items-start md:flex-col gap-4 rounded-[20px] bg-white border border-[#E6E3F7] p-4 md:p-6 lift">
+                <span className="w-11 h-11 shrink-0 rounded-[14px] flex items-center justify-center bg-primary-tint text-primary"><x.I size={20} /></span>
                 <span className="flex-1 min-w-0">
                   <span className="block text-[16px] font-extrabold text-ink">{x.t}</span>
                   <span className="block text-[13.5px] text-muted">{x.d}</span>
@@ -436,7 +446,7 @@ function FAQSection() {
         </div>
         <Reveal className="text-center mt-9">
           <p className="text-[14px] text-muted mb-3">Didn&apos;t see your question?</p>
-          <Magnetic><button onClick={openPopup} className="btn-grad tap inline-flex items-center gap-2 px-7 py-3.5 text-white font-extrabold rounded-full text-[14px]">Talk to a counselor <Icon.ArrowRight size={15} /></button></Magnetic>
+          <Magnetic><button onClick={openPopup} className="btn-grad tap inline-flex items-center gap-2 px-7 py-3.5 text-white font-extrabold rounded-full text-[14px]">Free counseling <Icon.ArrowRight size={15} /></button></Magnetic>
         </Reveal>
       </div>
     </section>
@@ -456,7 +466,7 @@ function FinalCTA() {
           <p className="text-white/75 text-[14px] md:text-[16px] mb-8">A free 15-minute call. We&apos;ll suggest the right course and share the fee and EMI on WhatsApp.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Magnetic className="w-full sm:w-auto"><button onClick={openPopup} className="tap w-full sm:w-auto px-8 py-4 bg-white text-primary font-extrabold rounded-full text-[15px]" style={{ boxShadow: "0 14px 36px rgba(0,0,0,0.2)" }}>Free counseling</button></Magnetic>
-            <Magnetic className="w-full sm:w-auto"><a href="https://wa.me/919936609430" className="tap w-full sm:w-auto px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full text-[15px] inline-flex items-center justify-center gap-2" style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2), 0 12px 30px rgba(0,0,0,0.18)" }}><Icon.WhatsApp size={18} /> WhatsApp now</a></Magnetic>
+            <Magnetic className="w-full sm:w-auto"><a href="https://wa.me/919936609430" className="tap w-full sm:w-auto px-8 py-4 bg-[#16A34A] text-white font-bold rounded-full text-[15px] inline-flex items-center justify-center gap-2" style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2), 0 12px 30px rgba(0,0,0,0.18)" }}><Icon.WhatsApp size={18} /> WhatsApp us</a></Magnetic>
           </div>
           <p className="mt-5 text-[12.5px] font-semibold text-white/65">Free · No obligation · Replies in about 2 hours</p>
         </Reveal>

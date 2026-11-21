@@ -21,14 +21,16 @@ export default function DailyTile() {
       : streak > 0 ? `🔥 ${streak}-day streak · today's question is waiting` : "Today's question is waiting";
 
   return (
-    <Link href="/daily" className="group tap h-full flex items-center md:items-start md:flex-col gap-4 rounded-[20px] bg-ink2 text-white p-4 md:p-6 lift relative overflow-hidden">
-      <span aria-hidden className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 100% 0%, rgba(255,122,61,0.28), transparent 60%)" }} />
-      <span className="relative w-11 h-11 shrink-0 rounded-[14px] flex items-center justify-center text-white" style={{ background: "var(--grad-accent)" }}><Icon.Bolt size={20} /></span>
-      <span className="relative flex-1 min-w-0">
-        <span className="block text-[16px] font-extrabold">{returning ? "Welcome back" : title}</span>
-        <span className="block text-[13.5px] text-white/65">{line}</span>
+    /* Same tile as its neighbours; the gradient border and icon mark it as today's pick. */
+    <Link href="/daily" className="group tap h-full block rounded-[20px] p-[1.5px] lift" style={{ background: "var(--grad-primary)" }}>
+      <span className="h-full flex items-center md:items-start md:flex-col gap-4 rounded-[18.5px] bg-white p-4 md:p-6">
+        <span className="w-11 h-11 shrink-0 rounded-[14px] flex items-center justify-center text-white" style={{ background: "var(--grad-primary)" }}><Icon.Bolt size={20} /></span>
+        <span className="flex-1 min-w-0">
+          <span className="block text-[16px] font-extrabold text-ink">{returning ? "Welcome back" : title}</span>
+          <span className="block text-[13.5px] text-muted">{line}</span>
+        </span>
+        <Icon.ArrowRight size={17} className="shrink-0 text-primary md:hidden" />
       </span>
-      <Icon.ArrowRight size={17} className="relative shrink-0 text-[#FF9A6C] md:hidden" />
     </Link>
   );
 }

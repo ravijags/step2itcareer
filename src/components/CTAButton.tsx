@@ -1,7 +1,7 @@
 "use client";
 
 export default function CTAButton({
-  label = "Book Free Counseling",
+  label = "Free counseling",
   className = "",
 }: {
   label?: string;

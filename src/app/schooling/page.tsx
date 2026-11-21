@@ -32,7 +32,7 @@ export default function SchoolingPage() {
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <CounselButton className="btn-grad tap px-7 py-4 rounded-full text-white font-extrabold text-[15px]">Book a free demo class</CounselButton>
           <a href="https://wa.me/919936609430?text=Hi!%20I%27d%20like%20to%20know%20about%20the%20coding%20program%20for%20my%20child." target="_blank" rel="noopener noreferrer"
-            className="tap inline-flex items-center justify-center gap-2 px-7 py-4 bg-[#16A34A] text-white font-extrabold rounded-full text-[15px]"><Icon.WhatsApp size={18} /> Ask on WhatsApp</a>
+            className="tap inline-flex items-center justify-center gap-2 px-7 py-4 bg-[#16A34A] text-white font-extrabold rounded-full text-[15px]"><Icon.WhatsApp size={18} /> WhatsApp us</a>
         </div>
       </PageHero>
 

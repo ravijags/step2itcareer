@@ -26,7 +26,7 @@ export default function InternshipPage() {
         description="Most fresher job posts now ask for real project experience. Do yours with a mentor, in any track — 4, 6 or 8 weeks."
       >
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-          <a href={WA} target="_blank" rel="noopener noreferrer" className="tap inline-flex items-center justify-center gap-2 px-7 py-4 bg-[#16A34A] text-white font-extrabold rounded-full text-[15px]"><Icon.WhatsApp size={18} /> Ask on WhatsApp</a>
+          <a href={WA} target="_blank" rel="noopener noreferrer" className="tap inline-flex items-center justify-center gap-2 px-7 py-4 bg-[#16A34A] text-white font-extrabold rounded-full text-[15px]"><Icon.WhatsApp size={18} /> WhatsApp us</a>
           <CounselButton className="btn-ghost-dark tap px-7 py-4 rounded-full text-white font-bold text-[15px]">Free counseling</CounselButton>
         </div>
       </PageHero>

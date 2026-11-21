@@ -15,7 +15,7 @@ export const SITE = {
   mentor: {
     name: "Ashvani Srivastava",
     initials: "AS",
-    role: "Founder & mentor · 10+ years in EdTech",
+    role: "Founder & CEO · 10+ years in EdTech",
     /* Put a square photo in /public (e.g. public/ashvani.jpg) and set "/ashvani.jpg".
        Leave null to show the initials avatar. */
     photo: "/ashvani.jpg" as string | null,
@@ -25,6 +25,10 @@ export const SITE = {
 
 /* Student stories on the homepage. Replace with real (approved) stories when you have them.
    Until then these are samples: fresher-level companies and packages, kept believable, names changed. */
+/* Homepage student stories. The four below are SAMPLES: keep SHOW_STORIES false until real,
+   approved stories replace them, then set it to true. */
+export const SHOW_STORIES = false;
+
 export const STORIES = [
   { initials: "RS", name: "Rohit S.", location: "Delhi", tag: "B.Com → Analyst", track: "Data Analytics", company: "Accenture", companyColor: "#A100FF", pkg: "₹7 LPA", quote: "I came from B.Com and thought analytics wasn't for me. The mock interviews were tougher than the real one." },
   { initials: "PA", name: "Priya A.", location: "Noida", tag: "Fresher", track: "Generative AI", company: "TCS", companyColor: "#CC0000", pkg: "₹5.5 LPA", quote: "5 students per batch sounds small but that's exactly why it works. My mentor knew every single gap I had." },
